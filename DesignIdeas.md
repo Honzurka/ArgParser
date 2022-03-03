@@ -22,6 +22,7 @@
         - use generic type: allows all types (such as complex objects) which we couldn't parse
 - parsed result
     - result.Get(OptName)
+        - string search means lookup errors will be detected at runtime and not compilation
         1. return Dictionary with result
             - can't associate exact type with option name
                 1. user would have to cast value by himself => bad
@@ -38,6 +39,7 @@
             - lot of code for such a simple action
     - named var ref: `AddOption()` would return reference to parsed result
         - leads to too many variables, unstructured
+        - however, more type-safe
 - access values of plain arguments
     - we require name for each plain argument
         - for description in HELP
