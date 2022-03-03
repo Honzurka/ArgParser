@@ -1,123 +1,34 @@
 /*
 
-#Short option
-A command-line argument that starts with a single dash, followed by a single character (e.g. “-v")
-
-#Long option
-A command-line argument that starts with two dashes, followed by one or more characters (e.g. “--version")
-
-#Option
-Short option or Long option
-
-#Option parameter
-A command-line argument that follows an option (if the option is defined to accept parameters by the user of your library)
-
-#Plain argument
-A command-line argument that is neither an option nor an option parameter.
-
-#Delimiter
-A command-line argument consisting of two dashes only, i.e. --. Any subsequent argument is considered to be a plain argument
-
-For example, in the following command
-
-cmd -v --version -s OLD --length=20 -- -my-file your-file
-there are short options v and s, long options version and length, the OLD and 20 values represent arguments to -s and --length options, respectively. The -my-file and your-file arguments after the -- delimiter are plain arguments.
-
-
-    - we might have a class for arg parsing. Should it be static? It's not
-      going to be instantiated more than once a program anyway.
-
-    - default values for parameters! Simply solves binary parameters, for other
-      uses of absence simply use Nullable<T> and null.
-      Specify by user that it's default
-
-    - solve duplicit options? might be just part of implementation...
-
-- specify what options the client program accepts, which of them are optional
-  and which of them are mandatory, verify the actual arguments passed to the
-  client program conform to this specification.
-
-
-    // names = [] => plain argument
-
-    - array of command class instances, each having a mandatory parameter ?
+    - array of command class instances, each having a mandatory parameter ? --------------------------------- ??
     - or instead of defining options in constructor, use methods
       c.AddMandatoryOption(o) and c.AddOptionalOption(o)
     - we could also leave it at a binary enumeration, just to give symbols
       to the API -> Option.OptionAccept.Mandatory
 
-- define synonyms (at the very least 1:1 between short and long options, but
-  ideally in a more general way).
-
-    - include dashes ? string[] synonyms || string[] longOptions, shortOptions
-    - again, methods .AddLongSynonym(o) and .AddShortSynonym(o), but we might
-      want to ensure a parameter has atleast one option, i guess...?
-
-    - addParam(['-f', '--force',...]), else throw error
-    - autodetect based on if short options can have more than one letter
-
-- specify, whether an option may/may not/must accept parameters, verify that
-  the actual arguments passed to the client program conform to this
-  specification.
-
-    - since this is enumerated, it can be specified in the constructor as
-      Option.ParameterAccept.Mandatory
-    - or, again, have multiple classes inherited from one class
-      OptionWithNoParam, OptionWithOptionalParam, OptionWithMandatoryParam
-
-    - inheritance based classes
-  python: nargs= ? * + 0 [1 2 3 ...]
-  - constructor / method overload
-
-
-- specify types of parameters, verify that the actual arguments passed to the
-  client program conform to this specification. At the very least the library
-  has to distinguish between string parameters, integral parameters (with
-  either or both: lower and upper bound), boolean parameters, and string
-  parameters with fixed domain (enumeration).
-
-    delegate f 
-    - have builtin functions like IsInteger(p), IsInRange(l,u,p), etc.,
-      then define some anonymous function (maybe?)
-      (string p) => IsInteger(p) && isInRange(0, 65536, p);
-
-    if f(string)
-
-    - 
-
-- allow adapting the client program behavior or configuration in response to
-  the options and arguments passed on the command line.
-
-- access the values of all plain arguments. The delimiter may be omitted unless
-  a plain argument starts with -.
-
-- document the options and to present the documentation to the user in form of
-  a help text.
-
-    - simple, hopefully
 */
 
-enum OptionAccept { Mandatory, Optional };
+enum OptionAccept { Mandatory, Optional }; // 2 hodnoty => mohl by byt bool?
 // maybe put parameterAccept inside Iparam
 enum ParameterAccept { Mandatory, Optional, None };
 
-interface IParam {
+interface IParamType {
     // public object GetValue();
-    public void IsValid(string value) {}
+    internal /*public*/ void IsValid(string value) {} //nemela bych krome validace vracet i pretypovanou hodnotu?
 }
 
-class IntParam : IParam {
+class IntParam : IParamType {
     public IntParam(int minValue = Int.MinValue, int maxValue = Int.MaxValue, int? default = null) {
       
     }
 }
-class BoolParam : IParam {
+class BoolParam : IParamType {
     public BoolParam(bool? default = null)
 }
-class StringParam : IParam {
+class StringParam : IParamType {
     public StringParam(string? default = null) { }
 }
-class EnumParam : IParam {
+class EnumParam : IParamType {
     string[] domain;
     public EnumParam(string[] domain, string? default = null);
 }
@@ -127,15 +38,15 @@ class ArgParser
     public ArgParser(string delimiter = "--") {}
 
     public void AddOption(string[] names, string description, OptionAccept optionAccept,
-      ParameterAccept parameterAccept, IParam type) {
+      ParameterAccept parameterAccept, IParamType type) {
     }
 
     // 
-    public void AddPlainArgument(string name, string description, IParam type) {}
+    public void AddPlainArgument(string name, string description, IParamType type) {}
 
 
 
-    public IReadOnlyDictionary<string name, object value> Parse() {}
+    public IReadOnlyDictionary<string name, object value> Parse() {} //mozna by bylo lepsi vracet tridu s Get(name) metodou
     //public T Get<T>(string name) {}
 }
 
