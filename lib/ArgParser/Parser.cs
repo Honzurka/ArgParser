@@ -30,12 +30,17 @@ namespace ArgParser
     };
 
 
-    public interface IOption<T>
+    public abstract class IOption<T>
     {
-        public T Value { get; /*private set;*/ }
-        public /*idealne internal?*/ void Parse(string[] optValue);
+        public T Value { get; private set; }
+
         // 1. nacte do pameti parsovane parametry
         // 2. hodi vyjimku / vrati false pokud selze
+        // allows creating custom Options
+        abstract protected void Parse(string[] optVals);
+
+        internal void CallParse(string[] optVals) => Parse(optVals); //impl. detail
+
     }
 
     public class OptionSettings
@@ -52,26 +57,22 @@ namespace ArgParser
     {
         public IntOption(OptionSettings settings, int? defaultValue = null, int minValue = int.MinValue, int maxValue = int.MaxValue) { }
 
-        public void Parse(string[] optValue) { }
-        public int Value { get; private set; }
+        protected override void Parse(string[] optVals) { }
     }
     public class StringOption : IOption<string>
     {
         public StringOption(OptionSettings settings, string defaultValue = null) { }
-        public void Parse(string[] optValue) { }
-        public string Value { get; private set; }
+        protected override void Parse(string[] optVals) { }
     }
     public class EnumOption : IOption<string>
     {
         public EnumOption(OptionSettings settings, string[] domain, string defaultValue) { }
-        public void Parse(string[] optValue) { }
-        public string Value { get; private set; }
+        protected override void Parse(string[] optVals) { }
     }
     public class BoolOption : IOption<bool>
     {
         public BoolOption(OptionSettings settings, bool? defaultValue = null) { }
-        public void Parse(string[] optValue) { }
-        public bool Value { get; private set; }
+        protected override void Parse(string[] optVals) { }
     }
     public class NoValueOption : IOption<bool>
     {
