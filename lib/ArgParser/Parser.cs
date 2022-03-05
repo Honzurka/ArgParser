@@ -17,14 +17,6 @@ namespace ArgParser
 
     public interface IOption<T>
     {
-        /*
-        public string[] names;
-        public string description;
-        */
-
-        //public bool IsMandatory { get; }
-        //public ParameterAccept parameterAccept { get; init; }
-
         public T Value { get; /*private set;*/ }
         public /*idealne internal?*/ void Parse(string[] optValue);
         // 1. nacte do pameti parsovane parametry
@@ -33,20 +25,14 @@ namespace ArgParser
 
     public class OptionSettings
     {
-        public string[] Names;
-        public string Description;
-        public bool IsMandatory;
+        public readonly string[] Names;
+        public readonly string Description;
+        public readonly bool IsMandatory;
+        public readonly ParameterAccept parameterAccept;
 
-        public OptionSettings(string[] names, string description, bool isMandatory = true) {}
+        public OptionSettings(string[] names, string description, ParameterAccept parameterAccept, bool isMandatory = true) {}
     }
 
-    // GENERAL
-    // names, description, optonAccept, parameterAccept
-    // SPECIFIC
-    // string: -
-    // bool: -
-    // int: range
-    // enum: domain
     public class IntOption : IOption<int>
     {
         public IntOption(OptionSettings settings, int? defaultValue = null, int minValue = int.MinValue, int maxValue = int.MaxValue) { }

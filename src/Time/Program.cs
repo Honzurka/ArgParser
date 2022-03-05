@@ -8,23 +8,22 @@ namespace Time
         public string Delimiter => "--";
 
         public StringOption format = new StringOption(
-            new OptionSettings(new string[] { "f", "format" }, "Specify output format."));
+            new OptionSettings(new string[] { "f", "format" }, "Specify output format.", ParameterAccept.Mandatory));
         public BoolOption portability = new BoolOption(
-            new OptionSettings(new string[] { "p", "portability" }, "Use the portable output format.", false));
+            new OptionSettings(new string[] { "p", "portability" }, "Use the portable output format.", ParameterAccept.None, false));
 
         public StringOption output = new StringOption(
-            new OptionSettings(new string[] { "o", "output" }, "Do not send the results to stderr, but overwrite the specified file."));
-        
+            new OptionSettings(new string[] { "o", "output" }, "Do not send the results to stderr, but overwrite the specified file.", ParameterAccept.Mandatory));
         // vazba na output ???
         public BoolOption append = new BoolOption(
-            new OptionSettings(new string[] { "a", "append" }, "(Used together with -o.) Do not overwrite but append.", false));
+            new OptionSettings(new string[] { "a", "append" }, "(Used together with -o.) Do not overwrite but append.", ParameterAccept.None, false));
         public BoolOption verbose = new BoolOption(
-            new OptionSettings(new string[] { "v", "verbose" }, "Give very verbose output about all the program knows about."));
+            new OptionSettings(new string[] { "v", "verbose" }, "Give very verbose output about all the program knows about.", ParameterAccept.None));
         
         public BoolOption help = new BoolOption(
-            new OptionSettings(new string[] { "help" }, "Print a usage message on standard output and exit successfully"));
+            new OptionSettings(new string[] { "help" }, "Print a usage message on standard output and exit successfully", ParameterAccept.None));
         public BoolOption version = new BoolOption(
-            new OptionSettings(new string[] { "V", "version" }, "Print version information on standard output, then exit successfully."));
+            new OptionSettings(new string[] { "V", "version" }, "Print version information on standard output, then exit successfully.", ParameterAccept.None));
     }
     class Program
     {

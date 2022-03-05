@@ -60,6 +60,13 @@
 - omezit mutabilitu => readonly
 - ma byt argParser static?
 - OptionAccept: 2 hodnoty => muze byt bool
+- mandatory param => nepotrebuje default value
+- **parameterAccept !!!!!!!!!!**
+    - pouzivame `BoolOption` pro parametry bez hodnoty
+        - nema byt BoolOption pro parametry s hodnotou true/false
+        - pak bychom potrebovali `NoValueOption` pro parametry bez hodnoty
+- IOption.Value - melo by prijimat index (kdybychom chteli rozsirovat na vice parametru)
+
 - option parameter type check
     - krome validace bych mohl vracet pretypovanou hodnotu
         - metodu udelame internal => implementacni detail == nemusime resit ted
