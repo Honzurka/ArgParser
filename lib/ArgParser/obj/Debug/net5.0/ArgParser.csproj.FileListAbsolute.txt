@@ -1,0 +1,12 @@
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\bin\Debug\net5.0\ArgParser.deps.json
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\bin\Debug\net5.0\ArgParser.dll
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\bin\Debug\net5.0\ref\ArgParser.dll
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\bin\Debug\net5.0\ArgParser.pdb
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\obj\Debug\net5.0\ArgParser.csproj.AssemblyReference.cache
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\obj\Debug\net5.0\ArgParser.GeneratedMSBuildEditorConfig.editorconfig
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\obj\Debug\net5.0\ArgParser.AssemblyInfoInputs.cache
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\obj\Debug\net5.0\ArgParser.AssemblyInfo.cs
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\obj\Debug\net5.0\ArgParser.csproj.CoreCompileInputs.cache
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\obj\Debug\net5.0\ArgParser.dll
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\obj\Debug\net5.0\ref\ArgParser.dll
+C:\Data\GitRepos\best-programming-practices\t13-api-design\lib\ArgParser\obj\Debug\net5.0\ArgParser.pdb
