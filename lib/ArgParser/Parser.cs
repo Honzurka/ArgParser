@@ -78,8 +78,6 @@ namespace ArgParser
     {
         // mandatory je vzdy false, parameter accept je vzdy nic, defaultValue bude false
         public NoValueOption(string[] names, string description) { }
-        public void Parse(string[] optValue) { }
-
-        public bool Value { get; private set; }
+        protected override void Parse(string[] optValue) { }
     }
 }
