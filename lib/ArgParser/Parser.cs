@@ -13,7 +13,22 @@ namespace ArgParser
         public void Parse(string[] args) { }
     }
 
-    public enum ParameterAccept { Mandatory, Optional, None };
+
+
+    public struct ParameterAccept {
+        public readonly int MinParameterAmount, MaxParameterAmount;
+
+        public ParameterAccept(int minParameterAmount, int maxParameterAmount = int.MaxValue) {
+            MinParameterAmount = minParameterAmount;
+            MaxParameterAmount = maxParameterAmount;
+        }
+
+        public static ParameterAccept Mandatory = new ParameterAccept(1, 1);
+        public static ParameterAccept Optional = new ParameterAccept(0, 1);
+        public static ParameterAccept AtleastOne = new ParameterAccept(1, int.MaxValue);
+        public static ParameterAccept Any = new ParameterAccept(0, int.MaxValue);
+    };
+
 
     public interface IOption<T>
     {
@@ -58,5 +73,12 @@ namespace ArgParser
         public void Parse(string[] optValue) { }
         public bool Value { get; private set; }
     }
+    public class NoValueOption : IOption<bool>
+    {
+        // mandatory je vzdy false, parameter accept je vzdy nic, defaultValue bude false
+        public NoValueOption(string[] names, string description) { }
+        public void Parse(string[] optValue) { }
 
+        public bool Value { get; private set; }
+    }
 }
