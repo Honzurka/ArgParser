@@ -12,12 +12,12 @@ enum OptionAccept { Mandatory, Optional }; // 2 hodnoty => mohl by byt bool?
 // maybe put parameterAccept inside Iparam
 enum ParameterAccept { Mandatory, Optional, None };
 
-interface IParamType {
+interface IParamType<T> {
     // public object GetValue();
     internal /*public*/ void IsValid(string value) {} //nemela bych krome validace vracet i pretypovanou hodnotu?
 }
 
-class IntParam : IParamType {
+class IntParam : IParamType<int> {
     public IntParam(int minValue = Int.MinValue, int maxValue = Int.MaxValue, int? default = null) {
       
     }
@@ -33,12 +33,32 @@ class EnumParam : IParamType {
     public EnumParam(string[] domain, string? default = null);
 }
 
+interface VarRef { T GetValue(); }
+
+interface Vars { T GetValue();  }
+
+class ParsedResult {
+    VarRef Get(string name) {
+
+    }
+}
+
+
+interface intVar : Vars { int GetValue(); }
+
 class ArgParser
 {
+    private static class Storage<T> { static List<VarRef<T>> stuff; }
+
+    //List<object> varRefs;
+
     public ArgParser(string delimiter = "--") {}
 
     public void AddOption(string[] names, string description, OptionAccept optionAccept,
-      ParameterAccept parameterAccept, IParamType type) {
+      ParameterAccept parameterAccept, IParamType<T> type) {
+          VarRef<T> toSave;
+
+          Storage<T>
     }
 
     // 
@@ -46,9 +66,55 @@ class ArgParser
 
 
 
-    public IReadOnlyDictionary<string name, object value> Parse() {} //mozna by bylo lepsi vracet tridu s Get(name) metodou
+    public IReadOnlyDictionary<string name, VarRef value> Parse() {} //mozna by bylo lepsi vracet tridu s Get(name) metodou
     //public T Get<T>(string name) {}
 }
+
+
+
+class Settings<T> {
+    string[] names;
+    T[] value;
+
+}
+
+class Options : IOption { //uzivatelovo
+    public settings<T> Verbose = new Settings<bool>("verbose", ...);// -> GetValue(defaultIdx = 0)¨
+
+    public PlainArg[] args = {
+
+    };
+}
+
+Options o = new Options();
+ParserV2.parse(options, args);
+// vs
+PArgParser p = new P().Parse(args);
+
+
+
+
+{
+    class P : ParserV2 {
+        Option<int> num = new Option<int>("num", ...);
+        Option<string> form;
+    }
+
+    new P().Parse(args);
+}
+
+// field in getAllFields
+    // type.GetField(nameof(field) + Settings ) as MemberInfo
+
+static class ParserV2 {
+    public void Parse(); // reflection
+    
+}
+
+/*
+
+*/
+
 
 class Example
 {

@@ -27,7 +27,9 @@
             - can't associate exact type with option name
                 1. user would have to cast value by himself => bad
                 2. use inheritance with sth like .GetValue() => user has to get value dictionary result
-                    - better but not perfect
+                    - problem
+                        - inheritance => must be generic => can't be saved in collection
+                        - without inheritance can't return exact type
         2. Get method implemented in library
             - too many responsibilities for 1 class
             - result has to carry whole configuration with it
@@ -40,6 +42,8 @@
     - named var ref: `AddOption()` would return reference to parsed result
         - leads to too many variables, unstructured
         - however, more type-safe
+    - user specifies options through class
+        - must use reflection
 - access values of plain arguments
     - we require name for each plain argument
         - for description in HELP
