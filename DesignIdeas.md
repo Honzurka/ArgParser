@@ -56,12 +56,9 @@
 
 
 # todo
-- nejspise by bylo vhodne vytvorit novou tridu pro vysledek z parsovani - viz parsed result 3.
-- metoda GetHelp() generujici --help 
 - pridat static, final,
 - omezit mutabilitu => readonly
 - ma byt argParser static?
-- ma uzivatel moznost pojmenovat optiony s `-`/`--` prefixem? => pokud ano, co delat v pripade ze zada `--v`
 - OptionAccept: 2 hodnoty => muze byt bool
 - option parameter type check
     - krome validace bych mohl vracet pretypovanou hodnotu
