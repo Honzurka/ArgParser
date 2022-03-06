@@ -2,7 +2,8 @@ using System.Collections.Generic;
 
 namespace ArgParser
 {
-    public abstract class ArgumentOptionBase {
+    public abstract class ArgumentOptionBase
+    {
         internal readonly string Description;
         internal readonly ParameterAccept parameterAccept;
 
@@ -20,10 +21,11 @@ namespace ArgParser
     /// <summary>
     /// Shared by all arguments.
     /// </summary>
-    public interface IArgument {}
+    public interface IArgument { }
 
     /// <typeparam name="T">Type of argument value</typeparam>
-    public abstract class ArgumentBase<T> : ArgumentOptionBase, IArgument {
+    public abstract class ArgumentBase<T> : ArgumentOptionBase, IArgument
+    {
         internal readonly string Name;
 
         /// <summary>
@@ -31,14 +33,15 @@ namespace ArgParser
         /// </summary>
         /// <param name="idx">Index of accessed value</param>
         /// <returns>Null if idx is out of range</returns>
-        public T GetValue(int idx = 0) {return default(T);}
+        public T GetValue(int idx = 0) { return default(T); }
         //    => idx < 0 || idx > paramValues.Count ? default(T) : paramValues[idx];
         // public T GetValueWithDefaultReplace(int idx = 0);
     }
 
     public sealed class IntArgument : ArgumentBase<int?>
     {
-        public IntArgument(string name, string description, int minValue = int.MinValue, int maxValue = int.MaxValue, 
+        public IntArgument(string name, string description,
+            int minValue = int.MinValue, int maxValue = int.MaxValue,
             ParameterAccept parameterAccept = new ParameterAccept(),
             int? defaultValue = null) { }
         protected override void Parse(string[] optVals) { }
@@ -78,13 +81,14 @@ namespace ArgParser
         /// </summary>
         /// <param name="idx">Index of accessed value</param>
         /// <returns>Null if idx is out of range</returns>
-        public T GetValue(int idx = 0) {return default(T);}
+        public T GetValue(int idx = 0) { return default(T); }
         //    => idx < 0 || idx > paramValues.Count ? default(T) : paramValues[idx];
     }
 
     public sealed class IntOption : OptionBase<int?>
     {
-        public IntOption(string[] names, string description, int minValue = int.MinValue, int maxValue = int.MaxValue, 
+        public IntOption(string[] names, string description,
+            int minValue = int.MinValue, int maxValue = int.MaxValue,
             ParameterAccept parameterAccept = new ParameterAccept(),
             int? defaultValue = null, bool isMandatory = false) { }
         protected override void Parse(string[] optVals) { }

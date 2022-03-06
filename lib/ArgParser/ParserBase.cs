@@ -18,14 +18,14 @@ namespace ArgParser
         /// Used by the parser to determine order of arguments
         /// </summary>
         /// <returns>References to argument fields</returns>
-        /// <exception cref="ParserCodeException">Thrown when not all arguments are specified in order</exception>
-        protected virtual IArgument[] GetArgumentOrder() => null;
+        protected virtual IArgument[] GetArgumentOrder() => new IArgument[0];
         internal IArgument[] CallGetArgumentOrder() => GetArgumentOrder();
 
         /// <summary>
         /// Parses args and stores parsed values in declared fields.
         /// </summary>
         /// <param name="args">Arguments to parse</param>
+        /// <exception cref="ParserCodeException">Thrown when the class doesn't conform to the parser requirements</exception>
         /// <exception cref="ParseException">Thrown when parsed arguments don't satisfy declared option fields</exception>
         public void Parse(string[] args) { /*internal impl*/ }
 
@@ -36,20 +36,25 @@ namespace ArgParser
     }
 
 
-    public struct ParameterAccept {
-        public readonly int MinParameterAmount, MaxParameterAmount;
+    /// <summary>
+    /// Describes number of accepted parameters. The default is to accept exactly 1 parameter
+    /// (the default constructor will construct such an instance).
+    /// </summary>
+    public struct ParameterAccept
+    {
+        public int MinParamAmount { get; }
+        public int MaxParamAmount { get; }
 
-        /// <summary>
-        /// Describes number of accepted parameters.
-        /// </summary>
-        /// <exception cref="ArgumentException">Thrown when minParameterAmount < 0 or maxParameterAmount < minParameterAmount </exception>
-        public ParameterAccept(int minParameterAmount = 1, int maxParameterAmount = 1) {
-            //if (minParameterAmount < 0 || maxParameterAmount < minParameterAmount) throw new Exception();
-            MinParameterAmount = minParameterAmount;
-            MaxParameterAmount = maxParameterAmount;
+        /// <exception cref="ArgumentException">Thrown when minParamAmount < 0 or maxParamAmount < minParamAmount or maxParamAmount == 0</exception>
+        public ParameterAccept(int minParamAmount, int maxParamAmount)
+        {
+            //if (minParamAmount < 0 || maxParamAmount < minParamAmount || maxParamAmount == 0) throw new ArgumentException();
+            MinParamAmount = minParamAmount;
+            MaxParamAmount = maxParamAmount;
         }
+        public ParameterAccept(int paramAmount) : this(paramAmount, paramAmount) { }
 
-        public static ParameterAccept Mandatory = new ParameterAccept(1, 1);
+        public static ParameterAccept Mandatory = new ParameterAccept();
         public static ParameterAccept Optional = new ParameterAccept(0, 1);
         public static ParameterAccept AtleastOne = new ParameterAccept(1, int.MaxValue);
         public static ParameterAccept Any = new ParameterAccept(0, int.MaxValue);
