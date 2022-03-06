@@ -55,7 +55,6 @@
 # todo
 - je k necemu `ArgumentOptionBase` potomek obou ??? ------------
     - dava cela hierarchie argumentu/optionu smysl?-------------
-
 - vyjimky?
     - typy
         - kolize jmen optionu
@@ -63,3 +62,4 @@
             - jak budeme kontrolovat - souvisi s *vnitrni reprezentaci* (impl. detail, ale bylo by dobre rozmyslet)
         - spatny typ argumentu nebo nevalidni argument
     - vyhazovat hned (napr. 1. spatny typ) NEBO ukladat chyby a informovat o vsech najednou?
+- zakomentovat vse co neni API
