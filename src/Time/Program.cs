@@ -57,9 +57,9 @@ namespace Time
             Parser parser = new Parser();
             parser.Parse(args);
 
-            if (parser.help.Value()) {
+            if (parser.help.GetValue()) {
                 Console.WriteLine(parser.GenerateHelp());
-            } else if (parser.version.Value()) {
+            } else if (parser.version.GetValue()) {
                 Console.WriteLine("Current version: " + version);
             }
             else {
@@ -68,7 +68,7 @@ namespace Time
         }
 
         static void ProgramMain(Parser parser) {
-            var format = parser.format.Value();
+            var format = parser.format.GetValue();
             //...
         }
     }
