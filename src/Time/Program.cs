@@ -3,16 +3,14 @@ using ArgParser;
 
 namespace Time
 {
-    class Options : IOptions
+    class Parser : ParserBase
     {
-        public string Delimiter => "--";
-
         public StringOption format = new StringOption(
-            new OptionSettings(new string[] { "f", "format" }, "Specify output format.", ParameterAccept.Mandatory, isMandatory: false));
+            new string[] { "f", "format" }, "Specify output format.");
         public NoValueOption portability = new NoValueOption(
             new string[] { "p", "portability" }, "Use the portable output format.");
         public StringOption output = new StringOption(
-            new OptionSettings(new string[] { "o", "output" }, "Do not send the results to stderr, but overwrite the specified file.", ParameterAccept.Mandatory, isMandatory: false));
+            new string[] { "o", "output" }, "Do not send the results to stderr, but overwrite the specified file.");
         
         public NoValueOption append = new NoValueOption(
             new string[] { "a", "append" }, "(Used together with -o.) Do not overwrite but append.");
@@ -23,6 +21,10 @@ namespace Time
             new string[] { "help" }, "Print a usage message on standard output and exit successfully");
         public NoValueOption version = new NoValueOption(
             new string[] { "V", "version" }, "Print version information on standard output, then exit successfully.");
+
+
+		
+		//protected override IArgument[] GetParameterOrdering() => new IArgument[] { a, B };
     }
     class Program
     {
@@ -52,21 +54,21 @@ namespace Time
 
         static void Main(string[] args)
         {
-            Options specification = new Options();
-            Parser parser = new Parser(specification);
+            Parser parser = new Parser();
             parser.Parse(args);
-            if (specification.help.Value) {
+
+            if (parser.help.Value()) {
                 Console.WriteLine(parser.GenerateHelp());
-            } else if (specification.version.Value) {
+            } else if (parser.version.Value()) {
                 Console.WriteLine("Current version: " + version);
             }
             else {
-                ProgramMain(specification);
+                ProgramMain(parser);
             }
         }
 
-        static void ProgramMain(Options parsedSpec) {
-            var format = parsedSpec.format.Value;
+        static void ProgramMain(Parser parser) {
+            var format = parser.format.Value();
             //...
         }
     }

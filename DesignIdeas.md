@@ -56,20 +56,7 @@
 
 
 # todo
-- pridat static, final,
-- omezit mutabilitu => readonly
-- ma byt argParser static?
-- OptionAccept: 2 hodnoty => muze byt bool
-- mandatory param => nepotrebuje default value
-- **parameterAccept !!!!!!!!!!**
-    - pouzivame `BoolOption` pro parametry bez hodnoty
-        - nema byt BoolOption pro parametry s hodnotou true/false
-        - pak bychom potrebovali `NoValueOption` pro parametry bez hodnoty
-- IOption.Value - melo by prijimat index (kdybychom chteli rozsirovat na vice parametru)
-
-- option parameter type check
-    - krome validace bych mohl vracet pretypovanou hodnotu
-        - metodu udelame internal => implementacni detail == nemusime resit ted
+- IOption.Parse: bude validovat hodnotu
     - kdy validovat
         1. hned - asi lepsi, uzivatel se dozvi o chybe hned, dale uz nemusi chyby resit
         2. pri pristupu uzivatele
@@ -82,5 +69,6 @@
     - vyhazovat hned (napr. 1. spatny typ) NEBO ukladat chyby a informovat o vsech najednou?
 - dokumentace API v kodu (metody,...)
 
+- rozdelit knihovnu do vice souboru
 
 - rozmyslet si vnitrni reprezentaci: budeme schopni implementovat toto API?
