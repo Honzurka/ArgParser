@@ -26,7 +26,9 @@ namespace ArgParser
         /// </summary>
         /// <param name="args">Arguments to parse</param>
         /// <exception cref="ParserCodeException">Thrown when the class doesn't conform to the parser requirements</exception>
-        /// <exception cref="ParseException">Thrown when parsed arguments don't satisfy declared option fields</exception>
+        /// <exception cref="ParseException">Thrown when parsed arguments don't satisfy declared option fields:
+        ///     Fields not inheriting from predefined classes (descendants of `OptionBase<T>` or `ArgumentBase<T>`)
+        ///     Defining argument fields without overriding `GetArgumentOrder`</exception>
         public void Parse(string[] args) { /*internal impl*/ }
 
         /// <summary>

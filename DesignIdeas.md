@@ -52,14 +52,10 @@
 - help
     - generated from option name, description, ...
 
-
-
-
 # todo
-- IOption.Parse: bude validovat hodnotu
-    - kdy validovat
-        1. hned - asi lepsi, uzivatel se dozvi o chybe hned, dale uz nemusi chyby resit
-        2. pri pristupu uzivatele
+- je k necemu `ArgumentOptionBase` potomek obou ??? ------------
+    - dava cela hierarchie argumentu/optionu smysl?-------------
+
 - vyjimky?
     - typy
         - kolize jmen optionu
@@ -67,8 +63,3 @@
             - jak budeme kontrolovat - souvisi s *vnitrni reprezentaci* (impl. detail, ale bylo by dobre rozmyslet)
         - spatny typ argumentu nebo nevalidni argument
     - vyhazovat hned (napr. 1. spatny typ) NEBO ukladat chyby a informovat o vsech najednou?
-- dokumentace API v kodu (metody,...)
-
-- rozdelit knihovnu do vice souboru
-
-- rozmyslet si vnitrni reprezentaci: budeme schopni implementovat toto API?
