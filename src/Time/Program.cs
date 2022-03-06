@@ -5,22 +5,20 @@ namespace Time
 {
     class Parser : ParserBase
     {
-        public StringOption format = new StringOption(
-            new string[] { "f", "format" }, "Specify output format.");
-        public NoValueOption portability = new NoValueOption(
-            new string[] { "p", "portability" }, "Use the portable output format.");
-        public StringOption output = new StringOption(
-            new string[] { "o", "output" }, "Do not send the results to stderr, but overwrite the specified file.");
+        public StringOption format = new (new string[] { "f", "format" }, "Specify output format.");
+        public NoValueOption portability = new(new string[] { "p", "portability" }, "Use the portable output format.");
+        public StringOption output = new(new string[] { "o", "output" },
+            "Do not send the results to stderr, but overwrite the specified file.");
         
-        public NoValueOption append = new NoValueOption(
-            new string[] { "a", "append" }, "(Used together with -o.) Do not overwrite but append.");
-        public NoValueOption verbose = new NoValueOption(
-            new string[] { "v", "verbose" }, "Give very verbose output about all the program knows about.");
+        public NoValueOption append = new(new string[] { "a", "append" },
+            "(Used together with -o.) Do not overwrite but append.");
+        public NoValueOption verbose = new(new string[] { "v", "verbose" },
+            "Give very verbose output about all the program knows about.");
         
-        public NoValueOption help = new NoValueOption(
-            new string[] { "help" }, "Print a usage message on standard output and exit successfully");
-        public NoValueOption version = new NoValueOption(
-            new string[] { "V", "version" }, "Print version information on standard output, then exit successfully.");
+        public NoValueOption help = new(new string[] { "help" },
+            "Print a usage message on standard output and exit successfully");
+        public NoValueOption version = new(new string[] { "V", "version" },
+            "Print version information on standard output, then exit successfully.");
 
 
 		
@@ -54,7 +52,7 @@ namespace Time
 
         static void Main(string[] args)
         {
-            Parser parser = new Parser();
+            var parser = new Parser();
             parser.Parse(args);
 
             if (parser.help.GetValue()) {

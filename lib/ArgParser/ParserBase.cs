@@ -18,8 +18,8 @@ namespace ArgParser
         /// Used by the parser to determine order of arguments
         /// </summary>
         /// <returns>References to argument fields</returns>
-        protected virtual IArgument[] GetArgumentOrder() => new IArgument[0];
-        internal IArgument[] CallGetArgumentOrder() => GetArgumentOrder();
+        protected virtual ArgumentBase[] GetArgumentOrder() => Array.Empty<ArgumentBase>();
+        internal ArgumentBase[] CallGetArgumentOrder() => GetArgumentOrder();
 
         /// <summary>
         /// Parses args and stores parsed values in declared fields.
@@ -56,9 +56,9 @@ namespace ArgParser
         }
         public ParameterAccept(int paramAmount) : this(paramAmount, paramAmount) { }
 
-        public static ParameterAccept Mandatory = new ParameterAccept();
-        public static ParameterAccept Optional = new ParameterAccept(0, 1);
-        public static ParameterAccept AtleastOne = new ParameterAccept(1, int.MaxValue);
-        public static ParameterAccept Any = new ParameterAccept(0, int.MaxValue);
+        public readonly static ParameterAccept Mandatory = new();
+        public readonly static ParameterAccept Optional = new(0, 1);
+        public readonly static ParameterAccept AtleastOne = new(1, int.MaxValue);
+        public readonly static ParameterAccept Any = new(0, int.MaxValue);
     };
 }

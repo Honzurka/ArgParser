@@ -5,21 +5,21 @@ namespace SimpleExample
 {
 	class Parser : ParserBase
 	{
-		public BoolOption boolOpt = new BoolOption(new string[] { "b", "bool" }, "bool description", isMandatory: true);
-		public NoValueOption help = new NoValueOption(new string[] { "help" }, "show help");
+		public BoolOption boolOpt = new(new string[] { "b", "bool" }, "bool description", isMandatory: true);
+		public NoValueOption help = new(new string[] { "help" }, "show help");
 
-		public IntArgument number = new IntArgument("number", "number description", minValue: 0, defaultValue: 42,
+		public IntArgument number = new("number", "number description", minValue: 0, defaultValue: 42,
 			parameterAccept: ParameterAccept.Mandatory);
-		public StringArgument file = new StringArgument("file", "file description");
+		public StringArgument file = new("file", "file description");
 
-		protected override IArgument[] GetArgumentOrder() => new IArgument() { number, file };
+		protected override ArgumentBase[] GetArgumentOrder() => new ArgumentBase[]{ number, file };
 	}
 
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			Parser parser = new Parser();
+			var parser = new Parser();
 			parser.Parse(args);
 
 			if(parser.help.GetValue())

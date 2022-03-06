@@ -1,11 +1,13 @@
-using System.Collections.Generic;
-
 namespace ArgParser
 {
-    public abstract class ArgumentOptionBase
+    /// <typeparam name="T">Type of option value</typeparam>
+    public abstract class OptionBase<T>
     {
+        internal readonly string[] Names;
         internal readonly string Description;
         internal readonly ParameterAccept parameterAccept;
+        internal readonly bool IsMandatory;
+        // internal T defaultValue;
 
         /// <summary>
         /// Checks type and restrictions.
@@ -16,72 +18,13 @@ namespace ArgParser
         abstract protected void Parse(string[] optVals);
 
         internal void CallParse(string[] optVals) => Parse(optVals);
-    }
-
-    /// <summary>
-    /// Shared by all arguments.
-    /// </summary>
-    public interface IArgument { }
-
-    /// <typeparam name="T">Type of argument value</typeparam>
-    public abstract class ArgumentBase<T> : ArgumentOptionBase, IArgument
-    {
-        internal readonly string Name;
 
         /// <summary>
         /// Called by user to access parsed value(s).
         /// </summary>
         /// <param name="idx">Index of accessed value</param>
         /// <returns>Null if idx is out of range</returns>
-        public T GetValue(int idx = 0) { return default(T); }
-        //    => idx < 0 || idx > paramValues.Count ? default(T) : paramValues[idx];
-        // public T GetValueWithDefaultReplace(int idx = 0);
-    }
-
-    public sealed class IntArgument : ArgumentBase<int?>
-    {
-        public IntArgument(string name, string description,
-            int minValue = int.MinValue, int maxValue = int.MaxValue,
-            ParameterAccept parameterAccept = new ParameterAccept(),
-            int? defaultValue = null) { }
-        protected override void Parse(string[] optVals) { }
-    }
-    public sealed class StringArgument : ArgumentBase<string>
-    {
-        public StringArgument(string name, string description,
-            ParameterAccept parameterAccept = new ParameterAccept(),
-            string defaultValue = null) { }
-        protected override void Parse(string[] optVals) { }
-    }
-    public sealed class EnumArgument : ArgumentBase<string>
-    {
-        public EnumArgument(string name, string description, string[] domain,
-            ParameterAccept parameterAccept = new ParameterAccept(),
-            string defaultValue = null) { }
-        protected override void Parse(string[] optVals) { }
-    }
-    public sealed class BoolArgument : ArgumentBase<bool?>
-    {
-        public BoolArgument(string name, string description,
-            ParameterAccept parameterAccept = new ParameterAccept(),
-            bool? defaultValue = null) { }
-        protected override void Parse(string[] optVals) { }
-    }
-
-
-    /// <typeparam name="T">Type of option value</typeparam>
-    public abstract class OptionBase<T> : ArgumentOptionBase
-    {
-        internal readonly string[] Names;
-        internal readonly bool IsMandatory;
-        // internal T defaultValue;
-
-        /// <summary>
-        /// Called by user to access parsed value(s).
-        /// </summary>
-        /// <param name="idx">Index of accessed value</param>
-        /// <returns>Null if idx is out of range</returns>
-        public T GetValue(int idx = 0) { return default(T); }
+        public T GetValue(int idx = 0) { return default; }
         //    => idx < 0 || idx > paramValues.Count ? default(T) : paramValues[idx];
     }
 
