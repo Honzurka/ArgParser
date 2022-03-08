@@ -21,6 +21,9 @@ The ArgParser library allows for parsing command line arguments through a user-d
 
 # Simple example
 ```C#
+using System;
+using ArgParser;
+
 namespace SimpleExample
 {
 	class Parser : ParserBase
@@ -37,12 +40,9 @@ namespace SimpleExample
 
 	class Program
 	{
-		static void Main(string[] args)
+		static void HandleArgs(Parser parser)
 		{
-			var parser = new Parser();
-			parser.Parse(args);
-
-			if(parser.help.GetValue())
+			if (parser.help.GetValue())
 			{
 				Console.WriteLine(parser.GenerateHelp());
 			}
@@ -52,13 +52,26 @@ namespace SimpleExample
 				if (parser.file.GetValue() != null) Console.WriteLine($"file = ${parser.file.GetValue()}");
 			}
 		}
+
+		static void Main(string[] args)
+		{
+			var parser = new Parser();
+			try
+			{
+				parser.Parse(args);
+			}
+			catch (ParseException)
+			{
+				Console.Error.WriteLine("Passed arguments doesn't conform to program specification. See help for more explanation.");
+				Console.WriteLine(parser.GenerateHelp());
+				Environment.Exit(1);
+			}
+			HandleArgs(parser);
+		}
 	}
 }
+
 ```
-
-
-
-
 
 # Building instructions
 ## Example program

@@ -53,8 +53,8 @@
     - generated from option name, description, ...
 
 # todo
-- je k necemu `ArgumentOptionBase` potomek obou ??? ------------
-    - dava cela hierarchie argumentu/optionu smysl?-------------
+-  jak rozezname treba u BoolOption s ParameterAccept.Optional, jestli se ten option nevyskytl, nebo jestli se vyskytl bez hodnoty
+    - mozne reseni: isSet property
 - vyjimky?
     - typy
         - kolize jmen optionu
