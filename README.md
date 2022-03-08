@@ -67,4 +67,14 @@ With `dotnet` installed, simply execute `dotnet build` in the repo directory,
 then to run execute `dotnet run --project src/Time/Time.csproj`.
 
 ## Including library in your project
-todo
+To use the library you only need the assembly from `lib/ArgParser/bin/(Debug|Release)/ArgParser/net5.0/ArgParser.dll`.
+
+For dotnet 5.0, you can copy the ArgParser dll to some local project folder (e.g. `include/`),
+then, inside your including project .csproj file, add this reference (include your path to the dll if you decided on a custom one):
+```xml
+<ItemGroup>
+  <Reference Include="ArgParser">
+    <HintPath>include/ArgParser.dll</HintPath>
+  </Reference>
+</ItemGroup>
+```
