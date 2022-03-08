@@ -20,7 +20,7 @@ The ArgParser library allows for parsing command line arguments through a user-d
 3. User obtains parsed values from the fields by calling a method `GetValue(int idx)` on them.
 
 # Simple example
-```C#
+```csharp
 using System;
 using ArgParser;
 
@@ -29,7 +29,7 @@ namespace SimpleExample
 	class Parser : ParserBase
 	{
 		public BoolOption boolOpt = new(new string[] { "b", "bool" }, "bool description", isMandatory: true);
-		public NoValueOption help = new(new string[] { "help" }, "show help");
+		public NoValueOption help = new(new string[] { "h", "help", "?" }, "show help");
 
 		public IntArgument number = new("number", "number description", minValue: 0, defaultValue: 42,
 			parameterAccept: ParameterAccept.Mandatory);
@@ -40,19 +40,6 @@ namespace SimpleExample
 
 	class Program
 	{
-		static void HandleArgs(Parser parser)
-		{
-			if (parser.help.GetValue())
-			{
-				Console.WriteLine(parser.GenerateHelp());
-			}
-			else
-			{
-				if (parser.boolOpt.GetValue() != null) Console.WriteLine($"boolOpt = ${parser.boolOpt.GetValue()}");
-				if (parser.file.GetValue() != null) Console.WriteLine($"file = ${parser.file.GetValue()}");
-			}
-		}
-
 		static void Main(string[] args)
 		{
 			var parser = new Parser();
@@ -63,14 +50,20 @@ namespace SimpleExample
 			catch (ParseException)
 			{
 				Console.Error.WriteLine("Passed arguments doesn't conform to program specification. See help for more explanation.");
-				Console.WriteLine(parser.GenerateHelp());
 				Environment.Exit(1);
 			}
-			HandleArgs(parser);
+			if (parser.help.GetValue())
+			{
+				Console.WriteLine(parser.GenerateHelp());
+			}
+			else
+			{
+				if (parser.boolOpt.GetValue() != null) Console.WriteLine($"boolOpt = ${parser.boolOpt.GetValue()}");
+				if (parser.file.GetValue() != null) Console.WriteLine($"file = ${parser.file.GetValue()}");
+			}
 		}
 	}
 }
-
 ```
 
 # Building instructions
