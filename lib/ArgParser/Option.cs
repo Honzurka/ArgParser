@@ -3,22 +3,18 @@ namespace ArgParser
     /// <typeparam name="T">Type of option value</typeparam>
     public abstract class OptionBase<T>
     {
-        internal readonly string[] Names;
-        internal readonly string Description;
-        internal readonly ParameterAccept parameterAccept;
-        internal readonly bool IsMandatory;
-        // internal T defaultValue;
+        public bool IsSet { get; }
+		// internal T defaultValue;
 
-        /// <summary>
-        /// Checks type and restrictions.
-        /// Saves typed result in its internal state.
-        /// </summary>
-        /// <param name="optVals">Arguments passed to the parser that correspond to this option/argument</param>
-        /// <exception cref="ParseException">Thrown when type or restrictions aren't fulfilled</exception>
-        abstract protected void Parse(string[] optVals);
+		/// <summary>
+		/// Checks type and restrictions.
+		/// Saves typed result in its internal state.
+		/// </summary>
+		/// <param name="optVals">Arguments passed to the parser that correspond to this option/argument</param>
+		/// <exception cref="ParseException">Thrown when type or restrictions aren't fulfilled</exception>
+		abstract protected void Parse(string[] optVals);
 
-        internal void CallParse(string[] optVals) => Parse(optVals);
-
+        
         /// <summary>
         /// Called by user to access parsed value(s).
         /// </summary>
