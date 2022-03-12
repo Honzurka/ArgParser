@@ -3,8 +3,8 @@
     /// <summary>
     /// Shared by all arguments.
     /// </summary>
-    public interface IArgument<T> {
-
+    public interface IArgument<T>
+    {
         /// <summary>
         /// Called by user to access parsed value(s).
         /// </summary>
@@ -18,10 +18,6 @@
     /// <typeparam name="T">Type of argument value</typeparam>
     public abstract class ArgumentBase
     {
-        internal readonly string Name;
-        internal readonly string Description;
-        internal readonly ParameterAccept parameterAccept;
-
         /// <summary>
         /// Checks type and restrictions.
         /// Saves typed result in its internal state.
@@ -29,8 +25,6 @@
         /// <param name="optVals">Arguments passed to the parser that correspond to this option/argument</param>
         /// <exception cref="ParseException">Thrown when type or restrictions aren't fulfilled</exception>
         abstract protected void Parse(string[] optVals);
-
-        internal void CallParse(string[] optVals) => Parse(optVals);
     }
 
     public sealed class IntArgument : ArgumentBase, IArgument<int?>
