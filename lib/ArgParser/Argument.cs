@@ -9,10 +9,13 @@
         /// Called by user to access parsed value(s).
         /// </summary>
         /// <param name="idx">Index of accessed value</param>
-        /// <returns>Null if idx is out of range</returns>
-        public T GetValue(int idx = 0);// { return default(T); }
-        //    => idx < 0 || idx > paramValues.Count ? default(T) : paramValues[idx];
-        // public T GetValueWithDefaultReplace(int idx = 0);
+        /// <returns>Default value if idx is out of range</returns>
+        public T GetValue(int idx = 0);
+
+        /// <summary>
+        ///  Returns the count of plain arguments parsed by this instance
+        /// </summary>
+        public int ParsedArgumentCount { get; }
     }
 
     /// <typeparam name="T">Type of argument value</typeparam>
@@ -35,13 +38,12 @@
             int? defaultValue = null)
         { }
 
-		public int? GetValue(int idx = 0)
-		{
-            return null;
-		}
+		public int? GetValue(int idx = 0) => default;
 
 		protected override void Parse(string[] optVals) { }
+        public int ParsedArgumentCount => default;
     }
+
     public sealed class StringArgument : ArgumentBase, IArgument<string>
     {
         public StringArgument(string name, string description,
@@ -49,13 +51,12 @@
             string defaultValue = null)
         { }
 
-		public string GetValue(int idx = 0)
-		{
-            return null;
-		}
+		public string GetValue(int idx = 0) => default;
 
 		protected override void Parse(string[] optVals) { }
+        public int ParsedArgumentCount => default;
     }
+    
     public sealed class EnumArgument : ArgumentBase, IArgument<string>
     {
         public EnumArgument(string name, string description, string[] domain,
@@ -63,12 +64,10 @@
             string defaultValue = null)
         { }
 
-		public string GetValue(int idx = 0)
-		{
-            return null;
-		}
+		public string GetValue(int idx = 0) => default;
 
 		protected override void Parse(string[] optVals) { }
+        public int ParsedArgumentCount => default;
     }
     public sealed class BoolArgument : ArgumentBase, IArgument<bool?>
     {
@@ -77,12 +76,9 @@
             bool? defaultValue = null)
         { }
 
-		public bool? GetValue(int idx = 0)
-		{
-            return null;
-		}
+		public bool? GetValue(int idx = 0) => default;
 
 		protected override void Parse(string[] optVals) { }
+        public int ParsedArgumentCount => default;
     }
-
 }

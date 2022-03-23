@@ -11,7 +11,11 @@ The ArgParser library allows for parsing command line arguments through a user-d
 
 ## use cases
 1. The user will define the accepted arguments as fields in a class inherited from `ParserBase`.
-    - The fields defined in the parser should themselves inherit from `ArgumentBase<T>` or `OptionBase<T>`, however, the intended use-case is to use pre-defined classes such as `IntOption` and `IntArgument` (see [Simple example](#simple-example)).
+    - The fields defined in the parser should themselves inherit from `ArgumentBase<T>` or `OptionBase<T>`, however, the intended use-case is to use pre-defined classes such as `IntOption` and `IntArgument` (see [Simple example](#simple-example)). 
+	- Difference between option and argument is that options are delimited by `-` or `--` and arguments are plain arguments, therefore without delimiter.
+	- Only last argument can have variable amount of parameters. Otherwise `ParserCodeException` is thrown.
+	- `ParameterAccept` describes number of parsed parameters. By default min and max number of parsed params is set to 1.
+	- `GetArgumentOrder` is used to define order of plain arguments.
 2. User calls `ParserBase.Parse()`. The parser will identify all the necesarry fields it contains and fill them with the parsed values.
     - Throws `ParseException` if parsed arguments don't satisfy declared option fields
     - Throws `ParserCodeException` if the class doesn't conform to the parser requirements
@@ -21,49 +25,46 @@ The ArgParser library allows for parsing command line arguments through a user-d
 
 # Simple example
 ```csharp
-using System;
-using ArgParser;
 
-namespace SimpleExample
+class Parser : ParserBase
 {
-	class Parser : ParserBase
+	public BoolOption BoolOpt = new(new string[] { "b", "bool" }, "bool description", isMandatory: true);
+	public NoValueOption Help = new(new string[] { "h", "help", "?" }, "show help");
+
+	public StringArgument Files = new("files", "files to read", ParameterAccept.Any);
+	public IntArgument Number = new("number", "number description", minValue: 0, defaultValue: 42);
+
+	protected override ArgumentBase[] GetArgumentOrder() => new ArgumentBase[]{ Files, Number };
+}
+
+static void Main(string[] args)
+{
+	var parser = new Parser();
+	try
 	{
-		public BoolOption boolOpt = new(new string[] { "b", "bool" }, "bool description", isMandatory: true);
-		public NoValueOption help = new(new string[] { "h", "help", "?" }, "show help");
-
-		public IntArgument number = new("number", "number description", minValue: 0, defaultValue: 42,
-			parameterAccept: ParameterAccept.Mandatory);
-		public StringArgument file = new("file", "file description");
-
-		protected override ArgumentBase[] GetArgumentOrder() => new ArgumentBase[]{ number, file };
+		parser.Parse(args);
 	}
-
-	class Program
+	catch (ParseException)
 	{
-		static void Main(string[] args)
-		{
-			var parser = new Parser();
-			try
-			{
-				parser.Parse(args);
-			}
-			catch (ParseException)
-			{
-				Console.Error.WriteLine("Passed arguments doesn't conform to program specification. See help for more explanation.");
-				Environment.Exit(1);
-			}
-			if (parser.help.GetValue())
-			{
-				Console.WriteLine(parser.GenerateHelp());
-			}
-			else
-			{
-				if (parser.boolOpt.GetValue() != null) Console.WriteLine($"boolOpt = ${parser.boolOpt.GetValue()}");
-				if (parser.file.GetValue() != null) Console.WriteLine($"file = ${parser.file.GetValue()}");
-			}
+		Console.Error.WriteLine("Passed arguments doesn't conform to program specification. See help for more explanation.");
+		Environment.Exit(1);
+	}
+	if (parser.Help.GetValue())
+	{
+		Console.WriteLine(parser.GenerateHelp());
+	}
+	else
+	{
+		if (parser.BoolOpt.GetValue() != null) Console.WriteLine($"boolOpt = ${parser.BoolOpt.GetValue()}");
+		int i = 0;
+		while (parser.Files.GetValue(i) != null) {
+			// equivalent to while (i < parser.files.ParsedParameterCount)
+			Console.WriteLine($"file{i} = {parser.Files.GetValue(i)}");
+			i++;
 		}
 	}
 }
+
 ```
 
 # Building instructions
