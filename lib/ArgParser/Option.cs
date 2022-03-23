@@ -3,7 +3,11 @@ namespace ArgParser
     /// <typeparam name="T">Type of option value</typeparam>
     public abstract class OptionBase<T>
     {
-        public bool IsSet { get; }
+
+        /// <summary>
+        /// Use to determine whether option was not set or set (even without parameters).
+        /// </summary>
+        public bool IsSet { get; private set; }
 		// internal T defaultValue;
 
 		/// <summary>

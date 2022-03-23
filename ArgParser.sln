@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Time", "src\Time\Time.cspro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleExample", "src\SimpleExample\SimpleExample.csproj", "{BF521C3A-E5E7-42B9-8562-24846764ED3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Numactl", "src\Numactl\Numactl.csproj", "{C716B826-4153-4EE7-88F7-9C92F3C20D1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumactlExample2", "src\NumactlExample2\NumactlExample2.csproj", "{C716B826-4153-4EE7-88F7-9C92F3C20D1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReviewExample", "src\ReviewExample\ReviewExample.csproj", "{46852EED-50A4-4A91-9B00-B7FBCFFFF3B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumactlExample1", "src\NumactlExample1\NumactlExample1.csproj", "{46852EED-50A4-4A91-9B00-B7FBCFFFF3B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
