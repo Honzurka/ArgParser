@@ -4,22 +4,26 @@ namespace ArgParser
 {
     /// <summary>
     /// To specify options/arguments
-    /// Inherit from this class and declare Option / Argument fields that are descendants of ArgumentBase / OptionBase
-    /// After parse is called: Parsed results could be obtained using fieldName.GetValue()
+    /// Inherit from this class and declare Option / Argument fields that are descendants of
+    /// <see cref="ArgParser.ArgumentBase">ArgumentBase</see> / <see cref="ArgParser.OptionBase{T}">OptionBase</see>
+    /// After the <see cref="ArgParser.ParserBase.Parse(string[])">Parse</see> method is called,
+    /// parsed results could be obtained using fieldName.GetValue()
     /// </summary>
     public abstract class ParserBase
     {
         /// <summary>
-        /// A command-line argument consisting of two dashes only, default: --. Any subsequent argument is considered to be a plain argument
+        /// A command-line argument consisting of two dashes only, default: "--". Any subsequent argument is considered to be a plain argument
         /// </summary>
         protected virtual string Delimiter => "--";
 
         /// <summary>
-        /// Used by the parser to determine order of arguments
+        /// Used by the parser to determine order of arguments.
+        /// Since reflection doesn't necessarily retain the order of fields,
+        /// it needs to be specified by the user.
         /// </summary>
         /// <returns>References to argument fields</returns>
-        protected virtual ArgumentBase[] GetArgumentOrder() => Array.Empty<ArgumentBase>();
-        
+        protected virtual IArgument[] GetArgumentOrder() => Array.Empty<IArgument>();
+
         /// <summary>
         /// Parses args and stores parsed values in declared fields.
         /// </summary>
@@ -31,7 +35,7 @@ namespace ArgParser
         public void Parse(string[] args) { /*internal impl*/ }
 
         /// <summary>
-        /// Automatically generates help message from declared fields (name, description)
+        /// Automatically generates help message from declared fields (name, description).
         /// </summary>
         public string GenerateHelp() { return ""; }
     }
@@ -39,7 +43,7 @@ namespace ArgParser
 
     /// <summary>
     /// Describes number of accepted parameters. The default is to accept exactly 1 parameter
-    /// (the default constructor will construct such an instance).
+    /// (the default parameterless constructor will construct such an instance).
     /// </summary>
     public struct ParameterAccept
     {
@@ -57,7 +61,7 @@ namespace ArgParser
 
         public readonly static ParameterAccept Mandatory = new();
         public readonly static ParameterAccept Optional = new(0, 1);
-        public readonly static ParameterAccept AtleastOne = new(1, int.MaxValue);
+        public readonly static ParameterAccept AtLeastOne = new(1, int.MaxValue);
         public readonly static ParameterAccept Any = new(0, int.MaxValue);
     };
 }

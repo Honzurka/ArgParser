@@ -11,11 +11,11 @@ The ArgParser library allows for parsing command line arguments through a user-d
 
 ## use cases
 1. The user will define the accepted arguments as fields in a class inherited from `ParserBase`.
-    - The fields defined in the parser should themselves inherit from `ArgumentBase<T>` or `OptionBase<T>`, however, the intended use-case is to use pre-defined classes such as `IntOption` and `IntArgument` (see [Simple example](#simple-example)). 
-	- Difference between option and argument is that options are delimited by `-` or `--` and arguments are plain arguments, therefore without delimiter.
-	- Only last argument can have variable amount of parameters. Otherwise `ParserCodeException` is thrown.
+    - The fields defined in the parser should themselves inherit from `ArgumentBase<T>` or `OptionBase<T>`, however, the pre-defined classes such as `IntOption` and `IntArgument` should cover most basic use-cases (see [Simple example](#simple-example)).
+	- Difference between option and argument is that options are prefixed by `-` or `--` and arguments are plain arguments, therefore without delimiter.
 	- `ParameterAccept` describes number of parsed parameters. By default min and max number of parsed params is set to 1.
-	- `GetArgumentOrder` is used to define order of plain arguments.
+	- `GetArgumentOrder` is used to define order of plain arguments. It should contain references to the parsed fields of the Parser.
+	- *Only one* Argument of a parser can have variable acceptable count of arguments (`ParameterAccept` where its minimum and maximum value are not the same). Otherwise `ParserCodeException` is thrown.
 2. User calls `ParserBase.Parse()`. The parser will identify all the necesarry fields it contains and fill them with the parsed values.
     - Throws `ParseException` if parsed arguments don't satisfy declared option fields
     - Throws `ParserCodeException` if the class doesn't conform to the parser requirements

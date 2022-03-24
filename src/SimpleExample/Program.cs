@@ -11,7 +11,7 @@ namespace SimpleExample
 		public StringArgument Files = new("files", "files to read", ParameterAccept.Any);
 		public IntArgument Number = new("number", "number description", minValue: 0, defaultValue: 42);
 
-		protected override ArgumentBase[] GetArgumentOrder() => new ArgumentBase[]{ Files, Number };
+		protected override IArgument[] GetArgumentOrder() => new IArgument[]{ Files, Number };
 	}
 
 	class Program
