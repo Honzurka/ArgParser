@@ -1,5 +1,14 @@
-# Key use cases driving your requirements
-#   What do you want/don’t want to support (goals/non-goals)
+---
+title:
+- Parsovací knihovna v C#
+author:
+- Jan Fürst a Filip Štrobl
+theme:
+- Copenhagen
+header-includes:
+- \newcommand{\btiny}{\begin{tiny}}
+- \newcommand{\etiny}{\end{tiny}}
+---
 
 # Cílili jsme na jednoduchost a bezpečnost použití
 - chyby programátora by měly být odhalitelné co nejdříve
@@ -8,6 +17,8 @@
   	- přístup k parsovaným hodnotám přímo (bez potreby stringu)
   - vyhazování výjimek při špatné specifikaci
 
+# Ukázka kodu
+\btiny
 ```csharp
 class Parser : ParserBase
 {
@@ -26,11 +37,13 @@ catch (ParseException)
 }
 Console.WriteLine(parser.Str.GetValue());
 ```
+\etiny
 
 # Knihovna se soustředí na běžné případy využití
 - volitelný počet argumentů / optionů
 - možnost rozšiřitelnosti parsovaných typů
 
+\btiny
 ```csharp
 class DoubleOption : OptionBase<double?> {
 	// defaultValue, constructor
@@ -50,18 +63,24 @@ class DoubleOption : OptionBase<double?> {
 			? defaultValue : values[index];
 }
 ```
+\etiny
+# Reakce na komentáře
 
-# Nepodporujeme specifické problémy
+- Nepodporujeme specifické problémy
 
-> Knihovna nepodporuje vzájemné vylučování parametrů
+	> Knihovna nepodporuje vzájemné vylučování parametrů
+	
+	> Iterace přes všechny naparsované optiony/parametry
 
-> iterace přes všechny naparsované optiony/parametry
+	- krajní případy by komplikovaly kód
 
-- krajní případy by komplikovaly kód
+- Návrhové změny
 
-# API style and overview of API usage
-#   Demonstrate key concepts on the time command
-#   Briefly mention advanced concepts if any
+	> Sjednotit třídy Argumentů a Optionů
+
+	- Třídy reprezentující Argumenty a Optiony mají jinou zodpovědnost
+	- Sjednocením neusnadníme práci uživateli
+
 
 # Knihovna je objektově zaměřená
 - využívá dědičnosti
@@ -72,6 +91,8 @@ class DoubleOption : OptionBase<double?> {
         - umožňuje vytváření vlastních optionů/argumentů
 - také využívá Reflection, ale o tu se uživatel nemusí starat
 
+# Ukázka kódu z time example
+\btiny
 ```csharp
 class Parser : ParserBase
 {
@@ -83,12 +104,10 @@ class Parser : ParserBase
 class Program
 {
 	const string version = "1.0";
-
 	static void Main(string[] args)
 	{
 		var parser = new Parser();
 		parser.Parse(args);
-
 		if (parser.help.GetValue()) {
 			Console.WriteLine(parser.GenerateHelp());
 		} else if (parser.version.GetValue()) {
@@ -98,21 +117,15 @@ class Program
 			ProgramMain(parser);
 		}
 	}
-
 	static void ProgramMain(Parser parser) {
 		var format = parser.format.GetValue();
 		//...
 	}
 }
 ```
+\etiny
 
-> Sjednotit třídy Argumentů a Optionů
-- Třídy reprezentující Argumenty a Optiony mají jinou zodpovědnost
-- Sjednocením neusnadníme práci uživateli
-
-# Present highlights of your design
-#    How do you make life easier for users?
-
+# Designové nápady
 - definování názvů short a long optionů
     - předpokládáme jednoznakové short, víceznakové long
         - nemusí se specifikovat `-`, `--`
@@ -123,8 +136,8 @@ class Program
   2. ParameterAccept - struktura obsahující informace o rozsahu
       - flexibilnější, ale trochu komplikovanější
       - k implementaci je třeba menší 'hack' - může být neintuitivní
-     
 
+# Designové nápady II
 - možnosti přístupu k naparsovaným hodnotám
     1. callbacky - Funkce reagující na na naparsovanou hodnotu by byly příliš jednoduché
     2. parsovaný výsledek v něčem jako Dictionary => přístup přes `stringový` název optionu, vrací `object`
@@ -135,9 +148,3 @@ class Program
         - příliš mnoho proměnných
     4. připravení struktury určující specifikace
         - aktuální řešení
-
-
-
-# Avoid black background
-#    Makes the presentation difficult to view
-
