@@ -11,14 +11,13 @@ header-includes:
 ---
 
 # Cílili jsme na jednoduchost a bezpečnost použití
-- chyby programátora by měly být odhalitelné co nejdříve
+- chyby programátora by měly být odhalitelné co nejdříve (za překladu)
   - typová bezpečnost
   	- přímá práce s typy
-  	- přístup k parsovaným hodnotám přímo (bez potreby stringu)
+  	- přístup k parsovaným hodnotám přímo (bez potřeby stringu)
   - vyhazování výjimek při špatné specifikaci
 
 # Ukázka kodu
-\btiny
 ```csharp
 class Parser : ParserBase
 {
@@ -26,18 +25,9 @@ class Parser : ParserBase
 }
 
 var parser = new Parser();
-try
-{
-	parser.Parse(args);
-}
-catch (ParseException)
-{
-	Console.Error.WriteLine("Invalid arguments.");
-	Environment.Exit(1);
-}
+parser.Parse(args);
 Console.WriteLine(parser.Str.GetValue());
 ```
-\etiny
 
 # Knihovna se soustředí na běžné případy využití
 - volitelný počet argumentů / optionů
@@ -80,15 +70,15 @@ class DoubleOption : OptionBase<double?> {
 
 	- Třídy reprezentující Argumenty a Optiony mají jinou zodpovědnost
 	- Sjednocením neusnadníme práci uživateli
-
+	- Sdílení kódu lze dosáhnout jinak (kompozice)
 
 # Knihovna je objektově zaměřená
 - využívá dědičnosti
     - odvození ParserBase (API)
         - slouží ke specifikaci parseru
         - zároveň umožňuje přístup naparsovaným hodnotám
-    - custom Options, Arguments (SPI)
-        - umožňuje vytváření vlastních optionů/argumentů
+    - odvození od OptionBase / ArgumentBase (SPI)
+        - umožňuje vytváření vlastních optionů / argumentů
 - také využívá Reflection, ale o tu se uživatel nemusí starat
 
 # Ukázka kódu z time example
@@ -97,21 +87,25 @@ class DoubleOption : OptionBase<double?> {
 class Parser : ParserBase
 {
 	public StringOption format = new (new string[] { "f", "format" }, "Specify output format.");
-	public NoValueOption portability = new(new string[] { "p", "portability" }, "Use the portable output format.");
+	public NoValueOption portability = new(new string[] { "p", "portability" }, "Use portable format.");
 	public NoValueOption help = new(new string[] { "h", "help", "?" }, "Print help and exit.");
 	...
 }
 class Program
 {
-	const string version = "1.0";
 	static void Main(string[] args)
 	{
 		var parser = new Parser();
-		parser.Parse(args);
+		try {
+			parser.Parse(args);
+		}
+		catch (ParseException e)
+		{
+			Console.Error.WriteLine($"Invalid arguments: {e.msg}");
+			Environment.Exit(1);
+		}
 		if (parser.help.GetValue()) {
 			Console.WriteLine(parser.GenerateHelp());
-		} else if (parser.version.GetValue()) {
-			Console.WriteLine("Current version: " + version);
 		}
 		else {
 			ProgramMain(parser);
@@ -140,8 +134,9 @@ class Program
 # Designové nápady II
 - možnosti přístupu k naparsovaným hodnotám
     1. callbacky - Funkce reagující na na naparsovanou hodnotu by byly příliš jednoduché
-    2. parsovaný výsledek v něčem jako Dictionary => přístup přes `stringový` název optionu, vrací `object`
-        - vyžaduje cast
+		- více práce pro uživatele
+    2. parsovaný výsledek v něčem jako Dictionary
+		- přístup přes `stringový` název optionu, vrací `object` nebo obecný nadtyp $\implies$ musí se přetypovat
         - stringy jsou náchylné na chyby
     3. předem připravené proměnné předané do .AddOption() - skrze ně přístup k parsované hodnotě
         - nestrukturované
