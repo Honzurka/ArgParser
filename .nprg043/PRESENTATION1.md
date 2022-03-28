@@ -98,6 +98,7 @@ class Parser : ParserBase
 {
 	public StringOption format = new (new string[] { "f", "format" }, "Specify output format.");
 	public NoValueOption portability = new(new string[] { "p", "portability" }, "Use the portable output format.");
+	public NoValueOption help = new(new string[] { "h", "help", "?" }, "Print help and exit.");
 	...
 }
 class Program

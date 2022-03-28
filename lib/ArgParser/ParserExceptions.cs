@@ -2,13 +2,14 @@
 
 namespace ArgParser
 {
-	/// <summary>
-	/// Thrown on Parse error.
-	/// </summary>
-	public class ParseException : Exception { }; //todo: pridat info o spatnem fieldu / spatnych fieldech-----------------------
+    /// <summary>
+    /// Thrown on Parse error (e.g. the given arguments cannot be parsed or
+    /// aren't valid according to the specification).
+    /// </summary>
+    public class ParseException : Exception { };
 
-	/// <summary>
-	/// Thrown on bad implementation of specification.
-	/// </summary>
-	public class ParserCodeException : Exception { };
+    /// <summary>
+    /// Thrown on invalid implementation of specification of the parser.
+    /// </summary>
+    public class ParserCodeException : Exception { };
 }
