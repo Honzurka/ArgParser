@@ -1,0 +1,15 @@
+ .gitlab-ci.yml                                   |   19 ++
+ ArgParser.sln                                    |   19 ++
+ test/ArgParserTests/ArgParserTests.csproj        |   27 +++
+ test/ArgParserTests/Parser_is_invalid.cs         |   56 ++++++++
+ test/ArgParserTests/Parsing_ambiguous_input.cs   |  118 ++++++++++++++++
+ test/ArgParserTests/Parsing_bool_arguments.cs    |   42 ++++++
+ test/ArgParserTests/Parsing_bool_options.cs      |   43 ++++++
+ test/ArgParserTests/Parsing_enum_arguments.cs    |   37 +++++
+ test/ArgParserTests/Parsing_enum_options.cs      |   36 +++++
+ test/ArgParserTests/Parsing_integer_arguments.cs |   77 +++++++++++
+ test/ArgParserTests/Parsing_integer_options.cs   |   78 +++++++++++
+ test/ArgParserTests/Parsing_noval_options.cs     |   37 +++++
+ test/ArgParserTests/Parsing_string_arguments.cs  |  135 +++++++++++++++++++
+ test/ArgParserTests/Parsing_string_options.cs    |  160 +++++++++++++++++++++++
+ 14 files changed, 882 insertions(+), 2 modifications(!)

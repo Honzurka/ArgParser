@@ -1,0 +1,19 @@
+image : mcr.microsoft.com/dotnet/sdk:6.0
+
+stages:
+  - build
+  - test
+
+build-all:
+  stage: build
+  script:
+    - echo "Debug build..."
+    - dotnet build
+
+run-unit-tests:
+  stage: test 
+  script:
+    - echo "Running unit tests..."
+    - dotnet test
+  dependencies:
+    - build-all
