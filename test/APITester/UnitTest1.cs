@@ -13,12 +13,28 @@ namespace APITester
         public IntOption IntOpt = new(new string[] { "i", "int" }, "int description");
         public EnumOption EnumOpt = new(new string[] { "e", "enum" }, "enum description", new string[] { "a", "b", "c" });
 
-        public IntArgument IntArg = new("int1", "int description");
-        public StringArgument StringArg = new("string1", "string descriptio,");
-        public EnumArgument EnumArg = new("enum1", "enum description", new string[] { "a", "b", "c" });
-        public BoolArgument BoolArg = new("bool1", "bool description");
+        public IntArgument IntArg = new("int1", "int description", parameterAccept: ParameterAccept.Optional);
+        /*public StringArgument StringArg = new("string1", "string descriptio,", ParameterAccept.Optional);
+        public EnumArgument EnumArg = new("enum1", "enum description", new string[] { "a", "b", "c" }, ParameterAccept.Optional);
+        public BoolArgument BoolArg = new("bool1", "bool description", ParameterAccept.Optional);*/
+
+        protected override IArgument[] GetArgumentOrder() => new IArgument[] { IntArg }; /// StringArg, EnumArg, BoolArg};
     }
-    
+
+    class ParserTestDeclarationForBool : ParserBase
+	{
+        public BoolArgument BoolArg = new("bool1", "bool description", ParameterAccept.Optional);
+
+        protected override IArgument[] GetArgumentOrder() => new IArgument[] { BoolArg };
+    }
+
+    class ParserTestDeclarationForString : ParserBase
+	{
+        public StringArgument StringArg = new("string1", "string descriptio,", ParameterAccept.Optional);
+
+        protected override IArgument[] GetArgumentOrder() => new IArgument[] { StringArg };
+    }
+
     class ParserTestEdgeCases : ParserBase
     {
         public BoolOption BoolOpt = new(new string[] { "b", "bool" }, "bool description");
@@ -28,17 +44,19 @@ namespace APITester
         public EnumOption EnumOpt = new(new string[] { "e", "enum" }, "enum description", new string[] { "a", "b", "c" });
 
         public IntArgument IntArg = new("int1", "int description", 10, 20);
+
+        protected override IArgument[] GetArgumentOrder() => new IArgument[] { IntArg };
     }
 
     class ParserTestMandatory : ParserBase
     {
-        public BoolOption BoolOpt = new(new string[] { "b", "bool" }, "bool description", parameterAccept: ParameterAccept.Mandatory);
+        public BoolOption BoolOpt = new(new string[] { "b", "bool" }, "bool description", parameterAccept: ParameterAccept.Mandatory, isMandatory: true);
         public StringOption StringOpt = new(new string[] { "s", "string" }, "string description");
     }
 
     class ParserTestAtLeastOne : ParserBase
     {
-        public IntOption IntOpt = new(new string[] { "i", "int" }, "int description", 10, 20, parameterAccept: ParameterAccept.AtLeastOne);
+        public IntOption IntOpt = new(new string[] { "i", "int" }, "int description", 10, 20, parameterAccept: ParameterAccept.AtLeastOne, isMandatory: true);
         public StringOption StringOpt = new(new string[] { "s", "string" }, "string description");
     }
 
@@ -96,6 +114,8 @@ namespace APITester
         {
             Assert.IsNotNull(ParserDeclare.IntArg);
         }
+
+        /*
         [Test]
         [Category("AddArg")]
         public void AddStringArg()
@@ -114,6 +134,7 @@ namespace APITester
         {
             Assert.IsNotNull(ParserDeclare.BoolArg);
         }
+        */
 
         [Test]
         [Category("AddValue")]
@@ -174,10 +195,10 @@ namespace APITester
         [Category("AddValue")]
         public void BoolValArg()
         {
-            ParserAddValue = new ParserTestDeclaration();
+            var BoolParserAddValue = new ParserTestDeclarationForBool();
             string[] args = new string[] { "true" };
-            ParserAddValue.Parse(args);
-            Assert.AreEqual(true, ParserAddValue.BoolArg.GetValue(0));
+            BoolParserAddValue.Parse(args);
+            Assert.AreEqual(true, BoolParserAddValue.BoolArg.GetValue(0).Value);
         }
         [Test]
         [Category("AddValue")]
@@ -192,10 +213,10 @@ namespace APITester
         [Category("AddValue")]
         public void StringValArg()
         {
-            ParserAddValue = new ParserTestDeclaration();
+            var StringParserAddValue = new ParserTestDeclarationForString();
             string[] args = new string[] { "testText" };
-            ParserAddValue.Parse(args);
-            Assert.AreEqual("testText", ParserAddValue.StringArg.GetValue(0));
+            StringParserAddValue.Parse(args);
+            Assert.AreEqual("testText", StringParserAddValue.StringArg.GetValue(0));
         }
 
         [Test]
@@ -232,7 +253,7 @@ namespace APITester
         }
 
         [Test]
-        [Category("ParameterAccect")]
+        [Category("ParameterAccept")]
         public void Mandatory()
         {
             ParserTestMandatory par = new ParserTestMandatory();
@@ -240,7 +261,7 @@ namespace APITester
             Assert.Throws<ParseException>(delegate { par.Parse(args); });
         }
         [Test]
-        [Category("ParameterAccect")]
+        [Category("ParameterAccept")]
         public void AtLeastOne()
         {
             ParserTestAtLeastOne par = new ParserTestAtLeastOne();
@@ -248,7 +269,7 @@ namespace APITester
             Assert.Throws<ParseException>(delegate { par.Parse(args); });
         }
         [Test]
-        [Category("ParameterAccect")]
+        [Category("ParameterAccept")]
         public void MinParamFail()
         {
             ParserTestMinParam par = new ParserTestMinParam();
