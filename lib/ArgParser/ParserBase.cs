@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Text;
 
 namespace ArgParser
 {
@@ -67,7 +68,7 @@ namespace ArgParser
 
                 foreach (var pa in classPlainArgsSet)
                     if (!orderedPlainArgsSet.Contains(pa))
-                        throw new ParserCodeException("Unknown plain arguments in argument order");
+                        throw new ParserCodeException("Unknown plain arguments in argument order ( didn't you forget to override it? :) )");
             }
 
             void CheckMultipleVariadicPlainArgs()
@@ -130,9 +131,7 @@ namespace ArgParser
                     return currentArg.ParameterAccept.MinParamAmount;
 
 
-                var currentArgIdx = Array.IndexOf(OrderedArguments, currentArg);
-
-                var argCountRequiredByFollowingArgs = OrderedArguments[(currentArgIdx + 1)..]
+                var argCountRequiredByFollowingArgs = OrderedArguments[(plainArgIdx + 1)..]
 					.Select(a => a.ParameterAccept.MinParamAmount)
 					.Aggregate(0, (acc, val) => acc + val);
 
@@ -180,8 +179,6 @@ namespace ArgParser
                 argIdx += paramCount + 1;
 			}
 
-            // check constraints
-            // todo: check if option aliases are different -- in ctor
             var orderedArguments = GetArgumentOrder();
 
             if (!CheckPlainParamCount(orderedArguments, args.Length - argIdx))
@@ -190,7 +187,7 @@ namespace ArgParser
             // parse plain args
             for (var plainArgIdx = 0; plainArgIdx < orderedArguments.Length; plainArgIdx++)
 			{
-                var remainingArgumentsCount = args.Length - argIdx; // CHANGE ------------------------- moved inside loop
+                var remainingArgumentsCount = args.Length - argIdx;
                 var currentArg = orderedArguments[plainArgIdx];
                 var valCount = GetPlainParamCount(plainArgIdx, remainingArgumentsCount);
 
@@ -211,56 +208,44 @@ namespace ArgParser
         /// </summary>
         public string GenerateHelp()
         {
-            // todo: later
-            return "";
+            StringBuilder result = new StringBuilder();
+			var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+
+            string GetArgumentName(IArgument argument)
+            {
+                string result = argument.Name;
+
+                if (argument.ParameterAccept.MaxParamAmount > 1)
+                    result += "...";
+                if (argument.ParameterAccept.MinParamAmount == 0)
+                    result = $"[{result}]";
+
+                return result;
+            }
+
+            void AppendUsageExampleLine()
+            {
+                result.Append(processName);
+                if (options.Count > 0) result.Append(" [options]");
+                foreach (var plainArg in GetArgumentOrder())
+                    result.Append($" {GetArgumentName(plainArg)}");
+                result.Append("\n\n");
+            }
+
+
+            AppendUsageExampleLine();
+
+            result.Append("Options:\n");
+			foreach (var opt in options)
+			{
+                result.Append($"{opt.GetHelp()}");
+			}
+
+            result.Append("Arguments:\n");
+            foreach (var plainArg in GetArgumentOrder())
+                result.Append(plainArg.GetHelp());
+
+            return result.ToString();
         }
     }
-
-
-    /// <summary>
-    /// Describes number of accepted parameters. The default is to accept exactly 1 parameter
-    /// (the default parameterless constructor will construct such an instance).
-    /// </summary>
-    public struct ParameterAccept
-    {
-        private int minParamAmount;
-        private int maxParamAmount;
-        public int MinParamAmount
-        {
-            get
-            {
-                if (minParamAmount < 1 && maxParamAmount < 1) { return minParamAmount + 1; }
-                return minParamAmount;
-            }
-        }
-        public int MaxParamAmount
-        {
-            get
-            {
-                if (minParamAmount < 1 && maxParamAmount < 1) { return maxParamAmount + 1; }
-                return maxParamAmount;
-            }
-        }
-
-        /// <exception cref="ArgumentException">Thrown when minParamAmount < 0 or maxParamAmount < minParamAmount or maxParamAmount == 0</exception>
-        public ParameterAccept(int minParamAmount, int maxParamAmount)
-        {
-            if (minParamAmount < 0 || maxParamAmount < minParamAmount || maxParamAmount == 0)
-                throw new ArgumentException();
-            this.minParamAmount = minParamAmount;
-            this.maxParamAmount = maxParamAmount;
-        }
-        public ParameterAccept(int paramAmount) : this(paramAmount, paramAmount) { }
-        internal static ParameterAccept CreateZeroParameterAccept()
-        {
-            return new ParameterAccept { minParamAmount = -1, maxParamAmount = -1 };
-        }
-
-        public bool IsVariadic => MinParamAmount != MaxParamAmount;
-
-        public readonly static ParameterAccept Mandatory = new();
-        public readonly static ParameterAccept Optional = new(0, 1);
-        public readonly static ParameterAccept AtLeastOne = new(1, int.MaxValue);
-        public readonly static ParameterAccept Any = new(0, int.MaxValue);
-    };
 }

@@ -5,8 +5,13 @@
     /// and should not be implemented. Use <see cref="ArgumentBase{T}">ArgumentBase</see> instead.
     /// </summary>
     public interface IArgument {
-        internal void CallParse(string[] optVals);
+        internal string Name { get; }
+        internal string Description { get; }
         internal ParameterAccept ParameterAccept { get; }
+
+        internal void CallParse(string[] optVals);
+        
+        internal string GetHelp();
     }
 
     /// <summary>
@@ -15,18 +20,28 @@
     /// <typeparam name="T">Type of argument value</typeparam>
     public abstract class ArgumentBase<T> : IArgument
     {
-        internal readonly string Name;
-        internal readonly string Description;
-        internal readonly ParameterAccept parameterAccept;
+        internal readonly string name;
+        string IArgument.Name => name;
 
-		protected ArgumentBase(string name, string description, ParameterAccept parameterAccept)
+        internal readonly string description;
+        string IArgument.Description => description;
+
+        internal readonly ParameterAccept parameterAccept;
+        ParameterAccept IArgument.ParameterAccept => parameterAccept;
+
+        protected abstract string GetTypeAsString();
+        protected abstract string GetConstraintsAsString();
+
+        string IArgument.GetHelp() =>
+            $"\t{name} : {GetTypeAsString()}{parameterAccept.GetHelp()} {GetConstraintsAsString()}\n" +
+            $"\t\t{description}\n\n";
+
+        protected ArgumentBase(string name, string description, ParameterAccept parameterAccept)
 		{
-			Name = name;
-			Description = description;
+			this.name = name;
+			this.description = description;
 			this.parameterAccept = parameterAccept;
 		}
-
-		ParameterAccept IArgument.ParameterAccept => parameterAccept;
 
         void IArgument.CallParse(string[] optVals)
         {
@@ -51,10 +66,12 @@
         /// <returns>The parsed value, or default value if idx is out of range.</returns>
         public abstract T GetValue(int idx = 0);
 
-        /// <summary>
-        /// Returns the count of plain arguments parsed by this instance.
-        /// </summary>
-        public int ParsedArgumentCount { get; private set; }
+
+		/// <summary>
+		/// Returns the count of plain arguments parsed by this instance.
+		/// </summary>
+		public int ParsedArgumentCount { get; private set; }
+
 	}
 
     public sealed class IntArgument : ArgumentBase<int?>
@@ -72,6 +89,9 @@
         protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
         public override int? GetValue(int idx = 0) => parsable.GetValue(idx);
+
+        protected override string GetTypeAsString() => parsable.GetTypeAsString();
+        protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
     }
 
     public sealed class StringArgument : ArgumentBase<string>
@@ -88,6 +108,9 @@
         protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
         public override string GetValue(int idx = 0) => parsable.GetValue(idx);
+
+        protected override string GetTypeAsString() => parsable.GetTypeAsString();
+        protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
     }
 
     public sealed class EnumArgument : ArgumentBase<string>
@@ -104,6 +127,9 @@
         protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
         public override string GetValue(int idx = 0) => parsable.GetValue(idx);
+
+        protected override string GetTypeAsString() => parsable.GetTypeAsString();
+        protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
     }
 
     public sealed class BoolArgument : ArgumentBase<bool?>
@@ -120,5 +146,8 @@
         protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
         public override bool? GetValue(int idx = 0) => parsable.GetValue(idx);
+
+        protected override string GetTypeAsString() => parsable.GetTypeAsString();
+        protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
     }
 }

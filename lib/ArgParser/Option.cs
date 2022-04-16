@@ -6,27 +6,47 @@ namespace ArgParser
     internal interface IOption
     {
         string[] Names { get; }
+        string Description { get; }
+        ParameterAccept ParameterAccept { get; }
+
         void CallParse(string[] optVals);
         bool MatchingOptionName(string optName);
-        ParameterAccept ParameterAccept { get; }
+
         bool IsMandatory { get; }
         bool IsSet { get; }
+
+        string GetHelp();
     }
 
     /// <typeparam name="T">Type of option value</typeparam>
     public abstract class OptionBase<T> : IOption
     {
+        public const int NOT_SET = -1;
+
         internal readonly string[] names;
-        internal readonly string Description;
-        internal readonly bool IsMandatory;
-
-        bool IOption.IsMandatory => IsMandatory;
-        bool IOption.IsSet => IsSet;
-
         string[] IOption.Names => names;
+
+        internal readonly string description;
+        string IOption.Description => description;
+
+        internal readonly bool isMandatory;
+        bool IOption.IsMandatory => isMandatory;
+
+        /// <summary>
+        /// Shortcut for <see cref="OptionBase{T}.ParsedParameterCount">ParsedParameterCount == <see cref="OptionBase{T}.NOT_SET">NOT_SET</see>
+        /// </summary>
+        public bool IsSet => ParsedParameterCount != NOT_SET;
+        bool IOption.IsSet => IsSet;
 
         internal readonly ParameterAccept parameterAccept;
         ParameterAccept IOption.ParameterAccept => parameterAccept;
+
+        protected abstract string GetTypeAsString();
+        protected abstract string GetConstraintsAsString();
+
+        string IOption.GetHelp() =>
+            $"\t{string.Join(' ', names)} : {GetTypeAsString()}{parameterAccept.GetHelp()}" + (isMandatory ? " (MANDATORY)" : "") + GetConstraintsAsString()
+                + $"\n\t\t{description}\n\n";
 
         void IOption.CallParse(string[] optVals)
         {
@@ -37,9 +57,6 @@ namespace ArgParser
         bool IOption.MatchingOptionName(string optName)
         {
             return names.Contains(optName);
-            // --opt -o -opt --o
-            // -abc = -a -b -c
-            // -p42 = -p 42
         }
 
         /// <summary>
@@ -69,21 +86,15 @@ namespace ArgParser
         /// </summary>
         public int ParsedParameterCount { get; private set; } = NOT_SET;
 
-        public const int NOT_SET = -1;
-
         protected OptionBase(string[] names, string description, ParameterAccept parameterAccept, bool isMandatory)
         {
             this.names = names.Select(name => name.Length == 1 ? "-" + name : "--" + name).ToArray();
-            Description = description;
+            this.description = description;
             this.parameterAccept = parameterAccept;
-            IsMandatory = isMandatory;
+            this.isMandatory = isMandatory;
         }
 
-        /// <summary>
-        /// Shortcut for <see cref="OptionBase{T}.ParsedParameterCount">ParsedParameterCount == <see cref="OptionBase{T}.NOT_SET">NOT_SET</see>
-        /// </summary>
-        public bool IsSet => ParsedParameterCount != NOT_SET;
-    }
+	}
 
     public sealed class IntOption : OptionBase<int?>
     {
@@ -100,6 +111,9 @@ namespace ArgParser
         protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
         protected override int? GetValueImpl(int idx) => parsable.GetValue(idx);
+
+        protected override string GetTypeAsString() => parsable.GetTypeAsString();
+        protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
     }
 
     public sealed class StringOption : OptionBase<string>
@@ -116,6 +130,9 @@ namespace ArgParser
         protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
         protected override string GetValueImpl(int idx) => parsable.GetValue(idx);
+
+        protected override string GetTypeAsString() => parsable.GetTypeAsString();
+        protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
     }
 
     public sealed class EnumOption : OptionBase<string>
@@ -132,6 +149,9 @@ namespace ArgParser
         protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
         protected override string GetValueImpl(int idx) => parsable.GetValue(idx);
+
+        protected override string GetTypeAsString() => parsable.GetTypeAsString();
+        protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
     }
 
     public sealed class BoolOption : OptionBase<bool?>
@@ -148,6 +168,9 @@ namespace ArgParser
         protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
         protected override bool? GetValueImpl(int idx) => parsable.GetValue(idx);
+
+        protected override string GetTypeAsString() => parsable.GetTypeAsString();
+        protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
     }
 
     /// <summary>
@@ -157,10 +180,13 @@ namespace ArgParser
     public sealed class NoValueOption : OptionBase<bool>
     {
         public NoValueOption(string[] names, string description)
-            : base(names, description, ParameterAccept.CreateZeroParameterAccept(), isMandatory: false) { }
+            : base(names, description, ParameterAccept.Zero, isMandatory: false) { }
 
         protected override void Parse(string[] optValue = null) { }
 
         protected override bool GetValueImpl(int idx = 0) => IsSet;
+
+        protected override string GetTypeAsString() => "flag";
+        protected override string GetConstraintsAsString() => "";
     }
 }

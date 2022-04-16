@@ -23,6 +23,8 @@ namespace Numactl
 
         public StringArgument command = new("command", "", ParameterAccept.Mandatory);
         public StringArgument args = new("args", "", ParameterAccept.Any);
+
+        protected override IArgument[] GetArgumentOrder() => new IArgument[] { command, args };
     }
 
     internal class Program

@@ -14,11 +14,8 @@ namespace APITester
         public EnumOption EnumOpt = new(new string[] { "e", "enum" }, "enum description", new string[] { "a", "b", "c" });
 
         public IntArgument IntArg = new("int1", "int description", parameterAccept: ParameterAccept.Optional);
-        /*public StringArgument StringArg = new("string1", "string descriptio,", ParameterAccept.Optional);
-        public EnumArgument EnumArg = new("enum1", "enum description", new string[] { "a", "b", "c" }, ParameterAccept.Optional);
-        public BoolArgument BoolArg = new("bool1", "bool description", ParameterAccept.Optional);*/
-
-        protected override IArgument[] GetArgumentOrder() => new IArgument[] { IntArg }; /// StringArg, EnumArg, BoolArg};
+        
+        protected override IArgument[] GetArgumentOrder() => new IArgument[] { IntArg };
     }
 
     class ParserTestDeclarationForBool : ParserBase
@@ -115,26 +112,6 @@ namespace APITester
             Assert.IsNotNull(ParserDeclare.IntArg);
         }
 
-        /*
-        [Test]
-        [Category("AddArg")]
-        public void AddStringArg()
-        {
-            Assert.IsNotNull(ParserDeclare.StringArg);
-        }
-        [Test]
-        [Category("AddArg")]
-        public void AddEnumArg()
-        {
-            Assert.IsNotNull(ParserDeclare.EnumArg);
-        }
-        [Test]
-        [Category("AddArg")]
-        public void AddBoolArg()
-        {
-            Assert.IsNotNull(ParserDeclare.BoolArg);
-        }
-        */
 
         [Test]
         [Category("AddValue")]

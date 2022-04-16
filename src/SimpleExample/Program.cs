@@ -19,6 +19,10 @@ namespace SimpleExample
 		static void Main(string[] args)
 		{
 			var parser = new Parser();
+
+			Console.WriteLine(parser.GenerateHelp());
+			return;
+
 			try
 			{
 				parser.Parse(args);

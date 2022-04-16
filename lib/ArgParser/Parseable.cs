@@ -42,6 +42,17 @@ namespace ArgParser
             if (idx < (parsedValues?.Length ?? 0)) return parsedValues[idx];
             return defaultValue;
         }
+
+        internal string GetTypeAsString() => "integer";
+
+        internal string GetConstraintsAsString()
+		{
+            string result = "";
+            if (minValue != int.MinValue) result += $"min: {minValue} ";
+            if (maxValue != int.MaxValue) result += $"max: {maxValue}";
+
+            return result;
+		}
     }
 
     internal class ParsableString
@@ -77,6 +88,23 @@ namespace ArgParser
             if (idx < (parsedValues?.Length ?? 0)) return parsedValues[idx];
             return defaultValue;
         }
+
+        internal string GetTypeAsString() => "string";
+        internal string GetConstraintsAsString()
+		{
+            string result = "";
+
+            if (domain != null)
+            {
+                result += "Allowed values: ";
+                foreach (var d in domain)
+                {
+                    result += $"{d} ";
+                }
+            }
+
+            return result;
+		}
     }
 
     internal class ParsableBool
@@ -111,5 +139,25 @@ namespace ArgParser
             if (idx < (parsedValues?.Length ?? 0)) return parsedValues[idx];
             return defaultValue;
         }
+
+        internal string GetTypeAsString() => "boolean";
+        internal string GetConstraintsAsString()
+		{
+            string result = "";
+
+            result += $"\n\t\tAllowed values(case insensitive): ";
+            result += $"(true):";
+			foreach (var t in trues)
+			{
+                result += $" {t.ToString()}";
+			}
+            result += $" | (false):";
+            foreach (var f in falses)
+			{
+                result += $" {f.ToString()}";
+			}
+
+            return result;
+		}
     }
 }
