@@ -7,14 +7,16 @@ stages:
 before_script:
   - "dotnet restore"
 
-build:
+build-all:
   stage: build
   script:
-    - "cd lib/ArgParser"
-    - "dotnet build"
-
-test:
-  stage: test
+    - echo "Debug build..."
+    - dotnet build
+  
+run-unit-tests:
+  stage: test 
   script:
-    - "cd APITester"
-    - "dotnet test"
+    - echo "Running unit tests..."
+    - dotnet test
+  # dependencies:
+  #   - build-all
