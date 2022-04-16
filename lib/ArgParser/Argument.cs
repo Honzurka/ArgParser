@@ -59,78 +59,66 @@
 
     public sealed class IntArgument : ArgumentBase<int?>
     {
-        int minValue;
-        int maxValue;
-        int? defaultValue;
-        int[] parsedValues;
+        readonly ParsableInt parsable;
 
         public IntArgument(string name, string description,
             int minValue = int.MinValue, int maxValue = int.MaxValue,
             ParameterAccept parameterAccept = new ParameterAccept(),
             int? defaultValue = null) : base(name, description, parameterAccept)
         {
-            this.minValue = minValue;
-            this.maxValue = maxValue;
-            this.defaultValue = defaultValue;
+            parsable = new (minValue, maxValue, defaultValue);
         }
 
-        protected override void Parse(string[] optVals)
-        {
-            parsedValues = new int[optVals.Length];
+        protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
-            for (int i = 0; i < optVals.Length; i++)
-            {
-                /*parsing int with constraints ---- move outside to share with options*/
-                if (!int.TryParse(optVals[i], out var value))
-                    throw new ParseException("parsing failed");
-                if (value < minValue || value > maxValue)
-                    throw new ParseException("validation failed");
-
-                parsedValues[i] = value;
-            }
-        }
-
-        public override int? GetValue(int idx = 0)
-        {
-            if (idx < parsedValues.Length) return parsedValues[idx];
-
-            return defaultValue;
-        }
+        public override int? GetValue(int idx = 0) => parsable.GetValue(idx);
     }
 
     public sealed class StringArgument : ArgumentBase<string>
     {
+        ParsableString parsable;
+
         public StringArgument(string name, string description,
             ParameterAccept parameterAccept = new ParameterAccept(),
             string defaultValue = null) : base(name, description, parameterAccept)
-        { }
+        {
+            parsable = new(defaultValue);
+        }
 
-        protected override void Parse(string[] optVals) { }
+        protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
-        public override string GetValue(int idx = 0) => default;
+        public override string GetValue(int idx = 0) => parsable.GetValue(idx);
     }
 
     public sealed class EnumArgument : ArgumentBase<string>
     {
+        ParsableString parsable;
+
         public EnumArgument(string name, string description, string[] domain,
             ParameterAccept parameterAccept = new ParameterAccept(),
             string defaultValue = null) : base(name, description, parameterAccept)
-        { }
+        {
+            parsable = new(defaultValue, domain);
+        }
 
-        protected override void Parse(string[] optVals) { }
+        protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
-        public override string GetValue(int idx = 0) => default;
+        public override string GetValue(int idx = 0) => parsable.GetValue(idx);
     }
 
     public sealed class BoolArgument : ArgumentBase<bool?>
     {
+        ParsableBool parsable;
+
         public BoolArgument(string name, string description,
             ParameterAccept parameterAccept = new ParameterAccept(),
             bool? defaultValue = null) : base(name, description, parameterAccept)
-        { }
+        {
+            parsable = new(defaultValue);
+        }
 
-        protected override void Parse(string[] optVals) { }
+        protected override void Parse(string[] optVals) => parsable.Parse(optVals);
 
-        public override bool? GetValue(int idx = 0) => default;
+        public override bool? GetValue(int idx = 0) => parsable.GetValue(idx);
     }
 }

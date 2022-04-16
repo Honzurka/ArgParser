@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace ArgParser
 {
@@ -12,6 +14,76 @@ namespace ArgParser
     /// </summary>
     public abstract class ParserBase
     {
+        List<IOption> options;
+
+        protected ParserBase()
+        {
+            void AssignOptions()
+            {
+                options = new List<IOption>();
+                var fields = GetType().GetFields();
+                foreach (var field in fields)
+                {
+                    if (field.FieldType.GetInterface(nameof(IOption)) != null)
+                    {
+                        options.Add((IOption)field.GetValue(this));
+                    }
+                }
+            }
+
+            void CheckConflictingAliases()
+            {
+                HashSet<string> aliases = new();
+
+                foreach (var opt in options)
+                {
+                    foreach (var name in opt.Names)
+                    {
+                        if (!aliases.Contains(name))
+                            aliases.Add(name);
+                        else
+                            throw new ParserCodeException("Parameter aliases are in conflict.");
+                    }
+                }
+
+            }
+
+            void CheckUnknownPlainArguments()
+            {
+                var orderedPlainArgs = GetArgumentOrder();
+                var classPlainArgs = GetType().GetFields()
+                    .Where(field => field.FieldType.GetInterface(nameof(IArgument)) != null)
+                    .Select(field => (IArgument)field.GetValue(this));
+
+                var orderedPlainArgsSet = orderedPlainArgs.ToHashSet();
+                var classPlainArgsSet = classPlainArgs.ToHashSet();
+
+                if (orderedPlainArgs.Length != orderedPlainArgsSet.Count)
+                    throw new ParserCodeException("Duplicate elements in argument order specification");
+
+                foreach (var pa in orderedPlainArgsSet)
+                    if (!classPlainArgsSet.Contains(pa))
+                        throw new ParserCodeException("Unused plain arguments out of argument order");
+
+                foreach (var pa in classPlainArgsSet)
+                    if (!orderedPlainArgsSet.Contains(pa))
+                        throw new ParserCodeException("Unknown plain arguments in argument order");
+            }
+
+            void CheckMultipleVariadicPlainArgs()
+            {
+                if (GetArgumentOrder().Where(argument => argument.ParameterAccept.IsVariadic).Count() > 1)
+                    throw new ParserCodeException("Multiple plain arguments with variadic count");
+            }
+
+            AssignOptions();
+            CheckConflictingAliases();
+            CheckUnknownPlainArguments();
+            CheckMultipleVariadicPlainArgs();
+        }
+
+
+
         /// <summary>
         /// A command-line argument consisting of two dashes only, default: "--". Any subsequent argument is considered to be a plain argument
         /// </summary>
@@ -36,7 +108,7 @@ namespace ArgParser
         ///     Defining argument fields without overriding `GetArgumentOrder`</exception>
         public void Parse(string[] args)
 		{
-            bool CheckParamCount(IArgument[] orderedArguments)
+            bool CheckPlainParamCount(IArgument[] orderedArguments, int argsLength)
             {
                  int min = orderedArguments
                     .Select(a => a.ParameterAccept.MinParamAmount)
@@ -46,7 +118,7 @@ namespace ArgParser
                    .Select(a => a.ParameterAccept.MaxParamAmount)
                    .Aggregate(0, (acc, val) => acc + val);
 
-                return args.Length >= min  && args.Length <= max;
+                return argsLength >= min && argsLength <= max;
             }
 
             int GetPlainParamCount(int plainArgIdx, int argsCount)
@@ -65,24 +137,71 @@ namespace ArgParser
                 return argsCount - otherArgsCount;
             }
 
-            // check constraints
-            var orderedArguments = GetArgumentOrder();
+            IOption TryGetOption(string name) => options.Find(o => o.MatchingOptionName(name));
 
-            if (!CheckParamCount(orderedArguments))
-                throw new ParseException("arguments are incompatible");
+            int GetOptionParamCount(IOption option, string[] args, int argIdx)
+			{
+                int result = 0;
+                while (result < option.ParameterAccept.MaxParamAmount)
+				{
+                    int idx = argIdx + result + 1;
+                    if (idx == args.Length || args[idx] == Delimiter || TryGetOption(args[idx]) != null)
+                    {
+                        if (result < option.ParameterAccept.MinParamAmount) throw new ParseException("Too few parameters passed to option");
+                        else break;
+                    }
+                    result++;
+                }
+                return result;
+			}
+
 
 
             int argIdx = 0;
-			while (argIdx < orderedArguments.Length)
+            // parse options
+            while (argIdx < args.Length)
 			{
-                var currentArg = orderedArguments[argIdx];
-                var valCount = GetPlainParamCount(argIdx, args.Length);
+                var currentArg = args[argIdx];
+
+                if (!currentArg.StartsWith("-")) break;
+                if (currentArg == Delimiter)
+                {
+                    argIdx++;
+                    break;
+                }
+
+                var option = TryGetOption(currentArg);
+                if (option == null) throw new ParseException("Unrecognized option");
+
+                var paramCount = GetOptionParamCount(option, args, argIdx);
+                option.CallParse(args[(argIdx + 1)..(argIdx + paramCount + 1)]);
+                argIdx += paramCount + 1;
+			}
+
+            // check constraints
+            // todo: check if option aliases are different -- in ctor
+            var orderedArguments = GetArgumentOrder();
+            var remainingArgumentsCount = args.Length - argIdx; // CHANGE
+
+            if (!CheckPlainParamCount(orderedArguments, args.Length - argIdx))
+                throw new ParseException("arguments are incompatible");
+
+            // parse plain args
+            for (var plainArgIdx = 0; plainArgIdx < orderedArguments.Length; plainArgIdx++)
+			{
+                var currentArg = orderedArguments[plainArgIdx];
+                var valCount = GetPlainParamCount(plainArgIdx, remainingArgumentsCount);
 
                 string[] vals = args[argIdx..(argIdx + valCount)];
 
                 currentArg.CallParse(vals);
-                argIdx += currentArg.ParameterAccept.MinParamAmount;
-			}
+                argIdx += valCount;
+            }
+
+            //check if isMandatory are parsed
+            foreach (var o in options)
+                if (o.IsMandatory && !o.IsSet)
+                    throw new ParseException("mandatory option not set");
 		}
 
         /// <summary>
@@ -102,17 +221,38 @@ namespace ArgParser
     /// </summary>
     public struct ParameterAccept
     {
-        public int MinParamAmount { get; }
-        public int MaxParamAmount { get; }
+        private int minParamAmount;
+        private int maxParamAmount;
+        public int MinParamAmount
+        {
+            get
+            {
+                if (minParamAmount < 1 && maxParamAmount < 1) { return minParamAmount + 1; }
+                return minParamAmount;
+            }
+        }
+        public int MaxParamAmount
+        {
+            get
+            {
+                if (minParamAmount < 1 && maxParamAmount < 1) { return maxParamAmount + 1; }
+                return maxParamAmount;
+            }
+        }
 
         /// <exception cref="ArgumentException">Thrown when minParamAmount < 0 or maxParamAmount < minParamAmount or maxParamAmount == 0</exception>
         public ParameterAccept(int minParamAmount, int maxParamAmount)
         {
-            //if (minParamAmount < 0 || maxParamAmount < minParamAmount || maxParamAmount == 0) throw new ArgumentException();
-            MinParamAmount = minParamAmount;
-            MaxParamAmount = maxParamAmount;
+            if (minParamAmount < 0 || maxParamAmount < minParamAmount || maxParamAmount == 0)
+                throw new ArgumentException();
+            this.minParamAmount = minParamAmount;
+            this.maxParamAmount = maxParamAmount;
         }
         public ParameterAccept(int paramAmount) : this(paramAmount, paramAmount) { }
+        internal static ParameterAccept CreateZeroParameterAccept()
+        {
+            return new ParameterAccept { minParamAmount = -1, maxParamAmount = -1 };
+        }
 
         public bool IsVariadic => MinParamAmount != MaxParamAmount;
 
