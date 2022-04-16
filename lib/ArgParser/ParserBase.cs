@@ -129,12 +129,14 @@ namespace ArgParser
                 if (!currentArg.ParameterAccept.IsVariadic)
                     return currentArg.ParameterAccept.MinParamAmount;
 
-                var otherArgsCount = OrderedArguments
-                    .Where(a => !ReferenceEquals(a, currentArg))
-                    .Select(a => a.ParameterAccept.MinParamAmount)
-                    .Aggregate(0, (acc, val) => acc + val);
 
-                return argsCount - otherArgsCount;
+                var currentArgIdx = Array.IndexOf(OrderedArguments, currentArg);
+
+                var argCountRequiredByFollowingArgs = OrderedArguments[(currentArgIdx + 1)..]
+					.Select(a => a.ParameterAccept.MinParamAmount)
+					.Aggregate(0, (acc, val) => acc + val);
+
+				return argsCount - argCountRequiredByFollowingArgs;
             }
 
             IOption TryGetOption(string name) => options.Find(o => o.MatchingOptionName(name));
@@ -181,7 +183,6 @@ namespace ArgParser
             // check constraints
             // todo: check if option aliases are different -- in ctor
             var orderedArguments = GetArgumentOrder();
-            var remainingArgumentsCount = args.Length - argIdx; // CHANGE
 
             if (!CheckPlainParamCount(orderedArguments, args.Length - argIdx))
                 throw new ParseException("arguments are incompatible");
@@ -189,6 +190,7 @@ namespace ArgParser
             // parse plain args
             for (var plainArgIdx = 0; plainArgIdx < orderedArguments.Length; plainArgIdx++)
 			{
+                var remainingArgumentsCount = args.Length - argIdx; // CHANGE ------------------------- moved inside loop
                 var currentArg = orderedArguments[plainArgIdx];
                 var valCount = GetPlainParamCount(plainArgIdx, remainingArgumentsCount);
 
