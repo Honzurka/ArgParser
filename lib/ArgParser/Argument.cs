@@ -5,7 +5,7 @@
     /// and should not be implemented. Use <see cref="ArgumentBase{T}">ArgumentBase</see> instead.
     /// </summary>
     public interface IArgument {
-        internal void Parse();
+        internal void CallParse(string[] optVals);
     }
 
     /// <summary>
@@ -14,7 +14,11 @@
     /// <typeparam name="T">Type of argument value</typeparam>
     public abstract class ArgumentBase<T> : IArgument
     {
-        void IArgument.Parse() { }
+        internal readonly string Name;
+        internal readonly string Description;
+        internal readonly ParameterAccept parameterAccept;
+
+        void IArgument.CallParse(string[] optVals) { }
         /// <summary>
         /// Checks type and restrictions and saves the typed result in its internal state.
         /// </summary>

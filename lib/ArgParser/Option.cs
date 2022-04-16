@@ -3,6 +3,12 @@ namespace ArgParser
     /// <typeparam name="T">Type of option value</typeparam>
     public abstract class OptionBase<T>
     {
+        internal readonly string[] Names;
+        internal readonly string Description;
+        internal readonly ParameterAccept parameterAccept;
+        internal readonly bool IsMandatory;
+
+        internal void CallParse(string[] optVals) => Parse(optVals);
 
         // internal T defaultValue;
 

@@ -23,7 +23,8 @@ namespace ArgParser
         /// </summary>
         /// <returns>References to argument fields</returns>
         protected virtual IArgument[] GetArgumentOrder() => Array.Empty<IArgument>();
-
+        internal ArgumentBase[] CallGetArgumentOrder() => GetArgumentOrder();
+        
         /// <summary>
         /// Parses args and stores parsed values in declared fields.
         /// </summary>
