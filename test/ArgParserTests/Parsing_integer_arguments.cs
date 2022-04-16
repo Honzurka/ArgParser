@@ -20,7 +20,7 @@ namespace ArgParserTests
         [InlineData(int.MaxValue)]
         public void Works_for_valid_input(int argumentValue)
         {
-            var args = new string[] { argumentValue.ToString() };
+            var args = new string[] { "--", argumentValue.ToString() };
             var parser = new IntegerArgumentParser();
 
             parser.Parse(args);
@@ -47,6 +47,8 @@ namespace ArgParserTests
         class BoundedIntegerArgumentParser : ParserBase
         {
             public IntArgument argument = new("argument", "argumentDesc", 0, 100);
+
+            protected override IArgument[] GetArgumentOrder() => new IArgument[] { argument };
         }
 
         [Theory]

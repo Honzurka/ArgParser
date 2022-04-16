@@ -21,7 +21,6 @@ namespace ArgParserTests
 
             parser.Parse(args);
 
-            Assert.True(parser.defaultOpt.IsSet);
             Assert.Equal("defaultVal", parser.defaultOpt.GetValue());
 
             Assert.False(parser.shortOpt.IsSet);
@@ -130,9 +129,9 @@ namespace ArgParserTests
         }
 
         [Theory]
-        [InlineData()]
-        [InlineData("first", "second", "third", "fourth")]
-        public void Fails_when_variable_option_has_invalid_number_of_values(params string[] optionValues)
+        [InlineData(new string[] { }, false)]
+        [InlineData(new string[] {"first", "second", "third", "fourth"}, false)]
+        public void Fails_when_variable_option_has_invalid_number_of_values(string[] optionValues, bool dummy)
         {
             var args = new string[optionValues.Length + 1];
             args[0] = "-o";

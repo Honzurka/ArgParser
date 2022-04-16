@@ -16,9 +16,8 @@ namespace ArgParserTests
         public void When_argument_order_contains_unknown_arguments()
         {
             var args = new string[] { "first" };
-            var parser = new UnknownArgumentParser();
 
-            Assert.Throws<ParserCodeException>(() => parser.Parse(args));
+            Assert.Throws<ParserCodeException>(() => new UnknownArgumentParser());
         }
 
         class TwoVarArgParser : ParserBase
@@ -33,9 +32,8 @@ namespace ArgParserTests
         public void When_multiple_arguments_have_variable_count_of_parameters()
         {
             var args = new string[] { "first" };
-            var parser = new TwoVarArgParser();
 
-            Assert.Throws<ParserCodeException>(() => parser.Parse(args));
+            Assert.Throws<ParserCodeException>(() => new TwoVarArgParser());
         }
 
         class ClashingNamesParser : ParserBase
@@ -48,9 +46,8 @@ namespace ArgParserTests
         public void When_multiple_options_contain_the_same_name()
         {
             var args = new string[] { "--first", "x", "-o", "y" };
-            var parser = new ClashingNamesParser();
 
-            Assert.Throws<ParserCodeException>(() => parser.Parse(args));
+            Assert.Throws<ParserCodeException>(() => new ClashingNamesParser());
         }
     }
 }

@@ -8,6 +8,7 @@ namespace ArgParserTests
         class BoolArgumentParser : ParserBase
         {
             public BoolArgument argument = new("argument", "argumentDesc");
+            protected override IArgument[] GetArgumentOrder() => new[] { argument };
         }
 
         [Theory]

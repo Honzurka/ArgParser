@@ -8,7 +8,7 @@ namespace ArgParserTests
         class ArgumentParser : ParserBase
         {
             public StringArgument simpleArg = new("simpleArg", "simpleArgDesc");
-            public StringArgument defaultArg = new("defaultArg", "defaultArgDesc", defaultValue: "defaultVal");
+            public StringArgument defaultArg = new("defaultArg", "defaultArgDesc", defaultValue: "defaultVal", parameterAccept: ParameterAccept.Optional);
 
             protected override IArgument[] GetArgumentOrder() => new IArgument[] { simpleArg, defaultArg };
         }
@@ -100,9 +100,9 @@ namespace ArgParserTests
         }
 
         [Theory]
-        [InlineData()]
-        [InlineData("first", "second", "third", "fourth")]
-        public void Fails_when_variable_argument_gets_incorrect_number_of_inputs(params string[] args)
+        [InlineData(new string[0], true)]
+        [InlineData(new string[] {"first", "second", "third", "fourth" }, true)]
+        public void Fails_when_variable_argument_gets_incorrect_number_of_inputs(string[] args, bool whyDoINeedThis)
         {
             var parser = new RangeArgumentParser();
 
