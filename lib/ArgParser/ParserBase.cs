@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ArgParser
 {
@@ -33,12 +34,65 @@ namespace ArgParser
         /// <exception cref="ParseException">Thrown when parsed arguments don't satisfy declared option fields:
         ///     Fields not inheriting from predefined classes (descendants of `OptionBase<T>` or `ArgumentBase<T>`)
         ///     Defining argument fields without overriding `GetArgumentOrder`</exception>
-        public void Parse(string[] args) { /*internal impl*/ }
+        public void Parse(string[] args)
+		{
+            bool CheckParamCount(IArgument[] orderedArguments)
+            {
+                 int min = orderedArguments
+                    .Select(a => a.ParameterAccept.MinParamAmount)
+                    .Aggregate(0, (acc, val) => acc + val);
+
+                int max = orderedArguments
+                   .Select(a => a.ParameterAccept.MaxParamAmount)
+                   .Aggregate(0, (acc, val) => acc + val);
+
+                return args.Length >= min  && args.Length <= max;
+            }
+
+            int GetPlainParamCount(int plainArgIdx, int argsCount)
+            {
+                var OrderedArguments = GetArgumentOrder();
+                var currentArg = OrderedArguments[plainArgIdx];
+
+                if (!currentArg.ParameterAccept.IsVariadic)
+                    return currentArg.ParameterAccept.MinParamAmount;
+
+                var otherArgsCount = OrderedArguments
+                    .Where(a => !ReferenceEquals(a, currentArg))
+                    .Select(a => a.ParameterAccept.MinParamAmount)
+                    .Aggregate(0, (acc, val) => acc + val);
+
+                return argsCount - otherArgsCount;
+            }
+
+            // check constraints
+            var orderedArguments = GetArgumentOrder();
+
+            if (!CheckParamCount(orderedArguments))
+                throw new ParseException("arguments are incompatible");
+
+
+            int argIdx = 0;
+			while (argIdx < orderedArguments.Length)
+			{
+                var currentArg = orderedArguments[argIdx];
+                var valCount = GetPlainParamCount(argIdx, args.Length);
+
+                string[] vals = args[argIdx..(argIdx + valCount)];
+
+                currentArg.CallParse(vals);
+                argIdx += currentArg.ParameterAccept.MinParamAmount;
+			}
+		}
 
         /// <summary>
         /// Automatically generates help message from declared fields (name, description).
         /// </summary>
-        public string GenerateHelp() { return ""; }
+        public string GenerateHelp()
+        {
+            // todo: later
+            return "";
+        }
     }
 
 
@@ -59,6 +113,8 @@ namespace ArgParser
             MaxParamAmount = maxParamAmount;
         }
         public ParameterAccept(int paramAmount) : this(paramAmount, paramAmount) { }
+
+        public bool IsVariadic => MinParamAmount != MaxParamAmount;
 
         public readonly static ParameterAccept Mandatory = new();
         public readonly static ParameterAccept Optional = new(0, 1);

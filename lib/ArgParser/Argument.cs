@@ -6,6 +6,7 @@
     /// </summary>
     public interface IArgument {
         internal void CallParse(string[] optVals);
+        internal ParameterAccept ParameterAccept { get; }
     }
 
     /// <summary>
@@ -18,7 +19,24 @@
         internal readonly string Description;
         internal readonly ParameterAccept parameterAccept;
 
-        void IArgument.CallParse(string[] optVals) { }
+		protected ArgumentBase(string name, string description, ParameterAccept parameterAccept)
+		{
+			Name = name;
+			Description = description;
+			this.parameterAccept = parameterAccept;
+		}
+
+		ParameterAccept IArgument.ParameterAccept => parameterAccept;
+
+        void IArgument.CallParse(string[] optVals)
+        {
+            // if (optVals.Length > parameterAccept.MaxParamAmount ||
+            //     optVals.Length < parameterAccept.MaxParamAmount) throw
+            ParsedArgumentCount = optVals.Length;
+            Parse(optVals);
+        
+        }
+
         /// <summary>
         /// Checks type and restrictions and saves the typed result in its internal state.
         /// </summary>
@@ -36,27 +54,55 @@
         /// <summary>
         /// Returns the count of plain arguments parsed by this instance.
         /// </summary>
-        public int ParsedArgumentCount { get; }
-    }
+        public int ParsedArgumentCount { get; private set; }
+	}
 
     public sealed class IntArgument : ArgumentBase<int?>
     {
+        int minValue;
+        int maxValue;
+        int? defaultValue;
+        int[] parsedValues;
+
         public IntArgument(string name, string description,
             int minValue = int.MinValue, int maxValue = int.MaxValue,
             ParameterAccept parameterAccept = new ParameterAccept(),
-            int? defaultValue = null)
-        { }
+            int? defaultValue = null) : base(name, description, parameterAccept)
+        {
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+            this.defaultValue = defaultValue;
+        }
 
-        protected override void Parse(string[] optVals) { }
+        protected override void Parse(string[] optVals)
+        {
+            parsedValues = new int[optVals.Length];
 
-        public override int? GetValue(int idx = 0) => default;
+            for (int i = 0; i < optVals.Length; i++)
+            {
+                /*parsing int with constraints ---- move outside to share with options*/
+                if (!int.TryParse(optVals[i], out var value))
+                    throw new ParseException("parsing failed");
+                if (value < minValue || value > maxValue)
+                    throw new ParseException("validation failed");
+
+                parsedValues[i] = value;
+            }
+        }
+
+        public override int? GetValue(int idx = 0)
+        {
+            if (idx < parsedValues.Length) return parsedValues[idx];
+
+            return defaultValue;
+        }
     }
 
     public sealed class StringArgument : ArgumentBase<string>
     {
         public StringArgument(string name, string description,
             ParameterAccept parameterAccept = new ParameterAccept(),
-            string defaultValue = null)
+            string defaultValue = null) : base(name, description, parameterAccept)
         { }
 
         protected override void Parse(string[] optVals) { }
@@ -68,7 +114,7 @@
     {
         public EnumArgument(string name, string description, string[] domain,
             ParameterAccept parameterAccept = new ParameterAccept(),
-            string defaultValue = null)
+            string defaultValue = null) : base(name, description, parameterAccept)
         { }
 
         protected override void Parse(string[] optVals) { }
@@ -80,7 +126,7 @@
     {
         public BoolArgument(string name, string description,
             ParameterAccept parameterAccept = new ParameterAccept(),
-            bool? defaultValue = null)
+            bool? defaultValue = null) : base(name, description, parameterAccept)
         { }
 
         protected override void Parse(string[] optVals) { }
