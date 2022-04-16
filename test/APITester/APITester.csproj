@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\lib\ArgParser\ArgParser.csproj" />
+    <ProjectReference Include="..\..\lib\ArgParser\ArgParser.csproj" />
   </ItemGroup>
 
 </Project>
