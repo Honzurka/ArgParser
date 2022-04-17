@@ -1,4 +1,5 @@
 ﻿using ArgParser;
+using System;
 using Xunit;
 
 namespace ArgParserTests
@@ -40,7 +41,7 @@ namespace ArgParserTests
         [Fact]
         public void Fails_when_nondefault_arguments_are_missing()
         {
-            var args = new string[0];
+            var args = Array.Empty<string>();
             var parser = new ArgumentParser();
 
             Assert.Throws<ParseException>(() => parser.Parse(args));
@@ -102,7 +103,9 @@ namespace ArgParserTests
         [Theory]
         [InlineData(new string[0], true)]
         [InlineData(new string[] {"first", "second", "third", "fourth" }, true)]
-        public void Fails_when_variable_argument_gets_incorrect_number_of_inputs(string[] args, bool whyDoINeedThis)
+#pragma warning disable xUnit1026 // Without the extra parameter, the test always fails
+        public void Fails_when_variable_argument_gets_incorrect_number_of_inputs(string[] args, bool _)
+#pragma warning restore xUnit1026
         {
             var parser = new RangeArgumentParser();
 

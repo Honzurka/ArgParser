@@ -20,9 +20,6 @@ namespace SimpleExample
 		{
 			var parser = new Parser();
 
-			Console.WriteLine(parser.GenerateHelp());
-			return;
-
 			try
 			{
 				parser.Parse(args);

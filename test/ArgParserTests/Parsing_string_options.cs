@@ -1,4 +1,5 @@
 using ArgParser;
+using System;
 using Xunit;
 
 namespace ArgParserTests
@@ -16,7 +17,7 @@ namespace ArgParserTests
         [Fact]
         public void Works_when_optional_options_are_missing()
         {
-            var args = new string[0];
+            var args = Array.Empty<string>();
             var parser = new StringParser();
 
             parser.Parse(args);
@@ -131,7 +132,9 @@ namespace ArgParserTests
         [Theory]
         [InlineData(new string[] { }, false)]
         [InlineData(new string[] {"first", "second", "third", "fourth"}, false)]
-        public void Fails_when_variable_option_has_invalid_number_of_values(string[] optionValues, bool dummy)
+#pragma warning disable xUnit1026 // Without the extra parameter, the test always fails
+        public void Fails_when_variable_option_has_invalid_number_of_values(string[] optionValues, bool _)
+#pragma warning restore xUnit1026
         {
             var args = new string[optionValues.Length + 1];
             args[0] = "-o";
@@ -149,7 +152,7 @@ namespace ArgParserTests
         [Fact]
         public void Fails_when_mandatory_option_is_missing()
         {
-            var args = new string[0];
+            var args = Array.Empty<string>();
             var parser = new MandatoryStringParser();
 
             Assert.Throws<ParseException>(() => parser.Parse(args));
