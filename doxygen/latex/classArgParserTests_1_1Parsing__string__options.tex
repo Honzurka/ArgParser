@@ -1,0 +1,257 @@
+\hypertarget{classArgParserTests_1_1Parsing__string__options}{}\doxysection{Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options Class Reference}
+\label{classArgParserTests_1_1Parsing__string__options}\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_a97ee49e311e6dc7953f63618073e8ed7}{Works\+\_\+when\+\_\+optional\+\_\+options\+\_\+are\+\_\+missing}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_aee842798be9625547c8d57f6dea5ea49}{Works\+\_\+with\+\_\+options\+\_\+with\+\_\+short\+\_\+names}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_a2abaf662f846f424f3a9cbff6bf9441a}{Works\+\_\+with\+\_\+options\+\_\+with\+\_\+long\+\_\+names}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_a0a55386b8828d1130be1a991565ae272}{Fails\+\_\+when\+\_\+encountering\+\_\+unknown\+\_\+options}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_a64bb80ff193eb4e855631d207963a06a}{Works\+\_\+when\+\_\+multival\+\_\+option\+\_\+has\+\_\+valid\+\_\+number\+\_\+of\+\_\+values}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_a94073329a132d6697dab26935e11e178}{Fails\+\_\+when\+\_\+multival\+\_\+option\+\_\+has\+\_\+invalid\+\_\+number\+\_\+of\+\_\+values}} (params string\mbox{[}$\,$\mbox{]} option\+Values)
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_a46e57df334827fe8486e7c547d9265ca}{Works\+\_\+when\+\_\+variable\+\_\+option\+\_\+has\+\_\+valid\+\_\+number\+\_\+of\+\_\+values}} (params string\mbox{[}$\,$\mbox{]} option\+Values)
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_a58caff44ff23fae3e453a8e33282c69a}{Fails\+\_\+when\+\_\+variable\+\_\+option\+\_\+has\+\_\+invalid\+\_\+number\+\_\+of\+\_\+values}} (string\mbox{[}$\,$\mbox{]} option\+Values, bool \+\_\+)
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__string__options_a6c4a50914d8c77022e9b8a4e8e5679b4}{Fails\+\_\+when\+\_\+mandatory\+\_\+option\+\_\+is\+\_\+missing}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00007}{7}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_a0a55386b8828d1130be1a991565ae272}\label{classArgParserTests_1_1Parsing__string__options_a0a55386b8828d1130be1a991565ae272}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Fails\_when\_encountering\_unknown\_options@{Fails\_when\_encountering\_unknown\_options}}
+\index{Fails\_when\_encountering\_unknown\_options@{Fails\_when\_encountering\_unknown\_options}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Fails\_when\_encountering\_unknown\_options()}{Fails\_when\_encountering\_unknown\_options()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Fails\+\_\+when\+\_\+encountering\+\_\+unknown\+\_\+options (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00067}{67}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00068         \{}
+\DoxyCodeLine{00069             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/s"{}}, \textcolor{stringliteral}{"{}first"{}}, \textcolor{stringliteral}{"{}-\/u"{}}, \textcolor{stringliteral}{"{}second"{}} \};}
+\DoxyCodeLine{00070             var parser = \textcolor{keyword}{new} StringParser();}
+\DoxyCodeLine{00071 }
+\DoxyCodeLine{00072             Assert.Throws<\mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}>(() => parser.Parse(args));}
+\DoxyCodeLine{00073         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_a6c4a50914d8c77022e9b8a4e8e5679b4}\label{classArgParserTests_1_1Parsing__string__options_a6c4a50914d8c77022e9b8a4e8e5679b4}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Fails\_when\_mandatory\_option\_is\_missing@{Fails\_when\_mandatory\_option\_is\_missing}}
+\index{Fails\_when\_mandatory\_option\_is\_missing@{Fails\_when\_mandatory\_option\_is\_missing}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Fails\_when\_mandatory\_option\_is\_missing()}{Fails\_when\_mandatory\_option\_is\_missing()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Fails\+\_\+when\+\_\+mandatory\+\_\+option\+\_\+is\+\_\+missing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00153}{153}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00154         \{}
+\DoxyCodeLine{00155             var args = Array.Empty<\textcolor{keywordtype}{string}>();}
+\DoxyCodeLine{00156             var parser = \textcolor{keyword}{new} MandatoryStringParser();}
+\DoxyCodeLine{00157 }
+\DoxyCodeLine{00158             Assert.Throws<\mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}>(() => parser.Parse(args));}
+\DoxyCodeLine{00159         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_a94073329a132d6697dab26935e11e178}\label{classArgParserTests_1_1Parsing__string__options_a94073329a132d6697dab26935e11e178}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Fails\_when\_multival\_option\_has\_invalid\_number\_of\_values@{Fails\_when\_multival\_option\_has\_invalid\_number\_of\_values}}
+\index{Fails\_when\_multival\_option\_has\_invalid\_number\_of\_values@{Fails\_when\_multival\_option\_has\_invalid\_number\_of\_values}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Fails\_when\_multival\_option\_has\_invalid\_number\_of\_values()}{Fails\_when\_multival\_option\_has\_invalid\_number\_of\_values()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Fails\+\_\+when\+\_\+multival\+\_\+option\+\_\+has\+\_\+invalid\+\_\+number\+\_\+of\+\_\+values (\begin{DoxyParamCaption}\item[{params string\mbox{[}$\,$\mbox{]}}]{option\+Values }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00096}{96}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00097         \{}
+\DoxyCodeLine{00098             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[optionValues.Length + 1];}
+\DoxyCodeLine{00099             args[0] = \textcolor{stringliteral}{"{}-\/o"{}};}
+\DoxyCodeLine{00100             optionValues.CopyTo(args, 1);}
+\DoxyCodeLine{00101             var parser = \textcolor{keyword}{new} MultiStringParser();}
+\DoxyCodeLine{00102 }
+\DoxyCodeLine{00103             Assert.Throws<\mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}>(() => parser.Parse(args));}
+\DoxyCodeLine{00104         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_a58caff44ff23fae3e453a8e33282c69a}\label{classArgParserTests_1_1Parsing__string__options_a58caff44ff23fae3e453a8e33282c69a}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Fails\_when\_variable\_option\_has\_invalid\_number\_of\_values@{Fails\_when\_variable\_option\_has\_invalid\_number\_of\_values}}
+\index{Fails\_when\_variable\_option\_has\_invalid\_number\_of\_values@{Fails\_when\_variable\_option\_has\_invalid\_number\_of\_values}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Fails\_when\_variable\_option\_has\_invalid\_number\_of\_values()}{Fails\_when\_variable\_option\_has\_invalid\_number\_of\_values()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Fails\+\_\+when\+\_\+variable\+\_\+option\+\_\+has\+\_\+invalid\+\_\+number\+\_\+of\+\_\+values (\begin{DoxyParamCaption}\item[{string\mbox{[}$\,$\mbox{]}}]{option\+Values,  }\item[{bool}]{\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00136}{136}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00138         \{}
+\DoxyCodeLine{00139             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[optionValues.Length + 1];}
+\DoxyCodeLine{00140             args[0] = \textcolor{stringliteral}{"{}-\/o"{}};}
+\DoxyCodeLine{00141             optionValues.CopyTo(args, 1);}
+\DoxyCodeLine{00142             var parser = \textcolor{keyword}{new} RangeStringParser();}
+\DoxyCodeLine{00143 }
+\DoxyCodeLine{00144             Assert.Throws<\mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}>(() => parser.Parse(args));}
+\DoxyCodeLine{00145         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_a64bb80ff193eb4e855631d207963a06a}\label{classArgParserTests_1_1Parsing__string__options_a64bb80ff193eb4e855631d207963a06a}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Works\_when\_multival\_option\_has\_valid\_number\_of\_values@{Works\_when\_multival\_option\_has\_valid\_number\_of\_values}}
+\index{Works\_when\_multival\_option\_has\_valid\_number\_of\_values@{Works\_when\_multival\_option\_has\_valid\_number\_of\_values}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Works\_when\_multival\_option\_has\_valid\_number\_of\_values()}{Works\_when\_multival\_option\_has\_valid\_number\_of\_values()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Works\+\_\+when\+\_\+multival\+\_\+option\+\_\+has\+\_\+valid\+\_\+number\+\_\+of\+\_\+values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00081}{81}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00082         \{}
+\DoxyCodeLine{00083             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/o"{}}, \textcolor{stringliteral}{"{}first"{}}, \textcolor{stringliteral}{"{}second"{}} \};}
+\DoxyCodeLine{00084             var parser = \textcolor{keyword}{new} MultiStringParser();}
+\DoxyCodeLine{00085 }
+\DoxyCodeLine{00086             parser.Parse(args);}
+\DoxyCodeLine{00087 }
+\DoxyCodeLine{00088             Assert.True(parser.option.IsSet);}
+\DoxyCodeLine{00089             Assert.Equal(\textcolor{stringliteral}{"{}first"{}}, parser.option.GetValue(0));}
+\DoxyCodeLine{00090             Assert.Equal(\textcolor{stringliteral}{"{}second"{}}, parser.option.GetValue(1));}
+\DoxyCodeLine{00091         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_a97ee49e311e6dc7953f63618073e8ed7}\label{classArgParserTests_1_1Parsing__string__options_a97ee49e311e6dc7953f63618073e8ed7}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Works\_when\_optional\_options\_are\_missing@{Works\_when\_optional\_options\_are\_missing}}
+\index{Works\_when\_optional\_options\_are\_missing@{Works\_when\_optional\_options\_are\_missing}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Works\_when\_optional\_options\_are\_missing()}{Works\_when\_optional\_options\_are\_missing()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Works\+\_\+when\+\_\+optional\+\_\+options\+\_\+are\+\_\+missing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00018}{18}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00019         \{}
+\DoxyCodeLine{00020             var args = Array.Empty<\textcolor{keywordtype}{string}>();}
+\DoxyCodeLine{00021             var parser = \textcolor{keyword}{new} StringParser();}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023             parser.Parse(args);}
+\DoxyCodeLine{00024 }
+\DoxyCodeLine{00025             Assert.Equal(\textcolor{stringliteral}{"{}defaultVal"{}}, parser.defaultOpt.GetValue());}
+\DoxyCodeLine{00026 }
+\DoxyCodeLine{00027             Assert.False(parser.shortOpt.IsSet);}
+\DoxyCodeLine{00028             Assert.False(parser.longOpt.IsSet);}
+\DoxyCodeLine{00029             Assert.False(parser.mixedOpt.IsSet);}
+\DoxyCodeLine{00030         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_a46e57df334827fe8486e7c547d9265ca}\label{classArgParserTests_1_1Parsing__string__options_a46e57df334827fe8486e7c547d9265ca}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Works\_when\_variable\_option\_has\_valid\_number\_of\_values@{Works\_when\_variable\_option\_has\_valid\_number\_of\_values}}
+\index{Works\_when\_variable\_option\_has\_valid\_number\_of\_values@{Works\_when\_variable\_option\_has\_valid\_number\_of\_values}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Works\_when\_variable\_option\_has\_valid\_number\_of\_values()}{Works\_when\_variable\_option\_has\_valid\_number\_of\_values()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Works\+\_\+when\+\_\+variable\+\_\+option\+\_\+has\+\_\+valid\+\_\+number\+\_\+of\+\_\+values (\begin{DoxyParamCaption}\item[{params string\mbox{[}$\,$\mbox{]}}]{option\+Values }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00115}{115}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00116         \{}
+\DoxyCodeLine{00117             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[optionValues.Length + 1];}
+\DoxyCodeLine{00118             args[0] = \textcolor{stringliteral}{"{}-\/o"{}};}
+\DoxyCodeLine{00119             optionValues.CopyTo(args, 1);}
+\DoxyCodeLine{00120             var parser = \textcolor{keyword}{new} RangeStringParser();}
+\DoxyCodeLine{00121 }
+\DoxyCodeLine{00122             parser.Parse(args);}
+\DoxyCodeLine{00123 }
+\DoxyCodeLine{00124             Assert.True(parser.option.IsSet);}
+\DoxyCodeLine{00125             Assert.Equal(optionValues.Length, parser.option.ParsedParameterCount);}
+\DoxyCodeLine{00126             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < optionValues.Length; i++)}
+\DoxyCodeLine{00127             \{}
+\DoxyCodeLine{00128                 Assert.Equal(optionValues[i], parser.option.GetValue(i));}
+\DoxyCodeLine{00129             \}}
+\DoxyCodeLine{00130         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_a2abaf662f846f424f3a9cbff6bf9441a}\label{classArgParserTests_1_1Parsing__string__options_a2abaf662f846f424f3a9cbff6bf9441a}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Works\_with\_options\_with\_long\_names@{Works\_with\_options\_with\_long\_names}}
+\index{Works\_with\_options\_with\_long\_names@{Works\_with\_options\_with\_long\_names}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Works\_with\_options\_with\_long\_names()}{Works\_with\_options\_with\_long\_names()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Works\+\_\+with\+\_\+options\+\_\+with\+\_\+long\+\_\+names (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00050}{50}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00051         \{}
+\DoxyCodeLine{00052             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/-\/long"{}}, \textcolor{stringliteral}{"{}longVal"{}}, \textcolor{stringliteral}{"{}-\/-\/mixed"{}}, \textcolor{stringliteral}{"{}mixedVal"{}} \};}
+\DoxyCodeLine{00053             var parser = \textcolor{keyword}{new} StringParser();}
+\DoxyCodeLine{00054 }
+\DoxyCodeLine{00055             parser.Parse(args);}
+\DoxyCodeLine{00056 }
+\DoxyCodeLine{00057             Assert.True(parser.longOpt.IsSet);}
+\DoxyCodeLine{00058             Assert.Equal(\textcolor{stringliteral}{"{}longVal"{}}, parser.longOpt.GetValue());}
+\DoxyCodeLine{00059 }
+\DoxyCodeLine{00060             Assert.True(parser.mixedOpt.IsSet);}
+\DoxyCodeLine{00061             Assert.Equal(\textcolor{stringliteral}{"{}mixedVal"{}}, parser.mixedOpt.GetValue());}
+\DoxyCodeLine{00062 }
+\DoxyCodeLine{00063             Assert.False(parser.shortOpt.IsSet);}
+\DoxyCodeLine{00064         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__string__options_aee842798be9625547c8d57f6dea5ea49}\label{classArgParserTests_1_1Parsing__string__options_aee842798be9625547c8d57f6dea5ea49}} 
+\index{ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}!Works\_with\_options\_with\_short\_names@{Works\_with\_options\_with\_short\_names}}
+\index{Works\_with\_options\_with\_short\_names@{Works\_with\_options\_with\_short\_names}!ArgParserTests.Parsing\_string\_options@{ArgParserTests.Parsing\_string\_options}}
+\doxysubsubsection{\texorpdfstring{Works\_with\_options\_with\_short\_names()}{Works\_with\_options\_with\_short\_names()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+string\+\_\+options.\+Works\+\_\+with\+\_\+options\+\_\+with\+\_\+short\+\_\+names (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__string__options_8cs_source_l00033}{33}} of file \mbox{\hyperlink{Parsing__string__options_8cs_source}{Parsing\+\_\+string\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00034         \{}
+\DoxyCodeLine{00035             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/s"{}}, \textcolor{stringliteral}{"{}shortVal"{}}, \textcolor{stringliteral}{"{}-\/m"{}}, \textcolor{stringliteral}{"{}mixedVal"{}} \};}
+\DoxyCodeLine{00036             var parser = \textcolor{keyword}{new} StringParser();}
+\DoxyCodeLine{00037 }
+\DoxyCodeLine{00038             parser.Parse(args);}
+\DoxyCodeLine{00039 }
+\DoxyCodeLine{00040             Assert.True(parser.shortOpt.IsSet);}
+\DoxyCodeLine{00041             Assert.Equal(\textcolor{stringliteral}{"{}shortVal"{}}, parser.shortOpt.GetValue());}
+\DoxyCodeLine{00042 }
+\DoxyCodeLine{00043             Assert.True(parser.mixedOpt.IsSet);}
+\DoxyCodeLine{00044             Assert.Equal(\textcolor{stringliteral}{"{}mixedVal"{}}, parser.mixedOpt.GetValue());}
+\DoxyCodeLine{00045 }
+\DoxyCodeLine{00046             Assert.False(parser.longOpt.IsSet);}
+\DoxyCodeLine{00047         \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+test/\+Arg\+Parser\+Tests/Parsing\+\_\+string\+\_\+options.\+cs\end{DoxyCompactItemize}

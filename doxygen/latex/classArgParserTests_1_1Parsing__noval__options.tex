@@ -1,0 +1,70 @@
+\hypertarget{classArgParserTests_1_1Parsing__noval__options}{}\doxysection{Arg\+Parser\+Tests.\+Parsing\+\_\+noval\+\_\+options Class Reference}
+\label{classArgParserTests_1_1Parsing__noval__options}\index{ArgParserTests.Parsing\_noval\_options@{ArgParserTests.Parsing\_noval\_options}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__noval__options_add4ee081cd8f8cdff81de33eba394547}{Stores\+\_\+true\+\_\+if\+\_\+flag\+\_\+is\+\_\+present}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__noval__options_a83bd5d6ea74c011276b03d9218574f25}{Stores\+\_\+false\+\_\+if\+\_\+flag\+\_\+is\+\_\+not\+\_\+present}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{Parsing__noval__options_8cs_source_l00006}{6}} of file \mbox{\hyperlink{Parsing__noval__options_8cs_source}{Parsing\+\_\+noval\+\_\+options.\+cs}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__noval__options_a83bd5d6ea74c011276b03d9218574f25}\label{classArgParserTests_1_1Parsing__noval__options_a83bd5d6ea74c011276b03d9218574f25}} 
+\index{ArgParserTests.Parsing\_noval\_options@{ArgParserTests.Parsing\_noval\_options}!Stores\_false\_if\_flag\_is\_not\_present@{Stores\_false\_if\_flag\_is\_not\_present}}
+\index{Stores\_false\_if\_flag\_is\_not\_present@{Stores\_false\_if\_flag\_is\_not\_present}!ArgParserTests.Parsing\_noval\_options@{ArgParserTests.Parsing\_noval\_options}}
+\doxysubsubsection{\texorpdfstring{Stores\_false\_if\_flag\_is\_not\_present()}{Stores\_false\_if\_flag\_is\_not\_present()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+noval\+\_\+options.\+Stores\+\_\+false\+\_\+if\+\_\+flag\+\_\+is\+\_\+not\+\_\+present (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__noval__options_8cs_source_l00026}{26}} of file \mbox{\hyperlink{Parsing__noval__options_8cs_source}{Parsing\+\_\+noval\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00027         \{}
+\DoxyCodeLine{00028             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[0];}
+\DoxyCodeLine{00029             var parser = \textcolor{keyword}{new} NoValParser();}
+\DoxyCodeLine{00030 }
+\DoxyCodeLine{00031             parser.Parse(args);}
+\DoxyCodeLine{00032 }
+\DoxyCodeLine{00033             Assert.False(parser.option.IsSet);}
+\DoxyCodeLine{00034             Assert.False(parser.option.GetValue());}
+\DoxyCodeLine{00035         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__noval__options_add4ee081cd8f8cdff81de33eba394547}\label{classArgParserTests_1_1Parsing__noval__options_add4ee081cd8f8cdff81de33eba394547}} 
+\index{ArgParserTests.Parsing\_noval\_options@{ArgParserTests.Parsing\_noval\_options}!Stores\_true\_if\_flag\_is\_present@{Stores\_true\_if\_flag\_is\_present}}
+\index{Stores\_true\_if\_flag\_is\_present@{Stores\_true\_if\_flag\_is\_present}!ArgParserTests.Parsing\_noval\_options@{ArgParserTests.Parsing\_noval\_options}}
+\doxysubsubsection{\texorpdfstring{Stores\_true\_if\_flag\_is\_present()}{Stores\_true\_if\_flag\_is\_present()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+noval\+\_\+options.\+Stores\+\_\+true\+\_\+if\+\_\+flag\+\_\+is\+\_\+present (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__noval__options_8cs_source_l00014}{14}} of file \mbox{\hyperlink{Parsing__noval__options_8cs_source}{Parsing\+\_\+noval\+\_\+options.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00015         \{}
+\DoxyCodeLine{00016             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/o"{}} \};}
+\DoxyCodeLine{00017             var parser = \textcolor{keyword}{new} NoValParser();}
+\DoxyCodeLine{00018 }
+\DoxyCodeLine{00019             parser.Parse(args);}
+\DoxyCodeLine{00020 }
+\DoxyCodeLine{00021             Assert.True(parser.option.IsSet);}
+\DoxyCodeLine{00022             Assert.True(parser.option.GetValue());}
+\DoxyCodeLine{00023         \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+test/\+Arg\+Parser\+Tests/Parsing\+\_\+noval\+\_\+options.\+cs\end{DoxyCompactItemize}

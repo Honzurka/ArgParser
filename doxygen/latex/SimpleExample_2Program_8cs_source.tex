@@ -1,0 +1,54 @@
+\hypertarget{SimpleExample_2Program_8cs_source}{}\doxysection{Program.\+cs}
+\label{SimpleExample_2Program_8cs_source}\index{src/SimpleExample/Program.cs@{src/SimpleExample/Program.cs}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00001}00001 \textcolor{keyword}{using} System;}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00002}00002 \textcolor{keyword}{using} \mbox{\hyperlink{namespaceArgParser}{ArgParser}};}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00003}00003 }
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00004}\mbox{\hyperlink{namespaceSimpleExample}{00004}} \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceSimpleExample}{SimpleExample}}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00005}00005 \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00006}\mbox{\hyperlink{classSimpleExample_1_1Parser}{00006}}     \textcolor{keyword}{class }\mbox{\hyperlink{classSimpleExample_1_1Parser}{Parser}} : \mbox{\hyperlink{classArgParser_1_1ParserBase}{ParserBase}}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00007}00007     \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00008}00008         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1BoolOption}{BoolOption}} BoolOpt = \textcolor{keyword}{new}(\textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}b"{}}, \textcolor{stringliteral}{"{}bool"{}} \}, \textcolor{stringliteral}{"{}bool description"{}}, isMandatory: \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00009}00009         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1NoValueOption}{NoValueOption}} Help = \textcolor{keyword}{new}(\textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}h"{}}, \textcolor{stringliteral}{"{}help"{}}, \textcolor{stringliteral}{"{}?"{}} \}, \textcolor{stringliteral}{"{}show help"{}});}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00011}00011         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1StringArgument}{StringArgument}} Files = \textcolor{keyword}{new}(\textcolor{stringliteral}{"{}files"{}}, \textcolor{stringliteral}{"{}files to read"{}}, \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}.Any);}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00012}00012         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1IntArgument}{IntArgument}} Number = \textcolor{keyword}{new}(\textcolor{stringliteral}{"{}number"{}}, \textcolor{stringliteral}{"{}number description"{}}, minValue: 0, defaultValue: 42);}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00013}00013 }
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00014}\mbox{\hyperlink{classSimpleExample_1_1Parser_a86bc02dab2f00790c4f8842cde7050f8}{00014}}         \textcolor{keyword}{protected} \textcolor{keyword}{override} \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}[] \mbox{\hyperlink{classSimpleExample_1_1Parser_a86bc02dab2f00790c4f8842cde7050f8}{GetArgumentOrder}}() => \textcolor{keyword}{new} \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}[]\{ Files, Number \};}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00015}00015     \}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00016}00016 }
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00017}\mbox{\hyperlink{classSimpleExample_1_1Program}{00017}}     \textcolor{keyword}{class }\mbox{\hyperlink{classSimpleExample_1_1Program}{Program}}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00018}00018     \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00019}00019         \textcolor{keyword}{static} \textcolor{keywordtype}{void} Main(\textcolor{keywordtype}{string}[] args)}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00020}00020         \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00021}00021             var parser = \textcolor{keyword}{new} \mbox{\hyperlink{classSimpleExample_1_1Parser}{Parser}}();}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00022}00022 }
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00023}00023             \textcolor{keywordflow}{try}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00024}00024             \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00025}00025                 parser.Parse(args);}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00026}00026             \}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00027}00027             \textcolor{keywordflow}{catch} (\mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}})}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00028}00028             \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00029}00029                 Console.Error.WriteLine(\textcolor{stringliteral}{"{}Passed arguments doesn't conform to program specification. See help for more explanation."{}});}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00030}00030                 Environment.Exit(1);}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00031}00031             \}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00032}00032             \textcolor{keywordflow}{if} (parser.Help.GetValue())}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00033}00033             \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00034}00034                 Console.WriteLine(parser.GenerateHelp());}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00035}00035             \}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00036}00036             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00037}00037             \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00038}00038                 \textcolor{keywordflow}{if} (parser.BoolOpt.GetValue() != \textcolor{keyword}{null}) Console.WriteLine(\$\textcolor{stringliteral}{"{}boolOpt = \$\{parser.BoolOpt.GetValue()\}"{}});}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00039}00039                 \textcolor{keywordtype}{int} i = 0;}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00040}00040                 \textcolor{keywordflow}{while} (parser.Files.GetValue(i) != \textcolor{keyword}{null}) \{}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00041}00041                     \textcolor{comment}{// equivalent to while (i < parser.files.ParsedParameterCount)}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00042}00042                     Console.WriteLine(\$\textcolor{stringliteral}{"{}file\{i\} = \{parser.Files.GetValue(i)\}"{}});}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00043}00043                     i++;}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00044}00044                 \}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00045}00045             \}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00046}00046         \}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00047}00047     \}}
+\DoxyCodeLine{\Hypertarget{SimpleExample_2Program_8cs_source_l00048}00048 \}}
+
+\end{DoxyCode}

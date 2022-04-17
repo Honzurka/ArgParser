@@ -1,0 +1,54 @@
+\hypertarget{namespaceArgParser}{}\doxysection{Arg\+Parser Namespace Reference}
+\label{namespaceArgParser}\index{ArgParser@{ArgParser}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Argument\+Base}}
+\begin{DoxyCompactList}\small\item\em Shared by all arguments. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classArgParser_1_1BoolArgument}{Bool\+Argument}}
+\item 
+class \mbox{\hyperlink{classArgParser_1_1BoolOption}{Bool\+Option}}
+\item 
+class \mbox{\hyperlink{classArgParser_1_1EnumArgument}{Enum\+Argument}}
+\item 
+class \mbox{\hyperlink{classArgParser_1_1EnumOption}{Enum\+Option}}
+\item 
+interface \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}
+\begin{DoxyCompactList}\small\item\em Specifies that this class is an argument. The interface contains internal methods and should not be implemented. Use \mbox{\hyperlink{}{Argument\+Base}} instead. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classArgParser_1_1IntArgument}{Int\+Argument}}
+\item 
+class \mbox{\hyperlink{classArgParser_1_1IntOption}{Int\+Option}}
+\item 
+interface {\bfseries IOption}
+\item 
+interface \mbox{\hyperlink{interfaceArgParser_1_1IParsable}{IParsable}}
+\item 
+class \mbox{\hyperlink{classArgParser_1_1NoValueOption}{No\+Value\+Option}}
+\begin{DoxyCompactList}\small\item\em A special case of an option. Its \mbox{\hyperlink{classArgParser_1_1OptionBase_a19d76f316e1a4b1076d9fd3925dc4628}{Get\+Value}} method returns whether it was in parsed arguments. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classArgParser_1_1OptionBase}{Option\+Base}}
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type of option value\\
+\hline
+\end{DoxyTemplParams}
+\end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}}
+\begin{DoxyCompactList}\small\item\em Describes number of accepted parameters. The default is to accept exactly 1 parameter (the default parameterless constructor will construct such an instance). \end{DoxyCompactList}\item 
+class {\bfseries Parsable\+Bool}
+\item 
+class {\bfseries Parsable\+Flag}
+\item 
+class {\bfseries Parsable\+Int}
+\item 
+class {\bfseries Parsable\+String}
+\item 
+class \mbox{\hyperlink{classArgParser_1_1ParseException}{Parse\+Exception}}
+\begin{DoxyCompactList}\small\item\em Thrown on Parse error (e.\+g. the given arguments cannot be parsed or aren\textquotesingle{}t valid according to the specification). \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classArgParser_1_1ParserBase}{Parser\+Base}}
+\begin{DoxyCompactList}\small\item\em To specify options/arguments Inherit from this class and declare Option / Argument fields that are descendants of \mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Argument\+Base}} / \mbox{\hyperlink{}{Option\+Base}} After the \mbox{\hyperlink{classArgParser_1_1ParserBase_aee3c7c8164300c12d22eba3f43b18448}{Parse}} method is called, parsed results could be obtained using field\+Name.\+Get\+Value() \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classArgParser_1_1ParserCodeException}{Parser\+Code\+Exception}}
+\begin{DoxyCompactList}\small\item\em Thrown on invalid implementation of specification of the parser. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classArgParser_1_1StringArgument}{String\+Argument}}
+\item 
+class \mbox{\hyperlink{classArgParser_1_1StringOption}{String\+Option}}
+\end{DoxyCompactItemize}

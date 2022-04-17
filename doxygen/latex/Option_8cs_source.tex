@@ -1,0 +1,123 @@
+\hypertarget{Option_8cs_source}{}\doxysection{Option.\+cs}
+\label{Option_8cs_source}\index{lib/ArgParser/Option.cs@{lib/ArgParser/Option.cs}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00001}00001 \textcolor{keyword}{using} System;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00002}00002 \textcolor{keyword}{using} System.Linq;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00003}00003 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00004}00004 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceArgParser}{ArgParser}}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00005}00005 \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00006}00006     \textcolor{keyword}{internal} \textcolor{keyword}{interface }IOption}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00007}00007     \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00008}00008         \textcolor{keywordtype}{string}[] Names \{ \textcolor{keyword}{get}; \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00009}00009         \textcolor{keywordtype}{string} Description \{ \textcolor{keyword}{get}; \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00010}00010         ParameterAccept ParameterAccept \{ \textcolor{keyword}{get}; \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00012}00012         \textcolor{keywordtype}{bool} IsMandatory \{ \textcolor{keyword}{get}; \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00013}00013         \textcolor{keywordtype}{bool} IsSet \{ \textcolor{keyword}{get}; \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00014}00014 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00015}00015         \textcolor{keywordtype}{void} CallParse(\textcolor{keywordtype}{string}[] optVals);}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00016}00016         \textcolor{keywordtype}{bool} MatchingOptionName(\textcolor{keywordtype}{string} optName);}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00018}00018         \textcolor{keywordtype}{string} GetHelp();}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00019}00019     \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00020}00020 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00022}\mbox{\hyperlink{classArgParser_1_1OptionBase}{00022}}     \textcolor{keyword}{public} \textcolor{keyword}{abstract} \textcolor{keyword}{class }\mbox{\hyperlink{classArgParser_1_1OptionBase}{OptionBase}}<T> : IOption}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00023}00023     \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00024}00024         readonly \mbox{\hyperlink{interfaceArgParser_1_1IParsable}{IParsable<T>}} parsable;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00025}00025 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00026}00026         \textcolor{keyword}{public} \textcolor{keyword}{const} \textcolor{keywordtype}{int} NOT\_SET = -\/1;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00027}00027 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00028}00028         \textcolor{keyword}{internal} readonly \textcolor{keywordtype}{string}[] names;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00029}00029         \textcolor{keywordtype}{string}[] IOption.Names => names;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00030}00030 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00031}00031         \textcolor{keyword}{internal} readonly \textcolor{keywordtype}{string} description;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00032}00032         \textcolor{keywordtype}{string} IOption.Description => description;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00033}00033 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00034}00034         \textcolor{keyword}{internal} readonly \textcolor{keywordtype}{bool} isMandatory;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00035}00035         \textcolor{keywordtype}{bool} IOption.IsMandatory => isMandatory;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00036}00036 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00037}00037 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00041}\mbox{\hyperlink{classArgParser_1_1OptionBase_ac72303446d752467e8519144fbbb29a7}{00041}}         \textcolor{keyword}{public} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classArgParser_1_1OptionBase_ac72303446d752467e8519144fbbb29a7}{IsSet}} => \mbox{\hyperlink{classArgParser_1_1OptionBase_a7f0352255c509388106ee8e0739e34ab}{ParsedParameterCount}} != NOT\_SET;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00042}00042         \textcolor{keywordtype}{bool} IOption.IsSet => \mbox{\hyperlink{classArgParser_1_1OptionBase_ac72303446d752467e8519144fbbb29a7}{IsSet}};}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00043}00043 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00044}00044         \textcolor{keyword}{internal} readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} parameterAccept;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00045}00045         \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} IOption.ParameterAccept => parameterAccept;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00046}00046 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00047}00047         \textcolor{keywordtype}{void} IOption.CallParse(\textcolor{keywordtype}{string}[]? optVals)}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00048}00048         \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00049}00049             \mbox{\hyperlink{classArgParser_1_1OptionBase_a7f0352255c509388106ee8e0739e34ab}{ParsedParameterCount}} = optVals?.Length ?? 0;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00050}00050             Parse(optVals ?? Array.Empty<\textcolor{keywordtype}{string}>());}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00051}00051         \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00052}00052 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00053}00053         \textcolor{keywordtype}{bool} IOption.MatchingOptionName(\textcolor{keywordtype}{string} optName) => names.Contains(optName);}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00054}00054 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00055}00055 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00062}00062         \textcolor{keywordtype}{void} Parse(\textcolor{keywordtype}{string}[] optVals) => parsable.Parse(optVals);}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00063}00063 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00064}00064         T? GetValueImpl(\textcolor{keywordtype}{int} idx) => parsable.GetValue(idx);}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00065}00065 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00066}00066 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00072}\mbox{\hyperlink{classArgParser_1_1OptionBase_a19d76f316e1a4b1076d9fd3925dc4628}{00072}}         \textcolor{keyword}{public} T? \mbox{\hyperlink{classArgParser_1_1OptionBase_a19d76f316e1a4b1076d9fd3925dc4628}{GetValue}}(\textcolor{keywordtype}{int} idx = 0)}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00073}00073         \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00074}00074             \textcolor{keywordflow}{if} (idx < 0) \textcolor{keywordflow}{throw} \textcolor{keyword}{new} IndexOutOfRangeException();}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00075}00075             \textcolor{keywordflow}{return} GetValueImpl(idx);}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00076}00076         \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00077}00077 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00078}00078         \textcolor{keywordtype}{string} GetTypeAsString() => parsable.TypeAsString;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00079}00079         \textcolor{keywordtype}{string} GetConstraintsAsString() => parsable.ConstraintsAsString;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00080}00080 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00084}\mbox{\hyperlink{classArgParser_1_1OptionBase_a7f0352255c509388106ee8e0739e34ab}{00084}}         \textcolor{keyword}{public} \textcolor{keywordtype}{int} \mbox{\hyperlink{classArgParser_1_1OptionBase_a7f0352255c509388106ee8e0739e34ab}{ParsedParameterCount}} \{ \textcolor{keyword}{get}; \textcolor{keyword}{private} \textcolor{keyword}{set}; \} = NOT\_SET;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00085}00085 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00086}00086         \textcolor{keyword}{protected} \mbox{\hyperlink{classArgParser_1_1OptionBase}{OptionBase}}(\textcolor{keywordtype}{string}[] names, \textcolor{keywordtype}{string} description, \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} parameterAccept, \textcolor{keywordtype}{bool} isMandatory, \mbox{\hyperlink{interfaceArgParser_1_1IParsable}{IParsable<T>}} parsable)}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00087}00087         \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00088}00088             this.names = names.Select(name => name.Length == 1 ? \textcolor{stringliteral}{"{}-\/"{}} + name : \textcolor{stringliteral}{"{}-\/-\/"{}} + name).ToArray();}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00089}00089             this.description = description;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00090}00090             this.parameterAccept = parameterAccept;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00091}00091             this.isMandatory = isMandatory;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00092}00092             this.parsable = parsable;}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00093}00093         \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00094}00094 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00095}00095         \textcolor{keywordtype}{string} IOption.GetHelp() =>}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00096}00096             \$\textcolor{stringliteral}{"{}\(\backslash\)t\{string.Join(' ', names)\} : \{GetTypeAsString()\}\{parameterAccept.GetHelp()\}"{}} + (isMandatory ? \textcolor{stringliteral}{"{} (MANDATORY)"{}} : \textcolor{stringliteral}{"{}"{}}) + GetConstraintsAsString()}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00097}00097                 + \$\textcolor{stringliteral}{"{}\(\backslash\)n\(\backslash\)t\(\backslash\)t\{description\}\(\backslash\)n\(\backslash\)n"{}};}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00098}00098     \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00099}00099 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00100}\mbox{\hyperlink{classArgParser_1_1IntOption}{00100}}     \textcolor{keyword}{public} sealed \textcolor{keyword}{class }\mbox{\hyperlink{classArgParser_1_1IntOption}{IntOption}} : \mbox{\hyperlink{classArgParser_1_1OptionBase}{OptionBase}}<int?>}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00101}00101     \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00102}00102         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1IntOption}{IntOption}}(\textcolor{keywordtype}{string}[] names, \textcolor{keywordtype}{string} description,}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00103}00103             \textcolor{keywordtype}{int} minValue = \textcolor{keywordtype}{int}.MinValue, \textcolor{keywordtype}{int} maxValue = \textcolor{keywordtype}{int}.MaxValue,}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00104}00104             \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} parameterAccept = \textcolor{keyword}{new} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}(),}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00105}00105             \textcolor{keywordtype}{int}? defaultValue = \textcolor{keyword}{null}, \textcolor{keywordtype}{bool} isMandatory = \textcolor{keyword}{false}) : base(names, description, parameterAccept, isMandatory, \textcolor{keyword}{new} ParsableInt(minValue, maxValue, defaultValue)) \{ \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00106}00106     \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00107}00107 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00108}\mbox{\hyperlink{classArgParser_1_1StringOption}{00108}}     \textcolor{keyword}{public} sealed \textcolor{keyword}{class }\mbox{\hyperlink{classArgParser_1_1StringOption}{StringOption}} : \mbox{\hyperlink{classArgParser_1_1OptionBase}{OptionBase}}<string?>}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00109}00109     \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00110}00110         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1StringOption}{StringOption}}(\textcolor{keywordtype}{string}[] names, \textcolor{keywordtype}{string} description,}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00111}00111             \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} parameterAccept = \textcolor{keyword}{new} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}(),}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00112}00112             \textcolor{keywordtype}{string}? defaultValue = \textcolor{keyword}{null}, \textcolor{keywordtype}{bool} isMandatory = \textcolor{keyword}{false}) : base(names, description, parameterAccept, isMandatory, \textcolor{keyword}{new} ParsableString(defaultValue)) \{ \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00113}00113     \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00114}00114 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00115}\mbox{\hyperlink{classArgParser_1_1EnumOption}{00115}}     \textcolor{keyword}{public} sealed \textcolor{keyword}{class }\mbox{\hyperlink{classArgParser_1_1EnumOption}{EnumOption}} : \mbox{\hyperlink{classArgParser_1_1OptionBase}{OptionBase}}<string?>}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00116}00116     \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00117}00117         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1EnumOption}{EnumOption}}(\textcolor{keywordtype}{string}[] names, \textcolor{keywordtype}{string} description, \textcolor{keywordtype}{string}[] domain,}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00118}00118             \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} parameterAccept = \textcolor{keyword}{new} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}(),}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00119}00119             \textcolor{keywordtype}{string}? defaultValue = \textcolor{keyword}{null}, \textcolor{keywordtype}{bool} isMandatory = \textcolor{keyword}{false}) : base(names, description, parameterAccept, isMandatory, \textcolor{keyword}{new} ParsableString(defaultValue, domain)) \{ \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00120}00120     \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00121}00121 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00122}\mbox{\hyperlink{classArgParser_1_1BoolOption}{00122}}     \textcolor{keyword}{public} sealed \textcolor{keyword}{class }\mbox{\hyperlink{classArgParser_1_1BoolOption}{BoolOption}} : \mbox{\hyperlink{classArgParser_1_1OptionBase}{OptionBase}}<bool?>}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00123}00123     \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00124}00124         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1BoolOption}{BoolOption}}(\textcolor{keywordtype}{string}[] names, \textcolor{keywordtype}{string} description,}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00125}00125             \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} parameterAccept = \textcolor{keyword}{new} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}(),}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00126}00126             \textcolor{keywordtype}{bool}? defaultValue = \textcolor{keyword}{null}, \textcolor{keywordtype}{bool} isMandatory = \textcolor{keyword}{false}) : base(names, description, parameterAccept, isMandatory, \textcolor{keyword}{new} ParsableBool(defaultValue)) \{ \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00127}00127     \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00128}00128 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00129}00129 }
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00134}\mbox{\hyperlink{classArgParser_1_1NoValueOption}{00134}}     \textcolor{keyword}{public} sealed \textcolor{keyword}{class }\mbox{\hyperlink{classArgParser_1_1NoValueOption}{NoValueOption}} : \mbox{\hyperlink{classArgParser_1_1OptionBase}{OptionBase}}<bool>}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00135}00135     \{}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00136}00136         \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1NoValueOption}{NoValueOption}}(\textcolor{keywordtype}{string}[] names, \textcolor{keywordtype}{string} description)}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00137}00137             : base(names, description, \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}.Zero, isMandatory: \textcolor{keyword}{false}, \textcolor{keyword}{new} ParsableFlag()) \{ \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00138}00138     \}}
+\DoxyCodeLine{\Hypertarget{Option_8cs_source_l00139}00139 \}}
+
+\end{DoxyCode}

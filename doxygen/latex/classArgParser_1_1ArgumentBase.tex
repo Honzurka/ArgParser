@@ -1,0 +1,113 @@
+\hypertarget{classArgParser_1_1ArgumentBase}{}\doxysection{Arg\+Parser.\+Argument\+Base\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classArgParser_1_1ArgumentBase}\index{ArgParser.ArgumentBase$<$ T $>$@{ArgParser.ArgumentBase$<$ T $>$}}
+
+
+Shared by all arguments.  
+
+
+Inheritance diagram for Arg\+Parser.\+Argument\+Base\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classArgParser_1_1ArgumentBase}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+T? \mbox{\hyperlink{classArgParser_1_1ArgumentBase_a82ed2dd59e7131992f04e88c7a075db0}{Get\+Value}} (int idx=0)
+\begin{DoxyCompactList}\small\item\em Called by user to access parsed value(s). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classArgParser_1_1ArgumentBase_af5f3d8048a2687655320acc13d406c23}{Argument\+Base}} (string name, string description, \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} parameter\+Accept, \mbox{\hyperlink{interfaceArgParser_1_1IParsable}{IParsable}}$<$ T $>$ parsable)
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classArgParser_1_1ArgumentBase_a7810c3e23c0ba6bc5c320766b362713e}{Parsed\+Argument\+Count}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Returns the count of plain arguments parsed by this instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Shared by all arguments. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type of argument value\\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line \mbox{\hyperlink{Argument_8cs_source_l00023}{23}} of file \mbox{\hyperlink{Argument_8cs_source}{Argument.\+cs}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classArgParser_1_1ArgumentBase_af5f3d8048a2687655320acc13d406c23}\label{classArgParser_1_1ArgumentBase_af5f3d8048a2687655320acc13d406c23}} 
+\index{ArgParser.ArgumentBase$<$ T $>$@{ArgParser.ArgumentBase$<$ T $>$}!ArgumentBase@{ArgumentBase}}
+\index{ArgumentBase@{ArgumentBase}!ArgParser.ArgumentBase$<$ T $>$@{ArgParser.ArgumentBase$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ArgumentBase()}{ArgumentBase()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Arg\+Parser.\+Argument\+Base}}$<$ T $>$.\mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Argument\+Base}} (\begin{DoxyParamCaption}\item[{string}]{name,  }\item[{string}]{description,  }\item[{\mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}}}]{parameter\+Accept,  }\item[{\mbox{\hyperlink{interfaceArgParser_1_1IParsable}{IParsable}}$<$ T $>$}]{parsable }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{Argument_8cs_source_l00040}{40}} of file \mbox{\hyperlink{Argument_8cs_source}{Argument.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00041         \{}
+\DoxyCodeLine{00042             this.name = name;}
+\DoxyCodeLine{00043             this.description = description;}
+\DoxyCodeLine{00044             this.parameterAccept = parameterAccept;}
+\DoxyCodeLine{00045             this.parsable = parsable;}
+\DoxyCodeLine{00046         \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classArgParser_1_1ArgumentBase_a82ed2dd59e7131992f04e88c7a075db0}\label{classArgParser_1_1ArgumentBase_a82ed2dd59e7131992f04e88c7a075db0}} 
+\index{ArgParser.ArgumentBase$<$ T $>$@{ArgParser.ArgumentBase$<$ T $>$}!GetValue@{GetValue}}
+\index{GetValue@{GetValue}!ArgParser.ArgumentBase$<$ T $>$@{ArgParser.ArgumentBase$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{GetValue()}{GetValue()}}
+{\footnotesize\ttfamily T? \mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Arg\+Parser.\+Argument\+Base}}$<$ T $>$.Get\+Value (\begin{DoxyParamCaption}\item[{int}]{idx = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Called by user to access parsed value(s). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em idx} & Index of accessed value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The parsed value, or default value if idx is out of range.
+\end{DoxyReturn}
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classArgParser_1_1ArgumentBase_a7810c3e23c0ba6bc5c320766b362713e}\label{classArgParser_1_1ArgumentBase_a7810c3e23c0ba6bc5c320766b362713e}} 
+\index{ArgParser.ArgumentBase$<$ T $>$@{ArgParser.ArgumentBase$<$ T $>$}!ParsedArgumentCount@{ParsedArgumentCount}}
+\index{ParsedArgumentCount@{ParsedArgumentCount}!ArgParser.ArgumentBase$<$ T $>$@{ArgParser.ArgumentBase$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ParsedArgumentCount}{ParsedArgumentCount}}
+{\footnotesize\ttfamily int \mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Arg\+Parser.\+Argument\+Base}}$<$ T $>$.Parsed\+Argument\+Count\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Returns the count of plain arguments parsed by this instance. 
+
+
+
+Definition at line \mbox{\hyperlink{Argument_8cs_source_l00080}{80}} of file \mbox{\hyperlink{Argument_8cs_source}{Argument.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00080 \{ \textcolor{keyword}{get}; \textcolor{keyword}{private} \textcolor{keyword}{set}; \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+Arg\+Parser/Argument.\+cs\end{DoxyCompactItemize}

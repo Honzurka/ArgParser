@@ -1,0 +1,90 @@
+The \mbox{\hyperlink{namespaceArgParser}{Arg\+Parser}} library allows for parsing command line arguments through a user-\/defined class which enables easy access to parsed values.\hypertarget{md_README_autotoc_md1}{}\doxysection{key concepts}\label{md_README_autotoc_md1}
+
+\begin{DoxyItemize}
+\item The library relies on C\# reflection. Which allows accessing parsed values with correct type and through pre-\/defined field.
+\item Possibility of custom Options or Arguments by inheriting from {\ttfamily Option\+Base\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}} or {\ttfamily Argument\+Base\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}}
+\item Short option vs long option
+\begin{DoxyItemize}
+\item short option (uses {\ttfamily -\/} with parameter name) has name consisting of 1 char only
+\item long option (uses {\ttfamily -\/-\/} with parameter name) has name consisting of at least 2 chars
+\end{DoxyItemize}
+\item Parsed option/arg types are restricted using inheritance\+: descendants of {\ttfamily Argument\+Base\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}} and {\ttfamily Option\+Base\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}}. Which limits possible types that could be parsed.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md2}{}\doxysection{use cases}\label{md_README_autotoc_md2}
+
+\begin{DoxyEnumerate}
+\item The user will define the accepted arguments as fields in a class inherited from {\ttfamily Parser\+Base}.
+\begin{DoxyItemize}
+\item The fields defined in the parser should themselves inherit from {\ttfamily Argument\+Base\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}} or {\ttfamily Option\+Base\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}}, however, the pre-\/defined classes such as {\ttfamily Int\+Option} and {\ttfamily Int\+Argument} should cover most basic use-\/cases (see Simple example).
+\item Difference between option and argument is that options are prefixed by {\ttfamily -\/} or {\ttfamily -\/-\/} and arguments are plain arguments, therefore without delimiter.
+\item {\ttfamily Parameter\+Accept} describes number of parsed parameters. By default min and max number of parsed params is set to 1.
+\item {\ttfamily Get\+Argument\+Order} is used to define order of plain arguments. It should contain references to the parsed fields of the Parser.
+\item {\itshape Only one} Argument of a parser can have variable acceptable count of arguments ({\ttfamily Parameter\+Accept} where its minimum and maximum value are not the same). Otherwise {\ttfamily Parser\+Code\+Exception} is thrown.
+\end{DoxyItemize}
+\item User calls {\ttfamily Parser\+Base.\+Parse()}. The parser will identify all the necesarry fields it contains and fill them with the parsed values.
+\begin{DoxyItemize}
+\item Throws {\ttfamily Parse\+Exception} if parsed arguments don\textquotesingle{}t satisfy declared option fields
+\item Throws {\ttfamily Parser\+Code\+Exception} if the class doesn\textquotesingle{}t conform to the parser requirements
+\begin{DoxyItemize}
+\item Fields not inheriting from predefined classes (descendants of {\ttfamily Option\+Base\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}} or {\ttfamily Argument\+Base\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}})
+\item Defining argument fields without overriding {\ttfamily Get\+Argument\+Order}
+\end{DoxyItemize}
+\end{DoxyItemize}
+\item User obtains parsed values from the fields by calling a method {\ttfamily Get\+Value(int idx)} on them.
+\end{DoxyEnumerate}\hypertarget{md_README_autotoc_md3}{}\doxysection{Simple example}\label{md_README_autotoc_md3}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{class }Parser : ParserBase}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \textcolor{keyword}{public} BoolOption BoolOpt = \textcolor{keyword}{new}(\textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}b"{}}, \textcolor{stringliteral}{"{}bool"{}} \}, \textcolor{stringliteral}{"{}bool description"{}}, isMandatory: \textcolor{keyword}{true});}
+\DoxyCodeLine{    \textcolor{keyword}{public} NoValueOption Help = \textcolor{keyword}{new}(\textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}h"{}}, \textcolor{stringliteral}{"{}help"{}}, \textcolor{stringliteral}{"{}?"{}} \}, \textcolor{stringliteral}{"{}show help"{}});}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{keyword}{public} StringArgument Files = \textcolor{keyword}{new}(\textcolor{stringliteral}{"{}files"{}}, \textcolor{stringliteral}{"{}files to read"{}}, ParameterAccept.Any);}
+\DoxyCodeLine{    \textcolor{keyword}{public} IntArgument Number = \textcolor{keyword}{new}(\textcolor{stringliteral}{"{}number"{}}, \textcolor{stringliteral}{"{}number description"{}}, minValue: 0, defaultValue: 42);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{keyword}{protected} \textcolor{keyword}{override} ArgumentBase[] GetArgumentOrder() => \textcolor{keyword}{new} ArgumentBase[]\{ Files, Number \};}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{static} \textcolor{keywordtype}{void} Main(\textcolor{keywordtype}{string}[] args)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    var parser = \textcolor{keyword}{new} Parser();}
+\DoxyCodeLine{    \textcolor{keywordflow}{try}}
+\DoxyCodeLine{    \{}
+\DoxyCodeLine{        parser.Parse(args);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{catch} (ParseException)}
+\DoxyCodeLine{    \{}
+\DoxyCodeLine{        Console.Error.WriteLine(\textcolor{stringliteral}{"{}Passed arguments doesn't conform to program specification. See help for more explanation."{}});}
+\DoxyCodeLine{        Environment.Exit(1);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} (parser.Help.GetValue())}
+\DoxyCodeLine{    \{}
+\DoxyCodeLine{        Console.WriteLine(parser.GenerateHelp());}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else}}
+\DoxyCodeLine{    \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{if} (parser.BoolOpt.GetValue() != \textcolor{keyword}{null}) Console.WriteLine(\$\textcolor{stringliteral}{"{}boolOpt = \$\{parser.BoolOpt.GetValue()\}"{}});}
+\DoxyCodeLine{        \textcolor{keywordtype}{int} i = 0;}
+\DoxyCodeLine{        \textcolor{keywordflow}{while} (parser.Files.GetValue(i) != \textcolor{keyword}{null}) \{}
+\DoxyCodeLine{            \textcolor{comment}{// equivalent to while (i < parser.files.ParsedParameterCount)}}
+\DoxyCodeLine{            Console.WriteLine(\$\textcolor{stringliteral}{"{}file\{i\} = \{parser.Files.GetValue(i)\}"{}});}
+\DoxyCodeLine{            i++;}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{md_README_autotoc_md4}{}\doxysection{Building instructions}\label{md_README_autotoc_md4}
+\hypertarget{md_README_autotoc_md5}{}\doxysubsection{Example program}\label{md_README_autotoc_md5}
+The repository contains a dotnet solution. With {\ttfamily dotnet} installed, simply execute {\ttfamily dotnet build} in the repo directory, then to run execute {\ttfamily dotnet run -\/-\/project src/\+Time/\+Time.\+csproj}.\hypertarget{md_README_autotoc_md6}{}\doxysubsection{Including library in your project}\label{md_README_autotoc_md6}
+To use the library you only need the assembly from {\ttfamily lib/\+Arg\+Parser/bin/(Debug$\vert$\+Release)/\+Arg\+Parser/net5.0/\+Arg\+Parser.\+dll}.
+
+For dotnet 5.\+0, you can copy the \mbox{\hyperlink{namespaceArgParser}{Arg\+Parser}} dll to some local project folder (e.\+g. {\ttfamily include/}), then, inside your including project .csproj file, add this reference (include your path to the dll if you decided on a custom one)\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<\textcolor{keywordtype}{ItemGroup}>}
+\DoxyCodeLine{  <\textcolor{keywordtype}{Reference} \textcolor{keyword}{Include}=\textcolor{stringliteral}{"{}ArgParser"{}}>}
+\DoxyCodeLine{    <\textcolor{keywordtype}{HintPath}>\textcolor{keyword}{include}/\textcolor{keyword}{ArgParser.dll}</\textcolor{keywordtype}{HintPath}>}
+\DoxyCodeLine{  </\textcolor{keywordtype}{Reference}>}
+\DoxyCodeLine{</\textcolor{keywordtype}{ItemGroup}>}
+
+\end{DoxyCode}
+ 

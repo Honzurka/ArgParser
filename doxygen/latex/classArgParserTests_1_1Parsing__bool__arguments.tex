@@ -1,0 +1,44 @@
+\hypertarget{classArgParserTests_1_1Parsing__bool__arguments}{}\doxysection{Arg\+Parser\+Tests.\+Parsing\+\_\+bool\+\_\+arguments Class Reference}
+\label{classArgParserTests_1_1Parsing__bool__arguments}\index{ArgParserTests.Parsing\_bool\_arguments@{ArgParserTests.Parsing\_bool\_arguments}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__bool__arguments_abd73d5cb70e8de3e37d30fcdd29504f0}{Works\+\_\+for\+\_\+valid\+\_\+boolean\+\_\+representations}} (string argument\+Value, bool expected\+Value)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{Parsing__bool__arguments_8cs_source_l00006}{6}} of file \mbox{\hyperlink{Parsing__bool__arguments_8cs_source}{Parsing\+\_\+bool\+\_\+arguments.\+cs}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__bool__arguments_abd73d5cb70e8de3e37d30fcdd29504f0}\label{classArgParserTests_1_1Parsing__bool__arguments_abd73d5cb70e8de3e37d30fcdd29504f0}} 
+\index{ArgParserTests.Parsing\_bool\_arguments@{ArgParserTests.Parsing\_bool\_arguments}!Works\_for\_valid\_boolean\_representations@{Works\_for\_valid\_boolean\_representations}}
+\index{Works\_for\_valid\_boolean\_representations@{Works\_for\_valid\_boolean\_representations}!ArgParserTests.Parsing\_bool\_arguments@{ArgParserTests.Parsing\_bool\_arguments}}
+\doxysubsubsection{\texorpdfstring{Works\_for\_valid\_boolean\_representations()}{Works\_for\_valid\_boolean\_representations()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+bool\+\_\+arguments.\+Works\+\_\+for\+\_\+valid\+\_\+boolean\+\_\+representations (\begin{DoxyParamCaption}\item[{string}]{argument\+Value,  }\item[{bool}]{expected\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__bool__arguments_8cs_source_l00033}{33}} of file \mbox{\hyperlink{Parsing__bool__arguments_8cs_source}{Parsing\+\_\+bool\+\_\+arguments.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00034         \{}
+\DoxyCodeLine{00035             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ argumentValue \};}
+\DoxyCodeLine{00036             var parser = \textcolor{keyword}{new} BoolArgumentParser();}
+\DoxyCodeLine{00037 }
+\DoxyCodeLine{00038             parser.Parse(args);}
+\DoxyCodeLine{00039 }
+\DoxyCodeLine{00040             Assert.Equal(expectedValue, parser.argument.GetValue());}
+\DoxyCodeLine{00041         \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+test/\+Arg\+Parser\+Tests/Parsing\+\_\+bool\+\_\+arguments.\+cs\end{DoxyCompactItemize}

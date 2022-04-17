@@ -1,0 +1,354 @@
+\hypertarget{classArgParser_1_1ParserBase}{}\doxysection{Arg\+Parser.\+Parser\+Base Class Reference}
+\label{classArgParser_1_1ParserBase}\index{ArgParser.ParserBase@{ArgParser.ParserBase}}
+
+
+To specify options/arguments Inherit from this class and declare Option / Argument fields that are descendants of \mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Argument\+Base}} / \mbox{\hyperlink{}{Option\+Base}} After the \mbox{\hyperlink{classArgParser_1_1ParserBase_aee3c7c8164300c12d22eba3f43b18448}{Parse}} method is called, parsed results could be obtained using field\+Name.\+Get\+Value()  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classArgParser_1_1ParserBase_aee3c7c8164300c12d22eba3f43b18448}{Parse}} (string\mbox{[}$\,$\mbox{]} args)
+\begin{DoxyCompactList}\small\item\em Parses args and stores parsed values in declared fields. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{classArgParser_1_1ParserBase_aba7b31391e6fef089ee0d640d323756d}{Generate\+Help}} ()
+\begin{DoxyCompactList}\small\item\em Automatically generates help message from declared fields (name, description). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{Get\+Argument\+Order}} ()
+\begin{DoxyCompactList}\small\item\em Used by the parser to determine order of arguments. Since reflection doesn\textquotesingle{}t necessarily retain the order of fields, it needs to be specified by the user. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+virtual string \mbox{\hyperlink{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}{Delimiter}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A command-\/line argument consisting of two dashes only, default\+: \char`\"{}-\/-\/\char`\"{}. Any subsequent argument is considered to be a plain argument \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+To specify options/arguments Inherit from this class and declare Option / Argument fields that are descendants of \mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Argument\+Base}} / \mbox{\hyperlink{}{Option\+Base}} After the \mbox{\hyperlink{classArgParser_1_1ParserBase_aee3c7c8164300c12d22eba3f43b18448}{Parse}} method is called, parsed results could be obtained using field\+Name.\+Get\+Value() 
+
+Definition at line \mbox{\hyperlink{ParserBase_8cs_source_l00015}{15}} of file \mbox{\hyperlink{ParserBase_8cs_source}{Parser\+Base.\+cs}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classArgParser_1_1ParserBase_a9f3ed90265bc2ab6a488d9ab6be0f292}\label{classArgParser_1_1ParserBase_a9f3ed90265bc2ab6a488d9ab6be0f292}} 
+\index{ArgParser.ParserBase@{ArgParser.ParserBase}!ParserBase@{ParserBase}}
+\index{ParserBase@{ParserBase}!ArgParser.ParserBase@{ArgParser.ParserBase}}
+\doxysubsubsection{\texorpdfstring{ParserBase()}{ParserBase()}}
+{\footnotesize\ttfamily Arg\+Parser.\+Parser\+Base.\+Parser\+Base (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParserBase_8cs_source_l00024}{24}} of file \mbox{\hyperlink{ParserBase_8cs_source}{Parser\+Base.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00025         \{}
+\DoxyCodeLine{00026             \textcolor{keywordtype}{void} AssignOptions() }
+\DoxyCodeLine{00027             \{}
+\DoxyCodeLine{00028                 var fields = GetType().GetFields();}
+\DoxyCodeLine{00029                 \textcolor{keywordflow}{foreach} (var field \textcolor{keywordflow}{in} fields)}
+\DoxyCodeLine{00030                 \{}
+\DoxyCodeLine{00031                     \textcolor{keywordflow}{if} (field.FieldType.GetInterface(nameof(IOption)) != \textcolor{keyword}{null})}
+\DoxyCodeLine{00032                     \{}
+\DoxyCodeLine{00033                         options.Add((IOption)(field.GetValue(\textcolor{keyword}{this}))!);}
+\DoxyCodeLine{00034                     \}}
+\DoxyCodeLine{00035                 \}}
+\DoxyCodeLine{00036             \}}
+\DoxyCodeLine{00037 }
+\DoxyCodeLine{00038             \textcolor{keywordtype}{void} CheckConflictingAliases() }
+\DoxyCodeLine{00039             \{}
+\DoxyCodeLine{00040                 HashSet<string> aliases = \textcolor{keyword}{new}();}
+\DoxyCodeLine{00041 }
+\DoxyCodeLine{00042                 \textcolor{keywordflow}{foreach} (var opt \textcolor{keywordflow}{in} options)}
+\DoxyCodeLine{00043                 \{}
+\DoxyCodeLine{00044                     \textcolor{keywordflow}{foreach} (var name \textcolor{keywordflow}{in} opt.Names)}
+\DoxyCodeLine{00045                     \{}
+\DoxyCodeLine{00046                         \textcolor{keywordflow}{if} (!aliases.Contains(name))}
+\DoxyCodeLine{00047                             aliases.Add(name);}
+\DoxyCodeLine{00048                         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00049                             \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParserCodeException(\textcolor{stringliteral}{"{}Parameter aliases are in conflict."{}});}
+\DoxyCodeLine{00050                     \}}
+\DoxyCodeLine{00051                 \}}
+\DoxyCodeLine{00052             \}}
+\DoxyCodeLine{00053 }
+\DoxyCodeLine{00054             \textcolor{keywordtype}{void} CheckUnknownPlainArguments() }
+\DoxyCodeLine{00055             \{}
+\DoxyCodeLine{00056                 var orderedPlainArgs = \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}();}
+\DoxyCodeLine{00057                 var classPlainArgs = GetType().GetFields()}
+\DoxyCodeLine{00058                     .Where(field => field.FieldType.GetInterface(nameof(IArgument)) != \textcolor{keyword}{null})}
+\DoxyCodeLine{00059                     .Select(field => (IArgument)(field.GetValue(\textcolor{keyword}{this}))!);}
+\DoxyCodeLine{00060 }
+\DoxyCodeLine{00061                 var orderedPlainArgsSet = orderedPlainArgs.ToHashSet();}
+\DoxyCodeLine{00062                 var classPlainArgsSet = classPlainArgs.ToHashSet();}
+\DoxyCodeLine{00063 }
+\DoxyCodeLine{00064                 \textcolor{keywordflow}{if} (orderedPlainArgs.Length != orderedPlainArgsSet.Count)}
+\DoxyCodeLine{00065                     \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParserCodeException(\textcolor{stringliteral}{"{}Duplicate elements in argument order specification"{}});}
+\DoxyCodeLine{00066 }
+\DoxyCodeLine{00067 }
+\DoxyCodeLine{00068                 \textcolor{keywordflow}{foreach} (var pa \textcolor{keywordflow}{in} orderedPlainArgsSet)}
+\DoxyCodeLine{00069                 \{}
+\DoxyCodeLine{00070                     \textcolor{keywordflow}{if} (!classPlainArgsSet.Contains(pa))}
+\DoxyCodeLine{00071                         \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParserCodeException(\textcolor{stringliteral}{"{}Unused plain arguments out of argument order"{}});}
+\DoxyCodeLine{00072                 \}}
+\DoxyCodeLine{00073 }
+\DoxyCodeLine{00074                 \textcolor{keywordflow}{foreach} (var pa \textcolor{keywordflow}{in} classPlainArgsSet)}
+\DoxyCodeLine{00075                 \{}
+\DoxyCodeLine{00076                     \textcolor{keywordflow}{if} (!orderedPlainArgsSet.Contains(pa))}
+\DoxyCodeLine{00077                         \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParserCodeException(\textcolor{stringliteral}{"{}Unknown plain arguments in argument order ( didn't you forget to override it? :) )"{}});}
+\DoxyCodeLine{00078                 \}}
+\DoxyCodeLine{00079             \}}
+\DoxyCodeLine{00080 }
+\DoxyCodeLine{00081             \textcolor{keywordtype}{void} CheckMultipleVariadicPlainArgs() }
+\DoxyCodeLine{00082             \{}
+\DoxyCodeLine{00083                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}().Where(argument => argument.ParameterAccept.IsVariadic).Count() > 1)}
+\DoxyCodeLine{00084                     \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParserCodeException(\textcolor{stringliteral}{"{}Multiple plain arguments with variadic count"{}});}
+\DoxyCodeLine{00085             \}}
+\DoxyCodeLine{00086 }
+\DoxyCodeLine{00087             AssignOptions();}
+\DoxyCodeLine{00088             CheckConflictingAliases();}
+\DoxyCodeLine{00089             CheckUnknownPlainArguments();}
+\DoxyCodeLine{00090             CheckMultipleVariadicPlainArgs();}
+\DoxyCodeLine{00091         \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classArgParser_1_1ParserBase_aba7b31391e6fef089ee0d640d323756d}\label{classArgParser_1_1ParserBase_aba7b31391e6fef089ee0d640d323756d}} 
+\index{ArgParser.ParserBase@{ArgParser.ParserBase}!GenerateHelp@{GenerateHelp}}
+\index{GenerateHelp@{GenerateHelp}!ArgParser.ParserBase@{ArgParser.ParserBase}}
+\doxysubsubsection{\texorpdfstring{GenerateHelp()}{GenerateHelp()}}
+{\footnotesize\ttfamily string Arg\+Parser.\+Parser\+Base.\+Generate\+Help (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Automatically generates help message from declared fields (name, description). 
+
+
+
+Definition at line \mbox{\hyperlink{ParserBase_8cs_source_l00231}{231}} of file \mbox{\hyperlink{ParserBase_8cs_source}{Parser\+Base.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00232         \{}
+\DoxyCodeLine{00233             StringBuilder result = \textcolor{keyword}{new}();}
+\DoxyCodeLine{00234 }
+\DoxyCodeLine{00235             \textcolor{keywordtype}{string} GetArgumentName(IArgument argument) }
+\DoxyCodeLine{00236             \{}
+\DoxyCodeLine{00237                 \textcolor{keywordtype}{string} result = argument.Name;}
+\DoxyCodeLine{00238 }
+\DoxyCodeLine{00239                 \textcolor{keywordflow}{if} (argument.ParameterAccept.MaxParamAmount > 1)}
+\DoxyCodeLine{00240                     result += \textcolor{stringliteral}{"{}..."{}};}
+\DoxyCodeLine{00241                 \textcolor{keywordflow}{if} (argument.ParameterAccept.MinParamAmount == 0)}
+\DoxyCodeLine{00242                     result = \$\textcolor{stringliteral}{"{}[\{result\}]"{}};}
+\DoxyCodeLine{00243 }
+\DoxyCodeLine{00244                 \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{00245             \}}
+\DoxyCodeLine{00246 }
+\DoxyCodeLine{00247             \textcolor{keywordtype}{void} AppendUsageExampleLine(StringBuilder result) }
+\DoxyCodeLine{00248             \{}
+\DoxyCodeLine{00249                 result.Append(System.Diagnostics.Process.GetCurrentProcess().ProcessName);}
+\DoxyCodeLine{00250                 \textcolor{keywordflow}{if} (options.Count > 0) result.Append(\textcolor{stringliteral}{"{} [options]"{}});}
+\DoxyCodeLine{00251                 \textcolor{keywordflow}{foreach} (var plainArg \textcolor{keywordflow}{in} \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}())}
+\DoxyCodeLine{00252                     result.Append(\$\textcolor{stringliteral}{"{} \{GetArgumentName(plainArg)\}"{}});}
+\DoxyCodeLine{00253                 result.Append(\textcolor{stringliteral}{"{}\(\backslash\)n\(\backslash\)n"{}});}
+\DoxyCodeLine{00254             \}}
+\DoxyCodeLine{00255 }
+\DoxyCodeLine{00256             \textcolor{keywordtype}{void} AppendOptionHelp(StringBuilder result) }
+\DoxyCodeLine{00257             \{}
+\DoxyCodeLine{00258                 result.Append(\textcolor{stringliteral}{"{}Options:\(\backslash\)n"{}});}
+\DoxyCodeLine{00259                 \textcolor{keywordflow}{foreach} (var opt \textcolor{keywordflow}{in} options)}
+\DoxyCodeLine{00260                 \{}
+\DoxyCodeLine{00261                     result.Append(\$\textcolor{stringliteral}{"{}\{opt.GetHelp()\}"{}});}
+\DoxyCodeLine{00262                 \}}
+\DoxyCodeLine{00263             \}}
+\DoxyCodeLine{00264 }
+\DoxyCodeLine{00265             \textcolor{keywordtype}{void} AppendPlainArgHelp(StringBuilder result) }
+\DoxyCodeLine{00266             \{}
+\DoxyCodeLine{00267                 result.Append(\textcolor{stringliteral}{"{}Arguments:\(\backslash\)n"{}});}
+\DoxyCodeLine{00268                 \textcolor{keywordflow}{foreach} (var plainArg \textcolor{keywordflow}{in} \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}())}
+\DoxyCodeLine{00269                     result.Append(plainArg.GetHelp());}
+\DoxyCodeLine{00270             \}}
+\DoxyCodeLine{00271 }
+\DoxyCodeLine{00272             AppendUsageExampleLine(result);}
+\DoxyCodeLine{00273             AppendOptionHelp(result);}
+\DoxyCodeLine{00274             AppendPlainArgHelp(result);}
+\DoxyCodeLine{00275 }
+\DoxyCodeLine{00276             \textcolor{keywordflow}{return} result.ToString();}
+\DoxyCodeLine{00277         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}\label{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}} 
+\index{ArgParser.ParserBase@{ArgParser.ParserBase}!GetArgumentOrder@{GetArgumentOrder}}
+\index{GetArgumentOrder@{GetArgumentOrder}!ArgParser.ParserBase@{ArgParser.ParserBase}}
+\doxysubsubsection{\texorpdfstring{GetArgumentOrder()}{GetArgumentOrder()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}\mbox{[}$\,$\mbox{]} Arg\+Parser.\+Parser\+Base.\+Get\+Argument\+Order (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Used by the parser to determine order of arguments. Since reflection doesn\textquotesingle{}t necessarily retain the order of fields, it needs to be specified by the user. 
+
+\begin{DoxyReturn}{Returns}
+References to argument fields
+\end{DoxyReturn}
+\mbox{\Hypertarget{classArgParser_1_1ParserBase_aee3c7c8164300c12d22eba3f43b18448}\label{classArgParser_1_1ParserBase_aee3c7c8164300c12d22eba3f43b18448}} 
+\index{ArgParser.ParserBase@{ArgParser.ParserBase}!Parse@{Parse}}
+\index{Parse@{Parse}!ArgParser.ParserBase@{ArgParser.ParserBase}}
+\doxysubsubsection{\texorpdfstring{Parse()}{Parse()}}
+{\footnotesize\ttfamily void Arg\+Parser.\+Parser\+Base.\+Parse (\begin{DoxyParamCaption}\item[{string\mbox{[}$\,$\mbox{]}}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Parses args and stores parsed values in declared fields. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & Arguments to parse\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \mbox{\hyperlink{classArgParser_1_1ParserCodeException}{Parser\+Code\+Exception}}} & Thrown when the class doesn\textquotesingle{}t conform to the parser requirements\\
+\hline
+{\em \mbox{\hyperlink{classArgParser_1_1ParseException}{Parse\+Exception}}} & Thrown when parsed arguments don\textquotesingle{}t satisfy declared option fields\+: Fields not inheriting from predefined classes (descendants of {\ttfamily \mbox{\hyperlink{classArgParser_1_1OptionBase}{Option\+Base}}\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}} or {\ttfamily \mbox{\hyperlink{classArgParser_1_1ArgumentBase}{Argument\+Base}}\texorpdfstring{$<$}{<}T\texorpdfstring{$>$}{>}}) Defining argument fields without overriding {\ttfamily Get\+Argument\+Order}\\
+\hline
+\end{DoxyExceptions}
+Returns value between option.\+Parameter\+Accept.\+Min\+Param\+Amount and option.\+Parameter\+Accept.\+Max\+Param\+Amount. Consume as much params as possible if variadic. 
+
+Definition at line \mbox{\hyperlink{ParserBase_8cs_source_l00112}{112}} of file \mbox{\hyperlink{ParserBase_8cs_source}{Parser\+Base.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00113         \{}
+\DoxyCodeLine{00114             IOption? TryGetOption(\textcolor{keywordtype}{string} name) => options.Find(o => o.MatchingOptionName(name));}
+\DoxyCodeLine{00115 }
+\DoxyCodeLine{00120             \textcolor{keywordtype}{int} GetOptionParamCount(IOption option, \textcolor{keywordtype}{string}[] args, \textcolor{keywordtype}{int} argIdx) }
+\DoxyCodeLine{00121             \{}
+\DoxyCodeLine{00122                 \textcolor{keywordtype}{int} result = 0;}
+\DoxyCodeLine{00123                 \textcolor{keywordflow}{while} (result < option.ParameterAccept.MaxParamAmount)}
+\DoxyCodeLine{00124                 \{}
+\DoxyCodeLine{00125                     \textcolor{keywordtype}{int} idx = argIdx + result + 1;}
+\DoxyCodeLine{00126                     \textcolor{keywordflow}{if} (idx == args.Length || args[idx] == \mbox{\hyperlink{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}{Delimiter}} || TryGetOption(args[idx]) != \textcolor{keyword}{null})}
+\DoxyCodeLine{00127                     \{}
+\DoxyCodeLine{00128                         \textcolor{keywordflow}{if} (result < option.ParameterAccept.MinParamAmount) \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParseException(\textcolor{stringliteral}{"{}Too few parameters passed to option"{}});}
+\DoxyCodeLine{00129                         \textcolor{keywordflow}{else} \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00130                     \}}
+\DoxyCodeLine{00131                     result++;}
+\DoxyCodeLine{00132                 \}}
+\DoxyCodeLine{00133                 \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{00134             \}}
+\DoxyCodeLine{00135 }
+\DoxyCodeLine{00139             \textcolor{keywordtype}{int} ParseOptions(\textcolor{keywordtype}{string}[] args) }
+\DoxyCodeLine{00140             \{}
+\DoxyCodeLine{00141                 \textcolor{keywordtype}{bool} IsPlainArg(\textcolor{keywordtype}{string} arg) => !arg.StartsWith(\textcolor{stringliteral}{"{}-\/"{}});}
+\DoxyCodeLine{00142 }
+\DoxyCodeLine{00143                 \textcolor{keywordtype}{int} argIdx = 0;}
+\DoxyCodeLine{00144                 \textcolor{keywordflow}{while} (argIdx < args.Length)}
+\DoxyCodeLine{00145                 \{}
+\DoxyCodeLine{00146                     var currentArg = args[argIdx];}
+\DoxyCodeLine{00147 }
+\DoxyCodeLine{00148                     \textcolor{keywordflow}{if} (IsPlainArg(currentArg)) \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00149                     \textcolor{keywordflow}{if} (currentArg == \mbox{\hyperlink{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}{Delimiter}})}
+\DoxyCodeLine{00150                     \{}
+\DoxyCodeLine{00151                         argIdx++;}
+\DoxyCodeLine{00152                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00153                     \}}
+\DoxyCodeLine{00154 }
+\DoxyCodeLine{00155                     var option = TryGetOption(currentArg);}
+\DoxyCodeLine{00156                     \textcolor{keywordflow}{if} (option == \textcolor{keyword}{null}) \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParseException(\textcolor{stringliteral}{"{}Unrecognized option"{}});}
+\DoxyCodeLine{00157 }
+\DoxyCodeLine{00158                     var paramCount = GetOptionParamCount(option, args, argIdx);}
+\DoxyCodeLine{00159                     option.CallParse(args[(argIdx + 1)..(argIdx + paramCount + 1)]);}
+\DoxyCodeLine{00160                     argIdx += paramCount + 1;}
+\DoxyCodeLine{00161                 \}}
+\DoxyCodeLine{00162 }
+\DoxyCodeLine{00163                 \textcolor{keywordflow}{return} argIdx;}
+\DoxyCodeLine{00164             \}}
+\DoxyCodeLine{00165 }
+\DoxyCodeLine{00166             \textcolor{keywordtype}{void} CheckPlainParamCounts(IArgument[] orderedArguments, \textcolor{keywordtype}{int} argsLength) }
+\DoxyCodeLine{00167             \{}
+\DoxyCodeLine{00168                 \textcolor{keywordtype}{int} min = orderedArguments}
+\DoxyCodeLine{00169                    .Select(a => a.ParameterAccept.MinParamAmount)}
+\DoxyCodeLine{00170                    .Aggregate(0, (acc, val) => acc + val);}
+\DoxyCodeLine{00171 }
+\DoxyCodeLine{00172                 \textcolor{keywordtype}{int} max = orderedArguments}
+\DoxyCodeLine{00173                    .Select(a => a.ParameterAccept.MaxParamAmount)}
+\DoxyCodeLine{00174                    .Aggregate(0, (acc, val) => acc + val);}
+\DoxyCodeLine{00175 }
+\DoxyCodeLine{00176                 \textcolor{keywordflow}{if} (argsLength < min || argsLength > max) \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParseException(\textcolor{stringliteral}{"{}arguments are incompatible"{}});}
+\DoxyCodeLine{00177             \}}
+\DoxyCodeLine{00178 }
+\DoxyCodeLine{00179             \textcolor{keywordtype}{int} GetPlainParamCount(\textcolor{keywordtype}{int} plainArgIdx, \textcolor{keywordtype}{int} argsCount) }
+\DoxyCodeLine{00180             \{}
+\DoxyCodeLine{00181                 var OrderedArguments = \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}();}
+\DoxyCodeLine{00182                 var currentArg = OrderedArguments[plainArgIdx];}
+\DoxyCodeLine{00183 }
+\DoxyCodeLine{00184                 \textcolor{keywordflow}{if} (!currentArg.ParameterAccept.IsVariadic)}
+\DoxyCodeLine{00185                     \textcolor{keywordflow}{return} currentArg.ParameterAccept.MinParamAmount;}
+\DoxyCodeLine{00186 }
+\DoxyCodeLine{00187 }
+\DoxyCodeLine{00188                 var argCountRequiredByFollowingArgs = OrderedArguments[(plainArgIdx + 1)..]}
+\DoxyCodeLine{00189                     .Select(a => a.ParameterAccept.MinParamAmount)}
+\DoxyCodeLine{00190                     .Aggregate(0, (acc, val) => acc + val);}
+\DoxyCodeLine{00191 }
+\DoxyCodeLine{00192                 \textcolor{keywordflow}{return} argsCount -\/ argCountRequiredByFollowingArgs;}
+\DoxyCodeLine{00193             \}}
+\DoxyCodeLine{00194 }
+\DoxyCodeLine{00195             \textcolor{keywordtype}{void} ParsePlainArgs(\textcolor{keywordtype}{string}[] args, \textcolor{keywordtype}{int} argIdx, IArgument[] orderedArguments) }
+\DoxyCodeLine{00196             \{}
+\DoxyCodeLine{00197                 \textcolor{keywordflow}{for} (var plainArgIdx = 0; plainArgIdx < orderedArguments.Length; plainArgIdx++)}
+\DoxyCodeLine{00198                 \{}
+\DoxyCodeLine{00199                     var remainingArgumentsCount = args.Length -\/ argIdx;}
+\DoxyCodeLine{00200                     var currentArg = orderedArguments[plainArgIdx];}
+\DoxyCodeLine{00201                     var valCount = GetPlainParamCount(plainArgIdx, remainingArgumentsCount);}
+\DoxyCodeLine{00202 }
+\DoxyCodeLine{00203                     \textcolor{keywordtype}{string}[] vals = args[argIdx..(argIdx + valCount)];}
+\DoxyCodeLine{00204 }
+\DoxyCodeLine{00205                     currentArg.CallParse(vals);}
+\DoxyCodeLine{00206                     argIdx += valCount;}
+\DoxyCodeLine{00207                 \}}
+\DoxyCodeLine{00208             \}}
+\DoxyCodeLine{00209 }
+\DoxyCodeLine{00210             \textcolor{keywordtype}{void} CheckThatMandatoryAreParsed() }
+\DoxyCodeLine{00211             \{}
+\DoxyCodeLine{00212                 \textcolor{keywordflow}{foreach} (var o \textcolor{keywordflow}{in} options)}
+\DoxyCodeLine{00213                 \{}
+\DoxyCodeLine{00214                     \textcolor{keywordflow}{if} (o.IsMandatory \&\& !o.IsSet)}
+\DoxyCodeLine{00215                         \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ParseException(\textcolor{stringliteral}{"{}mandatory option not set"{}});}
+\DoxyCodeLine{00216                 \}}
+\DoxyCodeLine{00217             \}}
+\DoxyCodeLine{00218 }
+\DoxyCodeLine{00219             \textcolor{keywordtype}{int} argIdx = ParseOptions(args);}
+\DoxyCodeLine{00220 }
+\DoxyCodeLine{00221             var orderedArguments = \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}();}
+\DoxyCodeLine{00222             CheckPlainParamCounts(orderedArguments, args.Length -\/ argIdx);}
+\DoxyCodeLine{00223             ParsePlainArgs(args, argIdx, orderedArguments);}
+\DoxyCodeLine{00224 }
+\DoxyCodeLine{00225             CheckThatMandatoryAreParsed();}
+\DoxyCodeLine{00226         \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}\label{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}} 
+\index{ArgParser.ParserBase@{ArgParser.ParserBase}!Delimiter@{Delimiter}}
+\index{Delimiter@{Delimiter}!ArgParser.ParserBase@{ArgParser.ParserBase}}
+\doxysubsubsection{\texorpdfstring{Delimiter}{Delimiter}}
+{\footnotesize\ttfamily virtual string Arg\+Parser.\+Parser\+Base.\+Delimiter\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+A command-\/line argument consisting of two dashes only, default\+: \char`\"{}-\/-\/\char`\"{}. Any subsequent argument is considered to be a plain argument 
+
+
+
+Definition at line \mbox{\hyperlink{ParserBase_8cs_source_l00020}{20}} of file \mbox{\hyperlink{ParserBase_8cs_source}{Parser\+Base.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+Arg\+Parser/Parser\+Base.\+cs\end{DoxyCompactItemize}

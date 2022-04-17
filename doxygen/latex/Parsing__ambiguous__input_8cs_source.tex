@@ -1,0 +1,131 @@
+\hypertarget{Parsing__ambiguous__input_8cs_source}{}\doxysection{Parsing\+\_\+ambiguous\+\_\+input.\+cs}
+\label{Parsing__ambiguous__input_8cs_source}\index{test/ArgParserTests/Parsing\_ambiguous\_input.cs@{test/ArgParserTests/Parsing\_ambiguous\_input.cs}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00001}00001 \textcolor{keyword}{using} \mbox{\hyperlink{namespaceArgParser}{ArgParser}};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00002}00002 \textcolor{keyword}{using} Xunit;}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00003}00003 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00004}00004 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceArgParserTests}{ArgParserTests}}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00005}00005 \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00006}\mbox{\hyperlink{classArgParserTests_1_1Parsing__ambiguous__input}{00006}}     \textcolor{keyword}{public} \textcolor{keyword}{class }\mbox{\hyperlink{classArgParserTests_1_1Parsing__ambiguous__input}{Parsing\_ambiguous\_input}}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00007}00007     \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00008}00008         \textcolor{keyword}{class }AmbiguousParser : \mbox{\hyperlink{classArgParser_1_1ParserBase}{ParserBase}}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00009}00009         \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00010}00010             \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1StringOption}{StringOption}} ambigOption = \textcolor{keyword}{new}(\textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}o"{}} \}, \textcolor{stringliteral}{"{}optionDesc"{}}, \textcolor{keyword}{new} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}(1, 2));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00011}00011 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00012}00012             \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1StringArgument}{StringArgument}} ambigArgument = \textcolor{keyword}{new}(\textcolor{stringliteral}{"{}argument"{}}, \textcolor{stringliteral}{"{}argumentDesc"{}}, \textcolor{keyword}{new} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}(1, 2));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00013}00013 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00014}00014             \textcolor{keyword}{protected} \textcolor{keyword}{override} \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}[] GetArgumentOrder() => \textcolor{keyword}{new}[] \{ ambigArgument \};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00015}00015         \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00016}00016 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00017}00017         [Fact]}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00018}00018         \textcolor{keyword}{public} \textcolor{keywordtype}{void} Works\_when\_ambiguous\_parts\_dont\_clash()}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00019}00019         \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00020}00020             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}arg1"{}}, \textcolor{stringliteral}{"{}arg2"{}} \};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00021}00021             var parser = \textcolor{keyword}{new} AmbiguousParser();}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00022}00022 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00023}00023             parser.Parse(args);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00024}00024 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00025}00025             Assert.False(parser.ambigOption.IsSet);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00026}00026             Assert.Equal(\textcolor{stringliteral}{"{}arg1"{}}, parser.ambigArgument.GetValue(0));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00027}00027             Assert.Equal(\textcolor{stringliteral}{"{}arg2"{}}, parser.ambigArgument.GetValue(1));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00028}00028         \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00029}00029 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00030}00030         [Fact]}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00031}00031         \textcolor{keyword}{public} \textcolor{keywordtype}{void} Works\_when\_ambiguous\_parts\_are\_explicitly\_delimited()}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00032}00032         \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00033}00033             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/o"{}}, \textcolor{stringliteral}{"{}val1"{}}, \textcolor{stringliteral}{"{}-\/-\/"{}}, \textcolor{stringliteral}{"{}arg1"{}} \};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00034}00034             var parser = \textcolor{keyword}{new} AmbiguousParser();}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00035}00035 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00036}00036             parser.Parse(args);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00037}00037 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00038}00038             Assert.True(parser.ambigOption.IsSet);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00039}00039             Assert.Equal(1, parser.ambigOption.ParsedParameterCount);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00040}00040             Assert.Equal(\textcolor{stringliteral}{"{}val1"{}}, parser.ambigOption.GetValue(0));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00041}00041 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00042}00042             Assert.Equal(\textcolor{stringliteral}{"{}arg1"{}}, parser.ambigArgument.GetValue(0));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00043}00043         \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00044}00044 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00045}00045         \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00046}00046 \textcolor{comment}{        }}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00047}00047 \textcolor{comment}{        [Fact]}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00048}00048 \textcolor{comment}{        public void Fails\_when\_ambiguous\_parts\_receive\_ambiguous\_input()}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00049}00049 \textcolor{comment}{        \{}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00050}00050 \textcolor{comment}{            var args = new string[] \{ "{}-\/o"{}, "{}val1"{}, "{}val2\_or\_arg1"{}, "{}arg1\_or\_arg2"{} \};}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00051}00051 \textcolor{comment}{            var parser = new AmbiguousParser();}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00052}00052 \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00053}00053 \textcolor{comment}{            Assert.Throws<ParseException>(() => parser.Parse(args));}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00054}00054 \textcolor{comment}{        \}}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00055}00055 \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00056}00056 \textcolor{comment}{        */}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00057}00057 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00058}00058         \textcolor{comment}{/* wrong test -\/ doesn't make much sense}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00059}00059 \textcolor{comment}{        [Fact]}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00060}00060 \textcolor{comment}{        public void Fails\_even\_when\_ambiguous\_parts\_receive\_implicitly\_unambiguous\_input()}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00061}00061 \textcolor{comment}{        \{}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00062}00062 \textcolor{comment}{            var args = new string[] \{ "{}-\/o"{}, "{}val1"{}, "{}val2"{}, "{}arg1"{}, "{}arg2"{} \};}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00063}00063 \textcolor{comment}{            var parser = new AmbiguousParser();}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00064}00064 \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00065}00065 \textcolor{comment}{            Assert.Throws<ParseException>(() => parser.Parse(args));}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00066}00066 \textcolor{comment}{        \}}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00067}00067 \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00068}00068 \textcolor{comment}{        */}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00070}00070         \textcolor{keyword}{class }OptionArgumentParser : \mbox{\hyperlink{classArgParser_1_1ParserBase}{ParserBase}}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00071}00071         \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00072}00072             \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1StringOption}{StringOption}} option = \textcolor{keyword}{new}(\textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}o"{}} \}, \textcolor{stringliteral}{"{}optionDesc"{}});}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00073}00073 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00074}00074             \textcolor{keyword}{public} \mbox{\hyperlink{classArgParser_1_1StringArgument}{StringArgument}} argument = \textcolor{keyword}{new}(\textcolor{stringliteral}{"{}argument"{}}, \textcolor{stringliteral}{"{}argumentDesc"{}}, \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}.Any);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00075}00075 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00076}00076             \textcolor{keyword}{protected} \textcolor{keyword}{override} \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}[] GetArgumentOrder() => \textcolor{keyword}{new} \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}[] \{ argument \};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00077}00077         \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00078}00078 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00079}00079         [Fact]}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00080}00080         \textcolor{keyword}{public} \textcolor{keywordtype}{void} Fails\_when\_unknown\_option\_is\_encountered()}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00081}00081         \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00082}00082             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/-\/first"{}}, \textcolor{stringliteral}{"{}second"{}} \};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00083}00083             var parser = \textcolor{keyword}{new} OptionArgumentParser();}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00084}00084 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00085}00085             Assert.Throws<\mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}>(() => parser.Parse(args));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00086}00086         \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00087}00087 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00088}00088         [Fact]}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00089}00089         \textcolor{keyword}{public} \textcolor{keywordtype}{void} Works\_when\_unknown\_option\_is\_explicitly\_delimited()}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00090}00090         \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00091}00091             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/-\/"{}}, \textcolor{stringliteral}{"{}-\/-\/first"{}}, \textcolor{stringliteral}{"{}second"{}} \};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00092}00092             var parser = \textcolor{keyword}{new} OptionArgumentParser();}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00093}00093 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00094}00094             parser.Parse(args);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00095}00095 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00096}00096             Assert.Equal(\textcolor{stringliteral}{"{}-\/-\/first"{}}, parser.argument.GetValue(0)); \textcolor{comment}{// wrong test}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00097}00097             Assert.Equal(\textcolor{stringliteral}{"{}second"{}}, parser.argument.GetValue(1));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00098}00098         \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00099}00099 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00100}00100         [Fact]}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00101}00101         \textcolor{keyword}{public} \textcolor{keywordtype}{void} Parses\_option\_when\_it\_is\_not\_delimited()}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00102}00102         \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00103}00103             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/o"{}}, \textcolor{stringliteral}{"{}value"{}} \};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00104}00104             var parser = \textcolor{keyword}{new} OptionArgumentParser();}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00105}00105 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00106}00106             parser.Parse(args);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00107}00107 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00108}00108             Assert.True(parser.option.IsSet);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00109}00109             Assert.Equal(\textcolor{stringliteral}{"{}value"{}}, parser.option.GetValue());}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00110}00110         \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00111}00111 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00112}00112         [Fact]}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00113}00113         \textcolor{keyword}{public} \textcolor{keywordtype}{void} Parses\_option\_as\_argument\_when\_it\_is\_delimited()}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00114}00114         \{}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00115}00115             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/-\/"{}}, \textcolor{stringliteral}{"{}-\/o"{}}, \textcolor{stringliteral}{"{}value"{}} \};}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00116}00116             var parser = \textcolor{keyword}{new} OptionArgumentParser();}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00117}00117 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00118}00118             parser.Parse(args);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00119}00119 }
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00120}00120             Assert.False(parser.option.IsSet);}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00121}00121             Assert.Equal(\textcolor{stringliteral}{"{}-\/o"{}}, parser.argument.GetValue(0));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00122}00122             Assert.Equal(\textcolor{stringliteral}{"{}value"{}}, parser.argument.GetValue(1));}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00123}00123         \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00124}00124     \}}
+\DoxyCodeLine{\Hypertarget{Parsing__ambiguous__input_8cs_source_l00125}00125 \}}
+
+\end{DoxyCode}

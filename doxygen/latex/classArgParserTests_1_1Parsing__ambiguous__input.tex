@@ -1,0 +1,172 @@
+\hypertarget{classArgParserTests_1_1Parsing__ambiguous__input}{}\doxysection{Arg\+Parser\+Tests.\+Parsing\+\_\+ambiguous\+\_\+input Class Reference}
+\label{classArgParserTests_1_1Parsing__ambiguous__input}\index{ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__ambiguous__input_a71978cf252653f21db68db6b77e204da}{Works\+\_\+when\+\_\+ambiguous\+\_\+parts\+\_\+dont\+\_\+clash}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__ambiguous__input_aaadeac9665fc2d19eec35a5bfb775286}{Works\+\_\+when\+\_\+ambiguous\+\_\+parts\+\_\+are\+\_\+explicitly\+\_\+delimited}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__ambiguous__input_a3c8b5b1d066ae6805f7aec39007d32eb}{Fails\+\_\+when\+\_\+unknown\+\_\+option\+\_\+is\+\_\+encountered}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__ambiguous__input_af1767249df9480802ee6a0d87d41f2c6}{Works\+\_\+when\+\_\+unknown\+\_\+option\+\_\+is\+\_\+explicitly\+\_\+delimited}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__ambiguous__input_a06ac8728e98c0e49c2799166f6488cd5}{Parses\+\_\+option\+\_\+when\+\_\+it\+\_\+is\+\_\+not\+\_\+delimited}} ()
+\item 
+void \mbox{\hyperlink{classArgParserTests_1_1Parsing__ambiguous__input_a624eaba7bb80190cbbd0a5f9fdf3a6ba}{Parses\+\_\+option\+\_\+as\+\_\+argument\+\_\+when\+\_\+it\+\_\+is\+\_\+delimited}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source_l00006}{6}} of file \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source}{Parsing\+\_\+ambiguous\+\_\+input.\+cs}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__ambiguous__input_a3c8b5b1d066ae6805f7aec39007d32eb}\label{classArgParserTests_1_1Parsing__ambiguous__input_a3c8b5b1d066ae6805f7aec39007d32eb}} 
+\index{ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}!Fails\_when\_unknown\_option\_is\_encountered@{Fails\_when\_unknown\_option\_is\_encountered}}
+\index{Fails\_when\_unknown\_option\_is\_encountered@{Fails\_when\_unknown\_option\_is\_encountered}!ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}}
+\doxysubsubsection{\texorpdfstring{Fails\_when\_unknown\_option\_is\_encountered()}{Fails\_when\_unknown\_option\_is\_encountered()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+ambiguous\+\_\+input.\+Fails\+\_\+when\+\_\+unknown\+\_\+option\+\_\+is\+\_\+encountered (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source_l00080}{80}} of file \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source}{Parsing\+\_\+ambiguous\+\_\+input.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00081         \{}
+\DoxyCodeLine{00082             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/-\/first"{}}, \textcolor{stringliteral}{"{}second"{}} \};}
+\DoxyCodeLine{00083             var parser = \textcolor{keyword}{new} OptionArgumentParser();}
+\DoxyCodeLine{00084 }
+\DoxyCodeLine{00085             Assert.Throws<\mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}>(() => parser.Parse(args));}
+\DoxyCodeLine{00086         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__ambiguous__input_a624eaba7bb80190cbbd0a5f9fdf3a6ba}\label{classArgParserTests_1_1Parsing__ambiguous__input_a624eaba7bb80190cbbd0a5f9fdf3a6ba}} 
+\index{ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}!Parses\_option\_as\_argument\_when\_it\_is\_delimited@{Parses\_option\_as\_argument\_when\_it\_is\_delimited}}
+\index{Parses\_option\_as\_argument\_when\_it\_is\_delimited@{Parses\_option\_as\_argument\_when\_it\_is\_delimited}!ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}}
+\doxysubsubsection{\texorpdfstring{Parses\_option\_as\_argument\_when\_it\_is\_delimited()}{Parses\_option\_as\_argument\_when\_it\_is\_delimited()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+ambiguous\+\_\+input.\+Parses\+\_\+option\+\_\+as\+\_\+argument\+\_\+when\+\_\+it\+\_\+is\+\_\+delimited (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source_l00113}{113}} of file \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source}{Parsing\+\_\+ambiguous\+\_\+input.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00114         \{}
+\DoxyCodeLine{00115             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/-\/"{}}, \textcolor{stringliteral}{"{}-\/o"{}}, \textcolor{stringliteral}{"{}value"{}} \};}
+\DoxyCodeLine{00116             var parser = \textcolor{keyword}{new} OptionArgumentParser();}
+\DoxyCodeLine{00117 }
+\DoxyCodeLine{00118             parser.Parse(args);}
+\DoxyCodeLine{00119 }
+\DoxyCodeLine{00120             Assert.False(parser.option.IsSet);}
+\DoxyCodeLine{00121             Assert.Equal(\textcolor{stringliteral}{"{}-\/o"{}}, parser.argument.GetValue(0));}
+\DoxyCodeLine{00122             Assert.Equal(\textcolor{stringliteral}{"{}value"{}}, parser.argument.GetValue(1));}
+\DoxyCodeLine{00123         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__ambiguous__input_a06ac8728e98c0e49c2799166f6488cd5}\label{classArgParserTests_1_1Parsing__ambiguous__input_a06ac8728e98c0e49c2799166f6488cd5}} 
+\index{ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}!Parses\_option\_when\_it\_is\_not\_delimited@{Parses\_option\_when\_it\_is\_not\_delimited}}
+\index{Parses\_option\_when\_it\_is\_not\_delimited@{Parses\_option\_when\_it\_is\_not\_delimited}!ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}}
+\doxysubsubsection{\texorpdfstring{Parses\_option\_when\_it\_is\_not\_delimited()}{Parses\_option\_when\_it\_is\_not\_delimited()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+ambiguous\+\_\+input.\+Parses\+\_\+option\+\_\+when\+\_\+it\+\_\+is\+\_\+not\+\_\+delimited (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source_l00101}{101}} of file \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source}{Parsing\+\_\+ambiguous\+\_\+input.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00102         \{}
+\DoxyCodeLine{00103             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/o"{}}, \textcolor{stringliteral}{"{}value"{}} \};}
+\DoxyCodeLine{00104             var parser = \textcolor{keyword}{new} OptionArgumentParser();}
+\DoxyCodeLine{00105 }
+\DoxyCodeLine{00106             parser.Parse(args);}
+\DoxyCodeLine{00107 }
+\DoxyCodeLine{00108             Assert.True(parser.option.IsSet);}
+\DoxyCodeLine{00109             Assert.Equal(\textcolor{stringliteral}{"{}value"{}}, parser.option.GetValue());}
+\DoxyCodeLine{00110         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__ambiguous__input_aaadeac9665fc2d19eec35a5bfb775286}\label{classArgParserTests_1_1Parsing__ambiguous__input_aaadeac9665fc2d19eec35a5bfb775286}} 
+\index{ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}!Works\_when\_ambiguous\_parts\_are\_explicitly\_delimited@{Works\_when\_ambiguous\_parts\_are\_explicitly\_delimited}}
+\index{Works\_when\_ambiguous\_parts\_are\_explicitly\_delimited@{Works\_when\_ambiguous\_parts\_are\_explicitly\_delimited}!ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}}
+\doxysubsubsection{\texorpdfstring{Works\_when\_ambiguous\_parts\_are\_explicitly\_delimited()}{Works\_when\_ambiguous\_parts\_are\_explicitly\_delimited()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+ambiguous\+\_\+input.\+Works\+\_\+when\+\_\+ambiguous\+\_\+parts\+\_\+are\+\_\+explicitly\+\_\+delimited (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source_l00031}{31}} of file \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source}{Parsing\+\_\+ambiguous\+\_\+input.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00032         \{}
+\DoxyCodeLine{00033             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/o"{}}, \textcolor{stringliteral}{"{}val1"{}}, \textcolor{stringliteral}{"{}-\/-\/"{}}, \textcolor{stringliteral}{"{}arg1"{}} \};}
+\DoxyCodeLine{00034             var parser = \textcolor{keyword}{new} AmbiguousParser();}
+\DoxyCodeLine{00035 }
+\DoxyCodeLine{00036             parser.Parse(args);}
+\DoxyCodeLine{00037 }
+\DoxyCodeLine{00038             Assert.True(parser.ambigOption.IsSet);}
+\DoxyCodeLine{00039             Assert.Equal(1, parser.ambigOption.ParsedParameterCount);}
+\DoxyCodeLine{00040             Assert.Equal(\textcolor{stringliteral}{"{}val1"{}}, parser.ambigOption.GetValue(0));}
+\DoxyCodeLine{00041 }
+\DoxyCodeLine{00042             Assert.Equal(\textcolor{stringliteral}{"{}arg1"{}}, parser.ambigArgument.GetValue(0));}
+\DoxyCodeLine{00043         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__ambiguous__input_a71978cf252653f21db68db6b77e204da}\label{classArgParserTests_1_1Parsing__ambiguous__input_a71978cf252653f21db68db6b77e204da}} 
+\index{ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}!Works\_when\_ambiguous\_parts\_dont\_clash@{Works\_when\_ambiguous\_parts\_dont\_clash}}
+\index{Works\_when\_ambiguous\_parts\_dont\_clash@{Works\_when\_ambiguous\_parts\_dont\_clash}!ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}}
+\doxysubsubsection{\texorpdfstring{Works\_when\_ambiguous\_parts\_dont\_clash()}{Works\_when\_ambiguous\_parts\_dont\_clash()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+ambiguous\+\_\+input.\+Works\+\_\+when\+\_\+ambiguous\+\_\+parts\+\_\+dont\+\_\+clash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source_l00018}{18}} of file \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source}{Parsing\+\_\+ambiguous\+\_\+input.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00019         \{}
+\DoxyCodeLine{00020             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}arg1"{}}, \textcolor{stringliteral}{"{}arg2"{}} \};}
+\DoxyCodeLine{00021             var parser = \textcolor{keyword}{new} AmbiguousParser();}
+\DoxyCodeLine{00022 }
+\DoxyCodeLine{00023             parser.Parse(args);}
+\DoxyCodeLine{00024 }
+\DoxyCodeLine{00025             Assert.False(parser.ambigOption.IsSet);}
+\DoxyCodeLine{00026             Assert.Equal(\textcolor{stringliteral}{"{}arg1"{}}, parser.ambigArgument.GetValue(0));}
+\DoxyCodeLine{00027             Assert.Equal(\textcolor{stringliteral}{"{}arg2"{}}, parser.ambigArgument.GetValue(1));}
+\DoxyCodeLine{00028         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{classArgParserTests_1_1Parsing__ambiguous__input_af1767249df9480802ee6a0d87d41f2c6}\label{classArgParserTests_1_1Parsing__ambiguous__input_af1767249df9480802ee6a0d87d41f2c6}} 
+\index{ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}!Works\_when\_unknown\_option\_is\_explicitly\_delimited@{Works\_when\_unknown\_option\_is\_explicitly\_delimited}}
+\index{Works\_when\_unknown\_option\_is\_explicitly\_delimited@{Works\_when\_unknown\_option\_is\_explicitly\_delimited}!ArgParserTests.Parsing\_ambiguous\_input@{ArgParserTests.Parsing\_ambiguous\_input}}
+\doxysubsubsection{\texorpdfstring{Works\_when\_unknown\_option\_is\_explicitly\_delimited()}{Works\_when\_unknown\_option\_is\_explicitly\_delimited()}}
+{\footnotesize\ttfamily void Arg\+Parser\+Tests.\+Parsing\+\_\+ambiguous\+\_\+input.\+Works\+\_\+when\+\_\+unknown\+\_\+option\+\_\+is\+\_\+explicitly\+\_\+delimited (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source_l00089}{89}} of file \mbox{\hyperlink{Parsing__ambiguous__input_8cs_source}{Parsing\+\_\+ambiguous\+\_\+input.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00090         \{}
+\DoxyCodeLine{00091             var args = \textcolor{keyword}{new} \textcolor{keywordtype}{string}[] \{ \textcolor{stringliteral}{"{}-\/-\/"{}}, \textcolor{stringliteral}{"{}-\/-\/first"{}}, \textcolor{stringliteral}{"{}second"{}} \};}
+\DoxyCodeLine{00092             var parser = \textcolor{keyword}{new} OptionArgumentParser();}
+\DoxyCodeLine{00093 }
+\DoxyCodeLine{00094             parser.Parse(args);}
+\DoxyCodeLine{00095 }
+\DoxyCodeLine{00096             Assert.Equal(\textcolor{stringliteral}{"{}-\/-\/first"{}}, parser.argument.GetValue(0)); \textcolor{comment}{// wrong test}}
+\DoxyCodeLine{00097             Assert.Equal(\textcolor{stringliteral}{"{}second"{}}, parser.argument.GetValue(1));}
+\DoxyCodeLine{00098         \}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+test/\+Arg\+Parser\+Tests/Parsing\+\_\+ambiguous\+\_\+input.\+cs\end{DoxyCompactItemize}

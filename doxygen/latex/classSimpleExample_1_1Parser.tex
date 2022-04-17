@@ -1,0 +1,100 @@
+\hypertarget{classSimpleExample_1_1Parser}{}\doxysection{Simple\+Example.\+Parser Class Reference}
+\label{classSimpleExample_1_1Parser}\index{SimpleExample.Parser@{SimpleExample.Parser}}
+Inheritance diagram for Simple\+Example.\+Parser\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classSimpleExample_1_1Parser}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classArgParser_1_1BoolOption}{Bool\+Option}} \mbox{\hyperlink{classSimpleExample_1_1Parser_ad20c23b2f8d2d0e37fe415499d180293}{Bool\+Opt}} = new(new string\mbox{[}$\,$\mbox{]} \{ \char`\"{}b\char`\"{}, \char`\"{}bool\char`\"{} \}, \char`\"{}bool description\char`\"{}, is\+Mandatory\+: true)
+\item 
+\mbox{\hyperlink{classArgParser_1_1NoValueOption}{No\+Value\+Option}} \mbox{\hyperlink{classSimpleExample_1_1Parser_a98d4d077f266cd83bb1e5489743bc60d}{Help}} = new(new string\mbox{[}$\,$\mbox{]} \{ \char`\"{}h\char`\"{}, \char`\"{}help\char`\"{}, \char`\"{}?\char`\"{} \}, \char`\"{}show help\char`\"{})
+\item 
+\mbox{\hyperlink{classArgParser_1_1StringArgument}{String\+Argument}} \mbox{\hyperlink{classSimpleExample_1_1Parser_ada67d23971c1c9dc397d88ee044b451c}{Files}} = new(\char`\"{}files\char`\"{}, \char`\"{}files to read\char`\"{}, Parameter\+Accept.\+Any)
+\item 
+\mbox{\hyperlink{classArgParser_1_1IntArgument}{Int\+Argument}} \mbox{\hyperlink{classSimpleExample_1_1Parser_a454238713d73a0856339a05335dbdcf6}{Number}} = new(\char`\"{}number\char`\"{}, \char`\"{}number description\char`\"{}, min\+Value\+: 0, default\+Value\+: 42)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+override \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classSimpleExample_1_1Parser_a86bc02dab2f00790c4f8842cde7050f8}{Get\+Argument\+Order}} ()
+\begin{DoxyCompactList}\small\item\em Used by the parser to determine order of arguments. Since reflection doesn\textquotesingle{}t necessarily retain the order of fields, it needs to be specified by the user. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{SimpleExample_2Program_8cs_source_l00006}{6}} of file \mbox{\hyperlink{SimpleExample_2Program_8cs_source}{Program.\+cs}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classSimpleExample_1_1Parser_a86bc02dab2f00790c4f8842cde7050f8}\label{classSimpleExample_1_1Parser_a86bc02dab2f00790c4f8842cde7050f8}} 
+\index{SimpleExample.Parser@{SimpleExample.Parser}!GetArgumentOrder@{GetArgumentOrder}}
+\index{GetArgumentOrder@{GetArgumentOrder}!SimpleExample.Parser@{SimpleExample.Parser}}
+\doxysubsubsection{\texorpdfstring{GetArgumentOrder()}{GetArgumentOrder()}}
+{\footnotesize\ttfamily override \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}\mbox{[}$\,$\mbox{]} Simple\+Example.\+Parser.\+Get\+Argument\+Order (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Used by the parser to determine order of arguments. Since reflection doesn\textquotesingle{}t necessarily retain the order of fields, it needs to be specified by the user. 
+
+\begin{DoxyReturn}{Returns}
+References to argument fields
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{Arg\+Parser.\+Parser\+Base}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classSimpleExample_1_1Parser_ad20c23b2f8d2d0e37fe415499d180293}\label{classSimpleExample_1_1Parser_ad20c23b2f8d2d0e37fe415499d180293}} 
+\index{SimpleExample.Parser@{SimpleExample.Parser}!BoolOpt@{BoolOpt}}
+\index{BoolOpt@{BoolOpt}!SimpleExample.Parser@{SimpleExample.Parser}}
+\doxysubsubsection{\texorpdfstring{BoolOpt}{BoolOpt}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classArgParser_1_1BoolOption}{Bool\+Option}} Simple\+Example.\+Parser.\+Bool\+Opt = new(new string\mbox{[}$\,$\mbox{]} \{ \char`\"{}b\char`\"{}, \char`\"{}bool\char`\"{} \}, \char`\"{}bool description\char`\"{}, is\+Mandatory\+: true)}
+
+
+
+Definition at line \mbox{\hyperlink{SimpleExample_2Program_8cs_source_l00008}{8}} of file \mbox{\hyperlink{SimpleExample_2Program_8cs_source}{Program.\+cs}}.
+
+\mbox{\Hypertarget{classSimpleExample_1_1Parser_ada67d23971c1c9dc397d88ee044b451c}\label{classSimpleExample_1_1Parser_ada67d23971c1c9dc397d88ee044b451c}} 
+\index{SimpleExample.Parser@{SimpleExample.Parser}!Files@{Files}}
+\index{Files@{Files}!SimpleExample.Parser@{SimpleExample.Parser}}
+\doxysubsubsection{\texorpdfstring{Files}{Files}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classArgParser_1_1StringArgument}{String\+Argument}} Simple\+Example.\+Parser.\+Files = new(\char`\"{}files\char`\"{}, \char`\"{}files to read\char`\"{}, Parameter\+Accept.\+Any)}
+
+
+
+Definition at line \mbox{\hyperlink{SimpleExample_2Program_8cs_source_l00011}{11}} of file \mbox{\hyperlink{SimpleExample_2Program_8cs_source}{Program.\+cs}}.
+
+\mbox{\Hypertarget{classSimpleExample_1_1Parser_a98d4d077f266cd83bb1e5489743bc60d}\label{classSimpleExample_1_1Parser_a98d4d077f266cd83bb1e5489743bc60d}} 
+\index{SimpleExample.Parser@{SimpleExample.Parser}!Help@{Help}}
+\index{Help@{Help}!SimpleExample.Parser@{SimpleExample.Parser}}
+\doxysubsubsection{\texorpdfstring{Help}{Help}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classArgParser_1_1NoValueOption}{No\+Value\+Option}} Simple\+Example.\+Parser.\+Help = new(new string\mbox{[}$\,$\mbox{]} \{ \char`\"{}h\char`\"{}, \char`\"{}help\char`\"{}, \char`\"{}?\char`\"{} \}, \char`\"{}show help\char`\"{})}
+
+
+
+Definition at line \mbox{\hyperlink{SimpleExample_2Program_8cs_source_l00009}{9}} of file \mbox{\hyperlink{SimpleExample_2Program_8cs_source}{Program.\+cs}}.
+
+\mbox{\Hypertarget{classSimpleExample_1_1Parser_a454238713d73a0856339a05335dbdcf6}\label{classSimpleExample_1_1Parser_a454238713d73a0856339a05335dbdcf6}} 
+\index{SimpleExample.Parser@{SimpleExample.Parser}!Number@{Number}}
+\index{Number@{Number}!SimpleExample.Parser@{SimpleExample.Parser}}
+\doxysubsubsection{\texorpdfstring{Number}{Number}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classArgParser_1_1IntArgument}{Int\+Argument}} Simple\+Example.\+Parser.\+Number = new(\char`\"{}number\char`\"{}, \char`\"{}number description\char`\"{}, min\+Value\+: 0, default\+Value\+: 42)}
+
+
+
+Definition at line \mbox{\hyperlink{SimpleExample_2Program_8cs_source_l00012}{12}} of file \mbox{\hyperlink{SimpleExample_2Program_8cs_source}{Program.\+cs}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Simple\+Example/Program.\+cs\end{DoxyCompactItemize}
