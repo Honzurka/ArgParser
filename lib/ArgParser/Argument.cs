@@ -15,6 +15,7 @@
 		internal string GetHelp();
 	}
 
+
 	/// <summary>
 	/// Shared by all arguments.
 	/// </summary>
@@ -53,12 +54,14 @@
 
 		}
 
+
 		/// <summary>
 		/// Checks type and restrictions and saves the typed result in its internal state.
 		/// </summary>
 		/// <param name="optVals">Arguments passed to the parser that correspond to this option / argument</param>
 		/// <exception cref="ParseException">Thrown when type or restrictions aren't fulfilled</exception>
 		void Parse(string[] optVals) => parsable.Parse(optVals);
+
 
 		/// <summary>
 		/// Called by user to access parsed value(s).
@@ -69,6 +72,7 @@
 
 		string GetTypeAsString() => parsable.TypeAsString;
 		string GetConstraintsAsString() => parsable.ConstraintsAsString;
+
 
 		/// <summary>
 		/// Returns the count of plain arguments parsed by this instance.

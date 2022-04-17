@@ -34,6 +34,7 @@ namespace ArgParser
 		internal readonly bool isMandatory;
 		bool IOption.IsMandatory => isMandatory;
 
+
 		/// <summary>
 		/// Shortcut for <see cref="OptionBase{T}.ParsedParameterCount">ParsedParameterCount == <see cref="OptionBase{T}.NOT_SET">NOT_SET</see>
 		/// </summary>
@@ -51,6 +52,7 @@ namespace ArgParser
 
 		bool IOption.MatchingOptionName(string optName) => names.Contains(optName);
 
+
 		/// <summary>
 		/// Checks type and restrictions.
 		/// Saves typed result in its internal state.
@@ -60,6 +62,7 @@ namespace ArgParser
 		void Parse(string[] optVals) => parsable.Parse(optVals);
 
 		T? GetValueImpl(int idx) => parsable.GetValue(idx);
+
 
 		/// <summary>
 		/// Called by user to access parsed value(s).
@@ -122,6 +125,7 @@ namespace ArgParser
 			ParameterAccept parameterAccept = new ParameterAccept(),
 			bool? defaultValue = null, bool isMandatory = false) : base(names, description, parameterAccept, isMandatory, new ParsableBool(defaultValue)) { }
 	}
+
 
 	/// <summary>
 	/// A special case of an option. Its <see cref="OptionBase.GetValue(int)">GetValue</see>
