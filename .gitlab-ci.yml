@@ -5,9 +5,6 @@ stages:
   - test
   - documentation
 
-before_script:
-  - "dotnet restore"
-
 build-all:
   stage: build
   script:
