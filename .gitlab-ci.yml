@@ -27,6 +27,7 @@ generate-documentation:
   - mv latex doxygen/
   artifacts:
     paths:
-    - doxygen
+    - doxygen/html
+    - doxygen/latex
   only:
   - master
