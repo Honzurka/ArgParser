@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 namespace ArgParser
 {
-	internal class ParsableInt
+	public interface IParsable<T>
 	{
-		int minValue;
-		int maxValue;
-		int? defaultValue;
+		void Parse(string[] optVals);
+		public T? GetValue(int idx);
+
+		string TypeAsString { get; }
+		string ConstraintsAsString { get; }
+	}
+
+	internal class ParsableInt : IParsable<int?>
+	{
+		readonly int minValue;
+		readonly int maxValue;
+		readonly int? defaultValue;
 		int[] parsedValues = Array.Empty<int>();
 
 		public ParsableInt(int minValue, int maxValue, int? defaultValue)
@@ -43,22 +52,35 @@ namespace ArgParser
 			return defaultValue;
 		}
 
-		internal string GetTypeAsString() => "integer";
+		string IParsable<int?>.TypeAsString => "integer";
 
-		internal string GetConstraintsAsString()
+		string IParsable<int?>.ConstraintsAsString
+		{
+			get
+			{
+				string result = "";
+				if (minValue != int.MinValue) result += $"min: {minValue} ";
+				if (maxValue != int.MaxValue) result += $"max: {maxValue}";
+
+				return result;
+			}
+		}
+
+		/*
+		string IParsable<int?>.GetConstraintsAsString()
 		{
 			string result = "";
 			if (minValue != int.MinValue) result += $"min: {minValue} ";
 			if (maxValue != int.MaxValue) result += $"max: {maxValue}";
 
 			return result;
-		}
+		}*/
 	}
 
-	internal class ParsableString
+	internal class ParsableString : IParsable<string?>
 	{
-		string? defaultValue;
-		string[]? domain;
+		readonly string? defaultValue;
+		readonly string[]? domain;
 		string[] parsedValues = Array.Empty<string>();
 
 		public ParsableString(string? defaultValue, string[]? domain = null)
@@ -88,30 +110,34 @@ namespace ArgParser
 			return defaultValue;
 		}
 
-		internal string GetTypeAsString() => "string";
-		internal string GetConstraintsAsString()
+		string IParsable<string?>.TypeAsString => "string";
+
+		string IParsable<string?>.ConstraintsAsString
 		{
-			string result = "";
-
-			if (domain != null)
+			get
 			{
-				result += "Allowed values: ";
-				foreach (var d in domain)
-				{
-					result += $"{d} ";
-				}
-			}
+				string result = "";
 
-			return result;
+				if (domain != null)
+				{
+					result += "Allowed values: ";
+					foreach (var d in domain)
+					{
+						result += $"{d} ";
+					}
+				}
+
+				return result;
+			}
 		}
 	}
 
-	internal class ParsableBool
+	internal class ParsableBool : IParsable<bool?>
 	{
 		static readonly string[] trues = new string[] { "true", "1" };
 		static readonly string[] falses = new string[] { "false", "0" };
 
-		bool? defaultValue;
+		readonly bool? defaultValue;
 		bool[] parsedValues = Array.Empty<bool>();
 
 		public ParsableBool(bool? defaultValue)
@@ -119,7 +145,7 @@ namespace ArgParser
 			this.defaultValue = defaultValue;
 		}
 
-		private bool ParseSingle(string opt)
+		private static bool ParseSingle(string opt)
 		{
 			if (trues.Contains(opt.ToLower())) return true;
 			if (falses.Contains(opt.ToLower())) return false;
@@ -139,24 +165,40 @@ namespace ArgParser
 			return defaultValue;
 		}
 
-		internal string GetTypeAsString() => "boolean";
-		internal string GetConstraintsAsString()
+		string IParsable<bool?>.TypeAsString => "boolean";
+
+		string IParsable<bool?>.ConstraintsAsString
 		{
-			string result = "";
-
-			result += $"\n\t\tAllowed values(case insensitive): ";
-			result += $"(true):";
-			foreach (var t in trues)
+			get
 			{
-				result += $" {t.ToString()}";
-			}
-			result += $" | (false):";
-			foreach (var f in falses)
-			{
-				result += $" {f.ToString()}";
-			}
+				string result = "";
 
-			return result;
+				result += $"\n\t\tAllowed values(case insensitive): ";
+				result += $"(true):";
+				foreach (var t in trues)
+				{
+					result += $" {t}";
+				}
+				result += $" | (false):";
+				foreach (var f in falses)
+				{
+					result += $" {f}";
+				}
+
+				return result;
+			}
 		}
+	}
+
+	internal class ParsableFlag : IParsable<bool>
+	{
+		bool isset = false;
+
+		public string TypeAsString => "flag";
+
+		public string ConstraintsAsString => "";
+
+		public bool GetValue(int idx) => isset;
+		public void Parse(string[] optVals) => isset = true;
 	}
 }

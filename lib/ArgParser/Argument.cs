@@ -21,6 +21,8 @@
 	/// <typeparam name="T">Type of argument value</typeparam>
 	public abstract class ArgumentBase<T> : IArgument
 	{
+		readonly IParsable<T> parsable;
+
 		internal readonly string name;
 		string IArgument.Name => name;
 
@@ -30,18 +32,16 @@
 		internal readonly ParameterAccept parameterAccept;
 		ParameterAccept IArgument.ParameterAccept => parameterAccept;
 
-		protected abstract string GetTypeAsString();
-		protected abstract string GetConstraintsAsString();
-
 		string IArgument.GetHelp() =>
 			$"\t{name} : {GetTypeAsString()}{parameterAccept.GetHelp()} {GetConstraintsAsString()}\n" +
 			$"\t\t{description}\n\n";
 
-		protected ArgumentBase(string name, string description, ParameterAccept parameterAccept)
+		protected ArgumentBase(string name, string description, ParameterAccept parameterAccept, IParsable<T> parsable)
 		{
 			this.name = name;
 			this.description = description;
 			this.parameterAccept = parameterAccept;
+			this.parsable = parsable;
 		}
 
 		void IArgument.CallParse(string[] optVals)
@@ -58,15 +58,17 @@
 		/// </summary>
 		/// <param name="optVals">Arguments passed to the parser that correspond to this option / argument</param>
 		/// <exception cref="ParseException">Thrown when type or restrictions aren't fulfilled</exception>
-		abstract protected void Parse(string[] optVals);
+		void Parse(string[] optVals) => parsable.Parse(optVals);
 
 		/// <summary>
 		/// Called by user to access parsed value(s).
 		/// </summary>
 		/// <param name="idx">Index of accessed value</param>
 		/// <returns>The parsed value, or default value if idx is out of range.</returns>
-		public abstract T GetValue(int idx = 0);
+		public T? GetValue(int idx = 0) => parsable.GetValue(idx);
 
+		string GetTypeAsString() => parsable.TypeAsString;
+		string GetConstraintsAsString() => parsable.ConstraintsAsString;
 
 		/// <summary>
 		/// Returns the count of plain arguments parsed by this instance.
@@ -77,78 +79,30 @@
 
 	public sealed class IntArgument : ArgumentBase<int?>
 	{
-		readonly ParsableInt parsable;
-
 		public IntArgument(string name, string description,
 			int minValue = int.MinValue, int maxValue = int.MaxValue,
 			ParameterAccept parameterAccept = new ParameterAccept(),
-			int? defaultValue = null) : base(name, description, parameterAccept)
-		{
-			parsable = new(minValue, maxValue, defaultValue);
-		}
-
-		protected override void Parse(string[] optVals) => parsable.Parse(optVals);
-
-		public override int? GetValue(int idx = 0) => parsable.GetValue(idx);
-
-		protected override string GetTypeAsString() => parsable.GetTypeAsString();
-		protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
+			int? defaultValue = null) : base(name, description, parameterAccept, new ParsableInt(minValue, maxValue, defaultValue)) { }
 	}
 
 	public sealed class StringArgument : ArgumentBase<string?>
 	{
-		ParsableString parsable;
-
 		public StringArgument(string name, string description,
 			ParameterAccept parameterAccept = new ParameterAccept(),
-			string? defaultValue = null) : base(name, description, parameterAccept)
-		{
-			parsable = new(defaultValue);
-		}
-
-		protected override void Parse(string[] optVals) => parsable.Parse(optVals);
-
-		public override string? GetValue(int idx = 0) => parsable.GetValue(idx);
-
-		protected override string GetTypeAsString() => parsable.GetTypeAsString();
-		protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
+			string? defaultValue = null) : base(name, description, parameterAccept, new ParsableString(defaultValue)) { }
 	}
 
 	public sealed class EnumArgument : ArgumentBase<string?>
 	{
-		ParsableString parsable;
-
 		public EnumArgument(string name, string description, string[] domain,
 			ParameterAccept parameterAccept = new ParameterAccept(),
-			string? defaultValue = null) : base(name, description, parameterAccept)
-		{
-			parsable = new(defaultValue, domain);
-		}
-
-		protected override void Parse(string[] optVals) => parsable.Parse(optVals);
-
-		public override string? GetValue(int idx = 0) => parsable.GetValue(idx);
-
-		protected override string GetTypeAsString() => parsable.GetTypeAsString();
-		protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
+			string? defaultValue = null) : base(name, description, parameterAccept, new ParsableString(defaultValue, domain)) { }
 	}
 
 	public sealed class BoolArgument : ArgumentBase<bool?>
 	{
-		ParsableBool parsable;
-
 		public BoolArgument(string name, string description,
 			ParameterAccept parameterAccept = new ParameterAccept(),
-			bool? defaultValue = null) : base(name, description, parameterAccept)
-		{
-			parsable = new(defaultValue);
-		}
-
-		protected override void Parse(string[] optVals) => parsable.Parse(optVals);
-
-		public override bool? GetValue(int idx = 0) => parsable.GetValue(idx);
-
-		protected override string GetTypeAsString() => parsable.GetTypeAsString();
-		protected override string GetConstraintsAsString() => parsable.GetConstraintsAsString();
+			bool? defaultValue = null) : base(name, description, parameterAccept, new ParsableBool(defaultValue)) { }
 	}
 }
