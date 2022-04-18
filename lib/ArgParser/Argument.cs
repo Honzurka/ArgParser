@@ -6,11 +6,12 @@
 	/// </summary>
 	public interface IArgument
 	{
-		internal string Name { get; }
-		internal string Description { get; }
 		internal ParameterAccept ParameterAccept { get; }
 
 		internal void CallParse(string[] optVals);
+
+
+		internal string Name { get; }
 
 		internal string GetHelp();
 	}
@@ -23,19 +24,17 @@
 	public abstract class ArgumentBase<T> : IArgument
 	{
 		readonly IParsable<T> parsable;
+		readonly ParameterAccept parameterAccept;
+		readonly string name;
+		readonly string description;
 
-		internal readonly string name;
 		string IArgument.Name => name;
-
-		internal readonly string description;
-		string IArgument.Description => description;
-
-		internal readonly ParameterAccept parameterAccept;
 		ParameterAccept IArgument.ParameterAccept => parameterAccept;
 
-		string IArgument.GetHelp() =>
-			$"\t{name} : {GetTypeAsString()}{parameterAccept.GetHelp()} {GetConstraintsAsString()}\n" +
-			$"\t\t{description}\n\n";
+		string IArgument.GetHelp() =>	string.Format("\t{0} : {1}{2}\n\t\t{3}",
+			name, parsable.TypeAsString + parameterAccept.GetHelp(),
+			parsable.ConstraintsAsString, description
+		);
 
 		protected ArgumentBase(string name, string description, ParameterAccept parameterAccept, IParsable<T> parsable)
 		{
@@ -51,7 +50,6 @@
 			//     optVals.Length < parameterAccept.MaxParamAmount) throw
 			ParsedArgumentCount = optVals.Length;
 			Parse(optVals);
-
 		}
 
 
@@ -70,15 +68,10 @@
 		/// <returns>The parsed value, or default value if idx is out of range.</returns>
 		public T? GetValue(int idx = 0) => parsable.GetValue(idx);
 
-		string GetTypeAsString() => parsable.TypeAsString;
-		string GetConstraintsAsString() => parsable.ConstraintsAsString;
-
-
 		/// <summary>
 		/// Returns the count of plain arguments parsed by this instance.
 		/// </summary>
 		public int ParsedArgumentCount { get; private set; }
-
 	}
 
 	public sealed class IntArgument : ArgumentBase<int?>
@@ -86,27 +79,35 @@
 		public IntArgument(string name, string description,
 			int minValue = int.MinValue, int maxValue = int.MaxValue,
 			ParameterAccept parameterAccept = new ParameterAccept(),
-			int? defaultValue = null) : base(name, description, parameterAccept, new ParsableInt(minValue, maxValue, defaultValue)) { }
+			int? defaultValue = null)
+				: base(name, description, parameterAccept,
+					new ParsableInt(minValue, maxValue, defaultValue)) { }
 	}
 
 	public sealed class StringArgument : ArgumentBase<string?>
 	{
 		public StringArgument(string name, string description,
 			ParameterAccept parameterAccept = new ParameterAccept(),
-			string? defaultValue = null) : base(name, description, parameterAccept, new ParsableString(defaultValue)) { }
+			string? defaultValue = null)
+				: base(name, description, parameterAccept,
+					new ParsableString(defaultValue)) { }
 	}
 
 	public sealed class EnumArgument : ArgumentBase<string?>
 	{
 		public EnumArgument(string name, string description, string[] domain,
 			ParameterAccept parameterAccept = new ParameterAccept(),
-			string? defaultValue = null) : base(name, description, parameterAccept, new ParsableString(defaultValue, domain)) { }
+			string? defaultValue = null)
+				: base(name, description, parameterAccept,
+					new ParsableString(defaultValue, domain)) { }
 	}
 
 	public sealed class BoolArgument : ArgumentBase<bool?>
 	{
 		public BoolArgument(string name, string description,
 			ParameterAccept parameterAccept = new ParameterAccept(),
-			bool? defaultValue = null) : base(name, description, parameterAccept, new ParsableBool(defaultValue)) { }
+			bool? defaultValue = null)
+				: base(name, description, parameterAccept,
+					new ParsableBool(defaultValue)) { }
 	}
 }

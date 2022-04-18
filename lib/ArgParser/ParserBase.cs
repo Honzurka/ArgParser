@@ -14,11 +14,6 @@ namespace ArgParser
 	/// </summary>
 	public abstract class ParserBase
 	{
-		/// <summary>
-		/// A command-line argument consisting of two dashes only, default: "--". Any subsequent argument is considered to be a plain argument
-		/// </summary>
-		protected virtual string Delimiter => "--";
-
 		readonly List<IOption> options = new();
 
 		protected ParserBase()
@@ -90,6 +85,10 @@ namespace ArgParser
 			CheckMultipleVariadicPlainArgs();
 		}
 
+		/// <summary>
+		/// A command-line argument consisting of two dashes only, default: "--". Any subsequent argument is considered to be a plain argument
+		/// </summary>
+		protected virtual string Delimiter => "--";
 
 		/// <summary>
 		/// Used by the parser to determine order of arguments.
@@ -98,8 +97,6 @@ namespace ArgParser
 		/// </summary>
 		/// <returns>References to argument fields</returns>
 		protected virtual IArgument[] GetArgumentOrder() => Array.Empty<IArgument>();
-		internal IArgument[] CallGetArgumentOrder() => GetArgumentOrder();
-
 
 		/// <summary>
 		/// Parses args and stores parsed values in declared fields.
@@ -246,7 +243,8 @@ namespace ArgParser
 
 			void AppendUsageExampleLine(StringBuilder result)
 			{
-				result.Append(System.Diagnostics.Process.GetCurrentProcess().ProcessName);
+				string programName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+				result.Append(programName);
 				if (options.Count > 0) result.Append(" [options]");
 				foreach (var plainArg in GetArgumentOrder())
 					result.Append($" {GetArgumentName(plainArg)}");
@@ -257,9 +255,7 @@ namespace ArgParser
 			{
 				result.Append("Options:\n");
 				foreach (var opt in options)
-				{
 					result.Append($"{opt.GetHelp()}");
-				}
 			}
 
 			void AppendPlainArgHelp(StringBuilder result)
