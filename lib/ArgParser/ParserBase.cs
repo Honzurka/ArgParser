@@ -30,6 +30,14 @@ namespace ArgParser
 				}
 			}
 
+			void CheckThatOptionsHaveAtLeastOneAlias()
+			{
+				foreach (var opt in options)
+				{
+					if (opt.Names.Length == 0) throw new ArgumentException("Each option must have at least 1 name.");
+				}
+			}
+
 			void CheckConflictingAliases()
 			{
 				HashSet<string> aliases = new();
@@ -86,6 +94,7 @@ namespace ArgParser
 			}
 
 			AssignOptions();
+			CheckThatOptionsHaveAtLeastOneAlias();
 			CheckConflictingAliases();
 			CheckUnknownPlainArguments();
 			CheckMultipleVariadicPlainArgs();
