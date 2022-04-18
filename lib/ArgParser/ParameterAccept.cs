@@ -21,7 +21,7 @@ namespace ArgParser
 		public ParameterAccept(int minParamAmount, int maxParamAmount)
 		{
 			if (minParamAmount < 0 || maxParamAmount < minParamAmount || maxParamAmount == 0)
-				throw new ArgumentException("Wrong param amount.");
+				throw new ArgumentException($"Wrong param amount [{minParamAmount}..{maxParamAmount}]");
 
 			this.minParamAmount = minParamAmount;
 			this.maxParamAmount = maxParamAmount;

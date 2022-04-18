@@ -32,9 +32,9 @@ namespace ArgParser
 		private int ParseSingle(string opt)
 		{
 			if (!int.TryParse(opt, out var value))
-				throw new ParseException("parsing failed");	// TODO: change parse error texts
+				throw new ParseException($"{opt} couldn't be parsed as int");
 			if (value < minValue || value > maxValue)
-				throw new ParseException("validation failed");
+				throw new ParseException($"{opt} is out of specified range [{minValue}..{maxValue}]");
 
 			return value;
 		}
@@ -81,7 +81,7 @@ namespace ArgParser
 		private string ParseSingle(string opt)
 		{
 			if (domain != null && !domain.Contains(opt))
-				throw new ParseException("validation failed");	// TODO: change parse error texts
+				throw new ParseException($"{opt} doesnt belong to domain `{string.Join(' ', domain)}`");
 
 			return opt;
 		}
@@ -122,7 +122,7 @@ namespace ArgParser
 		{
 			if (trues.Contains(opt.ToLower())) return true;
 			if (falses.Contains(opt.ToLower())) return false;
-			throw new ParseException("parsing failed");	// TODO: change parse error texts
+			throw new ParseException($"{opt} not recognized as boolean value");
 		}
 
 		public void Parse(string[] optVals)

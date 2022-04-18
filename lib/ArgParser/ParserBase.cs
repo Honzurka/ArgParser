@@ -8,8 +8,8 @@ namespace ArgParser
 	/// <summary>
 	/// To specify options/arguments
 	/// Inherit from this class and declare Option / Argument fields that are descendants of
-	/// <see cref="ArgParser.ArgumentBase">ArgumentBase</see> / <see cref="ArgParser.OptionBase{T}">OptionBase</see>
-	/// After the <see cref="ArgParser.ParserBase.Parse(string[])">Parse</see> method is called,
+	/// <see cref="ArgParser.ArgumentBase">ArgumentBase</see> / <see cref="OptionBase{T}">OptionBase</see>
+	/// After the <see cref="Parse(string[])">Parse</see> method is called,
 	/// parsed results could be obtained using fieldName.GetValue()
 	/// </summary>
 	public abstract class ParserBase
@@ -41,7 +41,7 @@ namespace ArgParser
 						if (!aliases.Contains(name))
 							aliases.Add(name);
 						else
-							throw new ParserCodeException("Parameter aliases are in conflict.");
+							throw new ParserCodeException($"Parameter aliases `{name}` are in conflict.");
 					}
 				}
 			}
@@ -56,27 +56,33 @@ namespace ArgParser
 				var orderedPlainArgsSet = orderedPlainArgs.ToHashSet();
 				var classPlainArgsSet = classPlainArgs.ToHashSet();
 
-				if (orderedPlainArgs.Length != orderedPlainArgsSet.Count)
-					throw new ParserCodeException("Duplicate elements in argument order specification");
-
+				if (orderedPlainArgs.Length != orderedPlainArgsSet.Count) {
+					var duplicates = orderedPlainArgs.GroupBy(a => a).Where(g => g.Count() > 1).Select(d => d.Key.Name).ToList();
+					throw new ParserCodeException($"Duplicate elements `{string.Join(' ', duplicates)}` in argument order specification");
+				}
 
 				foreach (var pa in orderedPlainArgsSet)
 				{
 					if (!classPlainArgsSet.Contains(pa))
-						throw new ParserCodeException("Unused plain arguments out of argument order");
+						throw new ParserCodeException($"Unused plain argument `{pa.Name.First()}` out of argument order");
 				}
 
 				foreach (var pa in classPlainArgsSet)
 				{
 					if (!orderedPlainArgsSet.Contains(pa))
-						throw new ParserCodeException("Unknown plain arguments in argument order ( didn't you forget to override it? :) )");
+						throw new ParserCodeException($"Unknown plain argument `{pa.Name.First()}` in argument order ( didn't you forget to override GetArgumentOrder? :) )");
 				}
 			}
 
 			void CheckMultipleVariadicPlainArgs()
 			{
-				if (GetArgumentOrder().Where(argument => argument.ParameterAccept.IsVariadic).Count() > 1)
-					throw new ParserCodeException("Multiple plain arguments with variadic count");
+				var variadicArgs = GetArgumentOrder().Where(a => a.ParameterAccept.IsVariadic);
+
+				if (variadicArgs.Count() > 1)
+				{
+					throw new ParserCodeException($"Multiple plain arguments with variadic count:" +
+						$"`{string.Join(' ', variadicArgs.Select(a => a.Name))}`");
+				}
 			}
 
 			AssignOptions();
@@ -122,15 +128,21 @@ namespace ArgParser
 					int idx = argIdx + result + 1;
 					if (idx == args.Length || args[idx] == Delimiter || TryGetOption(args[idx]) != null)
 					{
-						if (result < option.ParameterAccept.MinParamAmount) throw new ParseException("Too few parameters passed to option");
-						else break;
+						if (result < option.ParameterAccept.MinParamAmount)
+						{
+							throw new ParseException($"Too few parameters passed to option `{option.Names.First()}`");
+						}
+						else
+						{
+							break;
+						}
 					}
 					result++;
 				}
 				return result;
 			}
 
-			///<summary>
+			/// <summary>
 			/// Returns arg idx after parsing options.
 			/// </summary>
 			int ParseOptions(string[] args)
@@ -150,7 +162,7 @@ namespace ArgParser
 					}
 
 					var option = TryGetOption(currentArg);
-					if (option == null) throw new ParseException("Unrecognized option");
+					if (option == null) throw new ParseException($"Unrecognized option `{currentArg}`");
 
 					var paramCount = GetOptionParamCount(option, args, argIdx);
 					option.CallParse(args[(argIdx + 1)..(argIdx + paramCount + 1)]);
@@ -170,7 +182,7 @@ namespace ArgParser
 				   .Select(a => a.ParameterAccept.MaxParamAmount)
 				   .Aggregate(0, (acc, val) => acc + val);
 
-				if (argsLength < min || argsLength > max) throw new ParseException("arguments are incompatible");
+				if (argsLength < min || argsLength > max) throw new ParseException("Insufficient amount of parsed args");
 			}
 
 			int GetPlainParamCount(int plainArgIdx, int argsCount)
@@ -209,7 +221,7 @@ namespace ArgParser
 				foreach (var o in options)
 				{
 					if (o.IsMandatory && !o.IsSet)
-						throw new ParseException("mandatory option not set");
+						throw new ParseException($"Mandatory option `{o.Names.First()}` not set");
 				}
 			}
 

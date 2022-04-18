@@ -81,7 +81,7 @@ namespace ArgParser
 		/// <returns>Default value if idx is out of range</returns>
 		public T? GetValue(int idx = 0)
 		{
-			if (idx < 0) throw new IndexOutOfRangeException();
+			if (idx < 0) throw new IndexOutOfRangeException("Index must be non-negative value.");
 			return parsable.GetValue(idx);
 		}
 
