@@ -138,13 +138,9 @@ namespace ArgParser
 					if (idx == args.Length || args[idx] == Delimiter || TryGetOption(args[idx]) != null)
 					{
 						if (result < option.ParameterAccept.MinParamAmount)
-						{
 							throw new ParseException($"Too few parameters passed to option `{option.Names.First()}`");
-						}
-						else
-						{
-							break;
-						}
+						
+						else break;
 					}
 					result++;
 				}
@@ -191,7 +187,8 @@ namespace ArgParser
 				   .Select(a => a.ParameterAccept.MaxParamAmount)
 				   .Aggregate(0, (acc, val) => acc + val);
 
-				if (argsLength < min || argsLength > max) throw new ParseException("Insufficient amount of parsed args");
+				if (argsLength < min) throw new ParseException($"Insufficient amount of arguments (min {min})");
+				if (argsLength > max) throw new ParseException($"Too many arguments (max {max})");
 			}
 
 			int GetPlainParamCount(int plainArgIdx, int argsCount)
@@ -201,7 +198,6 @@ namespace ArgParser
 
 				if (!currentArg.ParameterAccept.IsVariadic)
 					return currentArg.ParameterAccept.MinParamAmount;
-
 
 				var argCountRequiredByFollowingArgs = OrderedArguments[(plainArgIdx + 1)..]
 					.Select(a => a.ParameterAccept.MinParamAmount)

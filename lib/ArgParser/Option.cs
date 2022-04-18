@@ -33,8 +33,11 @@ namespace ArgParser
 
 		protected OptionBase(string[] names, string description, ParameterAccept parameterAccept, bool isMandatory, IParsable<T> parsable)
 		{
-			this.names = names.Select(name => name.Length == 1 ? "-" + name : "--" + name).ToArray();
-			this.description = description;
+			this.names = names?.Select(name => name.Length == 1 ? "-" + name : "--" + name).ToArray() ??
+				throw new ParserCodeException("Option name must be specified");
+			this.description = description ??
+				throw new ParserCodeException("Option description must be specified");
+			
 			this.parameterAccept = parameterAccept;
 			this.isMandatory = isMandatory;
 			this.parsable = parsable;

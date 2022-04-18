@@ -31,23 +31,24 @@
 		string IArgument.Name => name;
 		ParameterAccept IArgument.ParameterAccept => parameterAccept;
 
-		string IArgument.GetHelp() =>	string.Format("\t{0} : {1}{2}\n\t\t{3}",
+		string IArgument.GetHelp() => string.Format("\t{0} : {1}{2}\n\t\t{3}",
 			name, parsable.TypeAsString + parameterAccept.GetHelp(),
 			parsable.ConstraintsAsString, description
 		);
 
 		protected ArgumentBase(string name, string description, ParameterAccept parameterAccept, IParsable<T> parsable)
 		{
-			this.name = name;
-			this.description = description;
+			this.name = name ??
+				throw new ParserCodeException("Argument name must be specified");
+			this.description = description ??
+				throw new ParserCodeException("Argument description must be specified");
+
 			this.parameterAccept = parameterAccept;
 			this.parsable = parsable;
 		}
 
 		void IArgument.CallParse(string[] optVals)
 		{
-			// if (optVals.Length > parameterAccept.MaxParamAmount ||
-			//     optVals.Length < parameterAccept.MaxParamAmount) throw
 			ParsedArgumentCount = optVals.Length;
 			Parse(optVals);
 		}
