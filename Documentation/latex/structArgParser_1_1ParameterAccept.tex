@@ -1,0 +1,197 @@
+\hypertarget{structArgParser_1_1ParameterAccept}{}\doxysection{Arg\+Parser.\+Parameter\+Accept Struct Reference}
+\label{structArgParser_1_1ParameterAccept}\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+
+
+Describes number of accepted parameters. The default is to accept exactly 1 parameter (the default parameterless constructor will construct such an instance).  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structArgParser_1_1ParameterAccept_aa478b42be616f246c5abb7155e29e3e5}{Parameter\+Accept}} (int min\+Param\+Amount, int max\+Param\+Amount)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyExceptions}{Exceptions}
+{\em Argument\+Exception} & Thrown when min\+Param\+Amount \texorpdfstring{$<$}{<} 0 or max\+Param\+Amount \texorpdfstring{$<$}{<} min\+Param\+Amount or max\+Param\+Amount == 0\\
+\hline
+\end{DoxyExceptions}
+\end{DoxyCompactList}\item 
+\mbox{\hyperlink{structArgParser_1_1ParameterAccept_a14f3716b33a12b64deacafe3e287c66f}{Parameter\+Accept}} (int param\+Amount)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} \mbox{\hyperlink{structArgParser_1_1ParameterAccept_a32f2c61cf14952aa81adb38604f093d0}{Mandatory}} = new()
+\item 
+static readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} \mbox{\hyperlink{structArgParser_1_1ParameterAccept_a79634582b235c00334dd45ace7e6bf4a}{Optional}} = new(0, 1)
+\item 
+static readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} \mbox{\hyperlink{structArgParser_1_1ParameterAccept_a1a085060330b69c57550a9ab9484be3b}{At\+Least\+One}} = new(1, int.\+Max\+Value)
+\item 
+static readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} \mbox{\hyperlink{structArgParser_1_1ParameterAccept_a85498798331b0a161ce4fa9e85ba91b1}{Any}} = new(0, int.\+Max\+Value)
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structArgParser_1_1ParameterAccept_a3c4b4d8c6689e96a0f7d3d07a8863130}{Is\+Variadic}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+int \mbox{\hyperlink{structArgParser_1_1ParameterAccept_afc931fe5109d25bbdcf9f7a4db306ac0}{Min\+Param\+Amount}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+int \mbox{\hyperlink{structArgParser_1_1ParameterAccept_a9294b1c4a346e6836ad958c76cecb906}{Max\+Param\+Amount}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Describes number of accepted parameters. The default is to accept exactly 1 parameter (the default parameterless constructor will construct such an instance). 
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00009}{9}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_aa478b42be616f246c5abb7155e29e3e5}\label{structArgParser_1_1ParameterAccept_aa478b42be616f246c5abb7155e29e3e5}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!ParameterAccept@{ParameterAccept}}
+\index{ParameterAccept@{ParameterAccept}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{ParameterAccept()}{ParameterAccept()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Arg\+Parser.\+Parameter\+Accept.\+Parameter\+Accept (\begin{DoxyParamCaption}\item[{int}]{min\+Param\+Amount,  }\item[{int}]{max\+Param\+Amount }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Argument\+Exception} & Thrown when min\+Param\+Amount \texorpdfstring{$<$}{<} 0 or max\+Param\+Amount \texorpdfstring{$<$}{<} min\+Param\+Amount or max\+Param\+Amount == 0\\
+\hline
+\end{DoxyExceptions}
+
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00021}{21}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00022         \{}
+\DoxyCodeLine{00023             \textcolor{keywordflow}{if} (minParamAmount < 0 || maxParamAmount < minParamAmount || maxParamAmount == 0)}
+\DoxyCodeLine{00024                 \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ArgumentException(\textcolor{stringliteral}{"{}Wrong param amount."{}});}
+\DoxyCodeLine{00025 }
+\DoxyCodeLine{00026             this.minParamAmount = minParamAmount;}
+\DoxyCodeLine{00027             this.maxParamAmount = maxParamAmount;}
+\DoxyCodeLine{00028         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_a14f3716b33a12b64deacafe3e287c66f}\label{structArgParser_1_1ParameterAccept_a14f3716b33a12b64deacafe3e287c66f}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!ParameterAccept@{ParameterAccept}}
+\index{ParameterAccept@{ParameterAccept}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{ParameterAccept()}{ParameterAccept()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Arg\+Parser.\+Parameter\+Accept.\+Parameter\+Accept (\begin{DoxyParamCaption}\item[{int}]{param\+Amount }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00030}{30}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00030 : \textcolor{keyword}{this}(paramAmount, paramAmount) \{ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_a85498798331b0a161ce4fa9e85ba91b1}\label{structArgParser_1_1ParameterAccept_a85498798331b0a161ce4fa9e85ba91b1}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!Any@{Any}}
+\index{Any@{Any}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{Any}{Any}}
+{\footnotesize\ttfamily readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} Arg\+Parser.\+Parameter\+Accept.\+Any = new(0, int.\+Max\+Value)\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00017}{17}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_a1a085060330b69c57550a9ab9484be3b}\label{structArgParser_1_1ParameterAccept_a1a085060330b69c57550a9ab9484be3b}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!AtLeastOne@{AtLeastOne}}
+\index{AtLeastOne@{AtLeastOne}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{AtLeastOne}{AtLeastOne}}
+{\footnotesize\ttfamily readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} Arg\+Parser.\+Parameter\+Accept.\+At\+Least\+One = new(1, int.\+Max\+Value)\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00016}{16}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_a32f2c61cf14952aa81adb38604f093d0}\label{structArgParser_1_1ParameterAccept_a32f2c61cf14952aa81adb38604f093d0}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!Mandatory@{Mandatory}}
+\index{Mandatory@{Mandatory}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{Mandatory}{Mandatory}}
+{\footnotesize\ttfamily readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} Arg\+Parser.\+Parameter\+Accept.\+Mandatory = new()\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00014}{14}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_a79634582b235c00334dd45ace7e6bf4a}\label{structArgParser_1_1ParameterAccept_a79634582b235c00334dd45ace7e6bf4a}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!Optional@{Optional}}
+\index{Optional@{Optional}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{Optional}{Optional}}
+{\footnotesize\ttfamily readonly \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{Parameter\+Accept}} Arg\+Parser.\+Parameter\+Accept.\+Optional = new(0, 1)\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00015}{15}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_a3c4b4d8c6689e96a0f7d3d07a8863130}\label{structArgParser_1_1ParameterAccept_a3c4b4d8c6689e96a0f7d3d07a8863130}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!IsVariadic@{IsVariadic}}
+\index{IsVariadic@{IsVariadic}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{IsVariadic}{IsVariadic}}
+{\footnotesize\ttfamily bool Arg\+Parser.\+Parameter\+Accept.\+Is\+Variadic\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00032}{32}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_a9294b1c4a346e6836ad958c76cecb906}\label{structArgParser_1_1ParameterAccept_a9294b1c4a346e6836ad958c76cecb906}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!MaxParamAmount@{MaxParamAmount}}
+\index{MaxParamAmount@{MaxParamAmount}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{MaxParamAmount}{MaxParamAmount}}
+{\footnotesize\ttfamily int Arg\+Parser.\+Parameter\+Accept.\+Max\+Param\+Amount\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00043}{43}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00044         \{}
+\DoxyCodeLine{00045             \textcolor{keyword}{get}}
+\DoxyCodeLine{00046             \{}
+\DoxyCodeLine{00047                 \textcolor{keywordflow}{if} (minParamAmount < 1 \&\& maxParamAmount < 1) \{ \textcolor{keywordflow}{return} maxParamAmount + 1; \}}
+\DoxyCodeLine{00048                 \textcolor{keywordflow}{return} maxParamAmount;}
+\DoxyCodeLine{00049             \}}
+\DoxyCodeLine{00050         \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{structArgParser_1_1ParameterAccept_afc931fe5109d25bbdcf9f7a4db306ac0}\label{structArgParser_1_1ParameterAccept_afc931fe5109d25bbdcf9f7a4db306ac0}} 
+\index{ArgParser.ParameterAccept@{ArgParser.ParameterAccept}!MinParamAmount@{MinParamAmount}}
+\index{MinParamAmount@{MinParamAmount}!ArgParser.ParameterAccept@{ArgParser.ParameterAccept}}
+\doxysubsubsection{\texorpdfstring{MinParamAmount}{MinParamAmount}}
+{\footnotesize\ttfamily int Arg\+Parser.\+Parameter\+Accept.\+Min\+Param\+Amount\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Definition at line \mbox{\hyperlink{ParameterAccept_8cs_source_l00034}{34}} of file \mbox{\hyperlink{ParameterAccept_8cs_source}{Parameter\+Accept.\+cs}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00035         \{}
+\DoxyCodeLine{00036             \textcolor{keyword}{get}}
+\DoxyCodeLine{00037             \{}
+\DoxyCodeLine{00038                 \textcolor{keywordflow}{if} (minParamAmount < 1 \&\& maxParamAmount < 1) \{ \textcolor{keywordflow}{return} minParamAmount + 1; \}}
+\DoxyCodeLine{00039                 \textcolor{keywordflow}{return} minParamAmount;}
+\DoxyCodeLine{00040             \}}
+\DoxyCodeLine{00041         \}}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+Arg\+Parser/Parameter\+Accept.\+cs\end{DoxyCompactItemize}

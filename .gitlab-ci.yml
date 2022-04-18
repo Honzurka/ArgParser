@@ -22,11 +22,12 @@ generate-documentation:
   image: alpine
   script:
   - apk update && apk add doxygen
-  - doxygen doxygen/Doxyfile
-  - mv html doxygen/
-  - mv latex doxygen/
+  - doxygen Doxyfile
+  - mkdir public
+  - mv html public/
+  - mv latex public/
   artifacts:
     paths:
-    - doxygen
+    - public
   only:
   - master

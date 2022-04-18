@@ -1,0 +1,65 @@
+\hypertarget{ParameterAccept_8cs_source}{}\doxysection{Parameter\+Accept.\+cs}
+\label{ParameterAccept_8cs_source}\index{lib/ArgParser/ParameterAccept.cs@{lib/ArgParser/ParameterAccept.cs}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00001}00001 \textcolor{keyword}{using} System;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00002}00002 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00003}00003 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceArgParser}{ArgParser}}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00004}00004 \{}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00009}\mbox{\hyperlink{structArgParser_1_1ParameterAccept}{00009}}     \textcolor{keyword}{public} \textcolor{keyword}{struct }\mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00010}00010     \{}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00011}00011         \textcolor{keyword}{private} \textcolor{keywordtype}{int} minParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00012}00012         \textcolor{keyword}{private} \textcolor{keywordtype}{int} maxParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00013}00013 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00014}00014         \textcolor{keyword}{public} readonly \textcolor{keyword}{static} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} Mandatory = \textcolor{keyword}{new}();}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00015}00015         \textcolor{keyword}{public} readonly \textcolor{keyword}{static} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} Optional = \textcolor{keyword}{new}(0, 1);}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00016}00016         \textcolor{keyword}{public} readonly \textcolor{keyword}{static} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} AtLeastOne = \textcolor{keyword}{new}(1, \textcolor{keywordtype}{int}.MaxValue);}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00017}00017         \textcolor{keyword}{public} readonly \textcolor{keyword}{static} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} Any = \textcolor{keyword}{new}(0, \textcolor{keywordtype}{int}.MaxValue);}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00018}00018         \textcolor{keyword}{internal} \textcolor{keyword}{static} \mbox{\hyperlink{structArgParser_1_1ParameterAccept}{ParameterAccept}} Zero = \textcolor{keyword}{new}() \{ minParamAmount = -\/1, maxParamAmount = -\/1 \};}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00019}00019 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00021}\mbox{\hyperlink{structArgParser_1_1ParameterAccept_aa478b42be616f246c5abb7155e29e3e5}{00021}}         \textcolor{keyword}{public} \mbox{\hyperlink{structArgParser_1_1ParameterAccept_aa478b42be616f246c5abb7155e29e3e5}{ParameterAccept}}(\textcolor{keywordtype}{int} minParamAmount, \textcolor{keywordtype}{int} maxParamAmount)}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00022}00022         \{}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00023}00023             \textcolor{keywordflow}{if} (minParamAmount < 0 || maxParamAmount < minParamAmount || maxParamAmount == 0)}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00024}00024                 \textcolor{keywordflow}{throw} \textcolor{keyword}{new} ArgumentException(\textcolor{stringliteral}{"{}Wrong param amount."{}});}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00025}00025 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00026}00026             this.minParamAmount = minParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00027}00027             this.maxParamAmount = maxParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00028}00028         \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00029}00029 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00030}00030         \textcolor{keyword}{public} \mbox{\hyperlink{structArgParser_1_1ParameterAccept_aa478b42be616f246c5abb7155e29e3e5}{ParameterAccept}}(\textcolor{keywordtype}{int} paramAmount) : this(paramAmount, paramAmount) \{ \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00031}00031 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00032}00032         \textcolor{keyword}{public} \textcolor{keywordtype}{bool} IsVariadic => MinParamAmount != MaxParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00033}00033 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00034}00034         \textcolor{keyword}{public} \textcolor{keywordtype}{int} MinParamAmount}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00035}00035         \{}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00036}00036             \textcolor{keyword}{get}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00037}00037             \{}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00038}00038                 \textcolor{keywordflow}{if} (minParamAmount < 1 \&\& maxParamAmount < 1) \{ \textcolor{keywordflow}{return} minParamAmount + 1; \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00039}00039                 \textcolor{keywordflow}{return} minParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00040}00040             \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00041}00041         \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00042}00042 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00043}00043         \textcolor{keyword}{public} \textcolor{keywordtype}{int} MaxParamAmount}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00044}00044         \{}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00045}00045             \textcolor{keyword}{get}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00046}00046             \{}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00047}00047                 \textcolor{keywordflow}{if} (minParamAmount < 1 \&\& maxParamAmount < 1) \{ \textcolor{keywordflow}{return} maxParamAmount + 1; \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00048}00048                 \textcolor{keywordflow}{return} maxParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00049}00049             \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00050}00050         \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00051}00051 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00052}00052         \textcolor{keyword}{internal} \textcolor{keywordtype}{string} GetHelp()}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00053}00053         \{}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00054}00054             \textcolor{keyword}{static} \textcolor{keywordtype}{bool} EqualTo(\mbox{\hyperlink{structArgParser_1_1ParameterAccept_aa478b42be616f246c5abb7155e29e3e5}{ParameterAccept}} left, \mbox{\hyperlink{structArgParser_1_1ParameterAccept_aa478b42be616f246c5abb7155e29e3e5}{ParameterAccept}} right) =>}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00055}00055                 left.MinParamAmount == right.MinParamAmount \&\&}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00056}00056                 left.MaxParamAmount == right.MaxParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00057}00057 }
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00058}00058             \textcolor{keywordflow}{if} (EqualTo(\textcolor{keyword}{this}, Mandatory) || EqualTo(\textcolor{keyword}{this}, Zero)) \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00059}00059             \textcolor{keywordflow}{if} (!IsVariadic) \textcolor{keywordflow}{return} \$\textcolor{stringliteral}{"{}[\{MinParamAmount\}]"{}};}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00060}00060             \textcolor{keywordflow}{if} (MaxParamAmount == \textcolor{keywordtype}{int}.MaxValue) \textcolor{keywordflow}{return} \$\textcolor{stringliteral}{"{}[\{MinParamAmount\}..]"{}};}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00061}00061             \textcolor{keywordflow}{return} \$\textcolor{stringliteral}{"{}[\{MinParamAmount\}..\{MaxParamAmount\}]"{}};}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00062}00062         \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00063}00063     \}}
+\DoxyCodeLine{\Hypertarget{ParameterAccept_8cs_source_l00064}00064 \}}
+
+\end{DoxyCode}

@@ -1,0 +1,247 @@
+\hypertarget{ParserBase_8cs_source}{}\doxysection{Parser\+Base.\+cs}
+\label{ParserBase_8cs_source}\index{lib/ArgParser/ParserBase.cs@{lib/ArgParser/ParserBase.cs}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00001}00001 \textcolor{keyword}{using} System;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00002}00002 \textcolor{keyword}{using} System.Linq;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00003}00003 \textcolor{keyword}{using} System.Collections.Generic;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00004}00004 \textcolor{keyword}{using} System.Text;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00005}00005 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00006}00006 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespaceArgParser}{ArgParser}}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00007}00007 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00015}\mbox{\hyperlink{classArgParser_1_1ParserBase}{00015}}     \textcolor{keyword}{public} \textcolor{keyword}{abstract} \textcolor{keyword}{class }\mbox{\hyperlink{classArgParser_1_1ParserBase}{ParserBase}}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00016}00016     \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00017}00017         readonly List<IOption> options = \textcolor{keyword}{new}();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00018}00018 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00019}00019         \textcolor{keyword}{protected} \mbox{\hyperlink{classArgParser_1_1ParserBase}{ParserBase}}()}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00020}00020         \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00021}00021             \textcolor{keywordtype}{void} AssignOptions()}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00022}00022             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00023}00023                 var fields = GetType().GetFields();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00024}00024                 \textcolor{keywordflow}{foreach} (var field \textcolor{keywordflow}{in} fields)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00025}00025                 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00026}00026                     \textcolor{keywordflow}{if} (field.FieldType.GetInterface(nameof(IOption)) != \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00027}00027                     \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00028}00028                         options.Add((IOption)(field.GetValue(\textcolor{keyword}{this}))!);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00029}00029                     \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00030}00030                 \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00031}00031             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00032}00032 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00033}00033             \textcolor{keywordtype}{void} CheckConflictingAliases()}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00034}00034             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00035}00035                 HashSet<string> aliases = \textcolor{keyword}{new}();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00036}00036 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00037}00037                 \textcolor{keywordflow}{foreach} (var opt \textcolor{keywordflow}{in} options)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00038}00038                 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00039}00039                     \textcolor{keywordflow}{foreach} (var name \textcolor{keywordflow}{in} opt.Names)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00040}00040                     \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00041}00041                         \textcolor{keywordflow}{if} (!aliases.Contains(name))}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00042}00042                             aliases.Add(name);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00043}00043                         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00044}00044                             \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParserCodeException}{ParserCodeException}}(\textcolor{stringliteral}{"{}Parameter aliases are in conflict."{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00045}00045                     \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00046}00046                 \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00047}00047             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00048}00048 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00049}00049             \textcolor{keywordtype}{void} CheckUnknownPlainArguments()}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00050}00050             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00051}00051                 var orderedPlainArgs = \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00052}00052                 var classPlainArgs = GetType().GetFields()}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00053}00053                     .Where(field => field.FieldType.GetInterface(nameof(\mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}})) != \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00054}00054                     .Select(field => (\mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}})(field.GetValue(\textcolor{keyword}{this}))!);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00055}00055 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00056}00056                 var orderedPlainArgsSet = orderedPlainArgs.ToHashSet();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00057}00057                 var classPlainArgsSet = classPlainArgs.ToHashSet();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00058}00058 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00059}00059                 \textcolor{keywordflow}{if} (orderedPlainArgs.Length != orderedPlainArgsSet.Count)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00060}00060                     \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParserCodeException}{ParserCodeException}}(\textcolor{stringliteral}{"{}Duplicate elements in argument order specification"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00061}00061 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00062}00062 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00063}00063                 \textcolor{keywordflow}{foreach} (var pa \textcolor{keywordflow}{in} orderedPlainArgsSet)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00064}00064                 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00065}00065                     \textcolor{keywordflow}{if} (!classPlainArgsSet.Contains(pa))}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00066}00066                         \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParserCodeException}{ParserCodeException}}(\textcolor{stringliteral}{"{}Unused plain arguments out of argument order"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00067}00067                 \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00068}00068 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00069}00069                 \textcolor{keywordflow}{foreach} (var pa \textcolor{keywordflow}{in} classPlainArgsSet)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00070}00070                 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00071}00071                     \textcolor{keywordflow}{if} (!orderedPlainArgsSet.Contains(pa))}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00072}00072                         \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParserCodeException}{ParserCodeException}}(\textcolor{stringliteral}{"{}Unknown plain arguments in argument order ( didn't you forget to override it? :) )"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00073}00073                 \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00074}00074             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00075}00075 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00076}00076             \textcolor{keywordtype}{void} CheckMultipleVariadicPlainArgs()}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00077}00077             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00078}00078                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}().Where(argument => argument.ParameterAccept.IsVariadic).Count() > 1)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00079}00079                     \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParserCodeException}{ParserCodeException}}(\textcolor{stringliteral}{"{}Multiple plain arguments with variadic count"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00080}00080             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00081}00081 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00082}00082             AssignOptions();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00083}00083             CheckConflictingAliases();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00084}00084             CheckUnknownPlainArguments();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00085}00085             CheckMultipleVariadicPlainArgs();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00086}00086         \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00087}00087 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00091}\mbox{\hyperlink{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}{00091}}         \textcolor{keyword}{protected} \textcolor{keyword}{virtual} \textcolor{keywordtype}{string} \mbox{\hyperlink{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}{Delimiter}} => \textcolor{stringliteral}{"{}-\/-\/"{}};}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00092}00092 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00099}\mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{00099}}         \textcolor{keyword}{protected} \textcolor{keyword}{virtual} \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}[] \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}() => Array.Empty<\mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}>();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00100}00100 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00109}\mbox{\hyperlink{classArgParser_1_1ParserBase_aee3c7c8164300c12d22eba3f43b18448}{00109}}         \textcolor{keyword}{public} \textcolor{keywordtype}{void} \mbox{\hyperlink{classArgParser_1_1ParserBase_aee3c7c8164300c12d22eba3f43b18448}{Parse}}(\textcolor{keywordtype}{string}[] args)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00110}00110         \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00111}00111             IOption? TryGetOption(\textcolor{keywordtype}{string} name) => options.Find(o => o.MatchingOptionName(name));}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00112}00112 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00117}00117             \textcolor{keywordtype}{int} GetOptionParamCount(IOption option, \textcolor{keywordtype}{string}[] args, \textcolor{keywordtype}{int} argIdx)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00118}00118             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00119}00119                 \textcolor{keywordtype}{int} result = 0;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00120}00120                 \textcolor{keywordflow}{while} (result < option.ParameterAccept.MaxParamAmount)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00121}00121                 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00122}00122                     \textcolor{keywordtype}{int} idx = argIdx + result + 1;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00123}00123                     \textcolor{keywordflow}{if} (idx == args.Length || args[idx] == \mbox{\hyperlink{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}{Delimiter}} || TryGetOption(args[idx]) != \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00124}00124                     \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00125}00125                         \textcolor{keywordflow}{if} (result < option.ParameterAccept.MinParamAmount) \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}(\textcolor{stringliteral}{"{}Too few parameters passed to option"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00126}00126                         \textcolor{keywordflow}{else} \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00127}00127                     \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00128}00128                     result++;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00129}00129                 \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00130}00130                 \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00131}00131             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00132}00132 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00136}00136             \textcolor{keywordtype}{int} ParseOptions(\textcolor{keywordtype}{string}[] args)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00137}00137             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00138}00138                 \textcolor{keywordtype}{bool} IsPlainArg(\textcolor{keywordtype}{string} arg) => !arg.StartsWith(\textcolor{stringliteral}{"{}-\/"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00139}00139 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00140}00140                 \textcolor{keywordtype}{int} argIdx = 0;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00141}00141                 \textcolor{keywordflow}{while} (argIdx < args.Length)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00142}00142                 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00143}00143                     var currentArg = args[argIdx];}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00144}00144 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00145}00145                     \textcolor{keywordflow}{if} (IsPlainArg(currentArg)) \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00146}00146                     \textcolor{keywordflow}{if} (currentArg == \mbox{\hyperlink{classArgParser_1_1ParserBase_af32109fa88060e503c9945f4ca9d9991}{Delimiter}})}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00147}00147                     \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00148}00148                         argIdx++;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00149}00149                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00150}00150                     \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00151}00151 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00152}00152                     var option = TryGetOption(currentArg);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00153}00153                     \textcolor{keywordflow}{if} (option == \textcolor{keyword}{null}) \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}(\textcolor{stringliteral}{"{}Unrecognized option"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00154}00154 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00155}00155                     var paramCount = GetOptionParamCount(option, args, argIdx);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00156}00156                     option.CallParse(args[(argIdx + 1)..(argIdx + paramCount + 1)]);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00157}00157                     argIdx += paramCount + 1;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00158}00158                 \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00159}00159 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00160}00160                 \textcolor{keywordflow}{return} argIdx;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00161}00161             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00162}00162 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00163}00163             \textcolor{keywordtype}{void} CheckPlainParamCounts(\mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}[] orderedArguments, \textcolor{keywordtype}{int} argsLength)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00164}00164             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00165}00165                 \textcolor{keywordtype}{int} min = orderedArguments}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00166}00166                    .Select(a => a.ParameterAccept.MinParamAmount)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00167}00167                    .Aggregate(0, (acc, val) => acc + val);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00168}00168 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00169}00169                 \textcolor{keywordtype}{int} max = orderedArguments}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00170}00170                    .Select(a => a.ParameterAccept.MaxParamAmount)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00171}00171                    .Aggregate(0, (acc, val) => acc + val);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00172}00172 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00173}00173                 \textcolor{keywordflow}{if} (argsLength < min || argsLength > max) \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}(\textcolor{stringliteral}{"{}arguments are incompatible"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00174}00174             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00175}00175 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00176}00176             \textcolor{keywordtype}{int} GetPlainParamCount(\textcolor{keywordtype}{int} plainArgIdx, \textcolor{keywordtype}{int} argsCount)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00177}00177             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00178}00178                 var OrderedArguments = \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00179}00179                 var currentArg = OrderedArguments[plainArgIdx];}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00180}00180 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00181}00181                 \textcolor{keywordflow}{if} (!currentArg.ParameterAccept.IsVariadic)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00182}00182                     \textcolor{keywordflow}{return} currentArg.ParameterAccept.MinParamAmount;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00183}00183 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00184}00184 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00185}00185                 var argCountRequiredByFollowingArgs = OrderedArguments[(plainArgIdx + 1)..]}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00186}00186                     .Select(a => a.ParameterAccept.MinParamAmount)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00187}00187                     .Aggregate(0, (acc, val) => acc + val);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00188}00188 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00189}00189                 \textcolor{keywordflow}{return} argsCount -\/ argCountRequiredByFollowingArgs;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00190}00190             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00191}00191 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00192}00192             \textcolor{keywordtype}{void} ParsePlainArgs(\textcolor{keywordtype}{string}[] args, \textcolor{keywordtype}{int} argIdx, \mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}}[] orderedArguments)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00193}00193             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00194}00194                 \textcolor{keywordflow}{for} (var plainArgIdx = 0; plainArgIdx < orderedArguments.Length; plainArgIdx++)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00195}00195                 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00196}00196                     var remainingArgumentsCount = args.Length -\/ argIdx;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00197}00197                     var currentArg = orderedArguments[plainArgIdx];}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00198}00198                     var valCount = GetPlainParamCount(plainArgIdx, remainingArgumentsCount);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00199}00199 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00200}00200                     \textcolor{keywordtype}{string}[] vals = args[argIdx..(argIdx + valCount)];}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00201}00201 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00202}00202                     currentArg.CallParse(vals);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00203}00203                     argIdx += valCount;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00204}00204                 \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00205}00205             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00206}00206 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00207}00207             \textcolor{keywordtype}{void} CheckThatMandatoryAreParsed()}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00208}00208             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00209}00209                 \textcolor{keywordflow}{foreach} (var o \textcolor{keywordflow}{in} options)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00210}00210                 \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00211}00211                     \textcolor{keywordflow}{if} (o.IsMandatory \&\& !o.IsSet)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00212}00212                         \textcolor{keywordflow}{throw} \textcolor{keyword}{new} \mbox{\hyperlink{classArgParser_1_1ParseException}{ParseException}}(\textcolor{stringliteral}{"{}mandatory option not set"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00213}00213                 \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00214}00214             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00215}00215 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00216}00216             \textcolor{keywordtype}{int} argIdx = ParseOptions(args);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00217}00217 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00218}00218             var orderedArguments = \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00219}00219             CheckPlainParamCounts(orderedArguments, args.Length -\/ argIdx);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00220}00220             ParsePlainArgs(args, argIdx, orderedArguments);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00221}00221 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00222}00222             CheckThatMandatoryAreParsed();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00223}00223         \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00224}00224 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00228}\mbox{\hyperlink{classArgParser_1_1ParserBase_aba7b31391e6fef089ee0d640d323756d}{00228}}         \textcolor{keyword}{public} \textcolor{keywordtype}{string} \mbox{\hyperlink{classArgParser_1_1ParserBase_aba7b31391e6fef089ee0d640d323756d}{GenerateHelp}}()}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00229}00229         \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00230}00230             StringBuilder result = \textcolor{keyword}{new}();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00231}00231 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00232}00232             \textcolor{keywordtype}{string} GetArgumentName(\mbox{\hyperlink{interfaceArgParser_1_1IArgument}{IArgument}} argument)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00233}00233             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00234}00234                 \textcolor{keywordtype}{string} result = argument.Name;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00235}00235 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00236}00236                 \textcolor{keywordflow}{if} (argument.ParameterAccept.MaxParamAmount > 1)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00237}00237                     result += \textcolor{stringliteral}{"{}..."{}};}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00238}00238                 \textcolor{keywordflow}{if} (argument.ParameterAccept.MinParamAmount == 0)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00239}00239                     result = \$\textcolor{stringliteral}{"{}[\{result\}]"{}};}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00240}00240 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00241}00241                 \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00242}00242             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00243}00243 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00244}00244             \textcolor{keywordtype}{void} AppendUsageExampleLine(StringBuilder result)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00245}00245             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00246}00246                 \textcolor{keywordtype}{string} programName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00247}00247                 result.Append(programName);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00248}00248                 \textcolor{keywordflow}{if} (options.Count > 0) result.Append(\textcolor{stringliteral}{"{} [options]"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00249}00249                 \textcolor{keywordflow}{foreach} (var plainArg \textcolor{keywordflow}{in} \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}())}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00250}00250                     result.Append(\$\textcolor{stringliteral}{"{} \{GetArgumentName(plainArg)\}"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00251}00251                 result.Append(\textcolor{stringliteral}{"{}\(\backslash\)n\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00252}00252             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00253}00253 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00254}00254             \textcolor{keywordtype}{void} AppendOptionHelp(StringBuilder result)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00255}00255             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00256}00256                 result.Append(\textcolor{stringliteral}{"{}Options:\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00257}00257                 \textcolor{keywordflow}{foreach} (var opt \textcolor{keywordflow}{in} options)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00258}00258                     result.Append(\$\textcolor{stringliteral}{"{}\{opt.GetHelp()\}"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00259}00259             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00260}00260 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00261}00261             \textcolor{keywordtype}{void} AppendPlainArgHelp(StringBuilder result)}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00262}00262             \{}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00263}00263                 result.Append(\textcolor{stringliteral}{"{}Arguments:\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00264}00264                 \textcolor{keywordflow}{foreach} (var plainArg \textcolor{keywordflow}{in} \mbox{\hyperlink{classArgParser_1_1ParserBase_a05609e87376d6f124142ff14699a1885}{GetArgumentOrder}}())}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00265}00265                     result.Append(plainArg.GetHelp());}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00266}00266             \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00267}00267 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00268}00268             AppendUsageExampleLine(result);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00269}00269             AppendOptionHelp(result);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00270}00270             AppendPlainArgHelp(result);}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00271}00271 }
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00272}00272             \textcolor{keywordflow}{return} result.ToString();}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00273}00273         \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00274}00274     \}}
+\DoxyCodeLine{\Hypertarget{ParserBase_8cs_source_l00275}00275 \}}
+
+\end{DoxyCode}
