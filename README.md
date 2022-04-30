@@ -86,6 +86,12 @@ then, inside your including project .csproj file, add this reference (include yo
 </ItemGroup>
 ```
 
+## Running Tests
+With `dotnet` installed execute `dotnet test` from project root folder.
+
+## Generating documentation
+With `doxygen` installed execute `doxygen Doxyfile`.
+
 # Design ideas
 ## Defining synonyms
 When adding option we add all its synonyms. Adding synonyms later would be more error-prone and it would also be harder to use.
@@ -111,3 +117,8 @@ We thought about multiple ways of accessing values.
 	- However this would lead to too many unstructured variables. 
 
 4. User specifies options through predefined class - current solution. This solution is similar to Named variable reference but it comes with structure for parsed values.
+
+## SPI: Defining custom types
+...
+
+
