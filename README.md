@@ -90,7 +90,7 @@ then, inside your including project .csproj file, add this reference (include yo
 With `dotnet` installed execute `dotnet test` from project root folder.
 
 ## Generating documentation
-With `doxygen` installed execute `doxygen Doxyfile`.
+With `doxygen` installed execute `doxygen Doxyfile`. After documentation is generated it can be view at [Documentation/html](./Documentation/html/index.html)
 
 # Design ideas
 ## Defining synonyms
