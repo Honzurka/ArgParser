@@ -85,3 +85,40 @@ then, inside your including project .csproj file, add this reference (include yo
   </Reference>
 </ItemGroup>
 ```
+
+## Running Tests
+With `dotnet` installed execute `dotnet test` from project root folder.
+
+## Generating documentation
+With `doxygen` installed execute `doxygen Doxyfile`. After documentation is generated it can be view at [Documentation/html](./Documentation/html/index.html)
+
+# Design ideas
+## Defining synonyms
+When adding option we add all its synonyms. Adding synonyms later would be more error-prone and it would also be harder to use.
+
+When differentiating between short/long option we assume that short option consists of 1 char only and long option consist of 2+ chars. Therefore user doesn't have to specify `-` or `--` in option name.
+
+## Parameter
+We use `ParameterAccept` structure to hold range of parameters. Compared to using predefined enums this allows great flexibility. 
+
+## Parameter type
+We have created all possible types using inheritance. In comparison with generic type this allows us to limit parsed types. This solution is extensible because user can defined his own types through SPI. It also allows us to associate restrictions with specific type.
+
+## Accessing parsed values
+We thought about multiple ways of accessing values.
+
+1. Calling `result.Get(OptionName)`. Option is search by string name which is error prone. Get method can't return exact type it would probably have to return `object` that the user would have to cast to specific type.
+
+2. Callbacks used for saving values. This allows great flexibility because user can specify excatly what he wants. Possible negative is that option order might change behavior. Lots of code is required for simple actions compared to other methods.
+
+3. Named variable reference. Method `AddOption()`, for adding option, would return reference to parsed result. 
+	- This solution is more type-safe because we don't have to access option through string name.
+	- It also allows us to return values with correct type.
+	- However this would lead to too many unstructured variables. 
+
+4. User specifies options through predefined class - current solution. This solution is similar to Named variable reference but it comes with structure for parsed values.
+
+## SPI: Defining custom types
+...
+
+
