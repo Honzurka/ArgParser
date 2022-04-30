@@ -23,9 +23,6 @@ generate-documentation:
   script:
   - apk update && apk add doxygen
   - doxygen Doxyfile
-  - mkdir public
-  - mv html public/
-  - mv latex public/
   artifacts:
     paths:
     - public

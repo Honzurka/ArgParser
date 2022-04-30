@@ -3,7 +3,7 @@ The ArgParser library allows for parsing command line arguments through a user-d
 
 ## key concepts
 - The library relies on C# reflection. Which allows accessing parsed values with correct type and through pre-defined field.
-- Possibility of custom Options or Arguments by inheriting from `OptionBase<T>` or `ArgumentBase<T>`
+- Possibility of custom Options or Arguments by inheriting from `OptionBase<T>` or `ArgumentBase<T>` ---------## SPI: Defining custom types
 - Short option vs long option
     - short option (uses `-` with parameter name) has name consisting of 1 char only
     - long option (uses `--` with parameter name) has name consisting of at least 2 chars
@@ -90,7 +90,7 @@ then, inside your including project .csproj file, add this reference (include yo
 With `dotnet` installed execute `dotnet test` from project root folder.
 
 ## Generating documentation
-With `doxygen` installed execute `doxygen Doxyfile`. After documentation is generated it can be view at [Documentation/html](./Documentation/html/index.html)
+With `doxygen` installed execute `doxygen Doxyfile`. After documentation is generated it can be viewed at [Documentation/html/index.html](./Documentation/html/index.html)
 
 # Design ideas
 ## Defining synonyms
@@ -117,8 +117,3 @@ We thought about multiple ways of accessing values.
 	- However this would lead to too many unstructured variables. 
 
 4. User specifies options through predefined class - current solution. This solution is similar to Named variable reference but it comes with structure for parsed values.
-
-## SPI: Defining custom types
-...
-
-
