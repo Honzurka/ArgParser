@@ -6,11 +6,14 @@ using System.Text;
 namespace ArgParser
 {
 	/// <summary>
-	/// To specify options/arguments
-	/// Inherit from this class and declare Option / Argument fields that are descendants of
-	/// <see cref="ArgParser.ArgumentBase">ArgumentBase</see> / <see cref="OptionBase{T}">OptionBase</see>
+	/// A base class which parses commandline arguments.
+	/// 
+	/// To specify options / arguments, inherit from this class and declare
+	/// option / argument fields that are descendants of
+	/// <see cref="ArgParser.ArgumentBase{T}">ArgumentBase</see> /
+	/// <see cref="OptionBase{T}">OptionBase</see>.
 	/// After the <see cref="Parse(string[])">Parse</see> method is called,
-	/// parsed results could be obtained using fieldName.GetValue()
+	/// parsed results can be obtained using fieldName.GetValue().
 	/// </summary>
 	public abstract class ParserBase
 	{
@@ -101,26 +104,48 @@ namespace ArgParser
 		}
 
 		/// <summary>
-		/// A command-line argument consisting of two dashes only, default: "--". Any subsequent argument is considered to be a plain argument
+		/// A command-line argument indicating the end of options.
+		/// 
+		/// When passed to the commandline args, any subsequent argument is
+		/// considered to be a plain argument. By default the delimiter
+		/// consists of 2 dashes ("--").
 		/// </summary>
 		protected virtual string Delimiter => "--";
 
 		/// <summary>
 		/// Used by the parser to determine order of arguments.
+		///
 		/// Since reflection doesn't necessarily retain the order of fields,
-		/// it needs to be specified by the user.
+		/// the argument order needs to be specified by the user, by making
+		/// an array of references to the class' arguments.
+		/// 
+		/// The argument order should not contain unrecognised IArgument
+		/// instances and at most one plain argument can be variadic.
 		/// </summary>
-		/// <returns>References to argument fields</returns>
-		protected virtual IArgument[] GetArgumentOrder() => Array.Empty<IArgument>();
+		/// <returns>References to argument fields.</returns>
+		protected virtual IArgument[] GetArgumentOrder() =>
+			Array.Empty<IArgument>();
 
 		/// <summary>
 		/// Parses args and stores parsed values in declared fields.
+		/// 
+		/// The parser splits the arguments into options / plain arguments
+		/// (all options precede plain arguments), and passes values to
+		/// corresponding options / plain arguments, according to the
+		/// <see cref="OptionBase.parameterAccept">options'</see> /
+		/// <see cref="ArgumentBase.parameterAccept">arguments'</see>
+		/// ParameterAccept fields.
 		/// </summary>
 		/// <param name="args">Arguments to parse</param>
-		/// <exception cref="ParserCodeException">Thrown when the class doesn't conform to the parser requirements</exception>
-		/// <exception cref="ParseException">Thrown when parsed arguments don't satisfy declared option fields:
-		///     Fields not inheriting from predefined classes (descendants of `OptionBase<T>` or `ArgumentBase<T>`)
-		///     Defining argument fields without overriding `GetArgumentOrder`</exception>
+		/// <exception cref="ParserCodeException">
+		/// Thrown when the class doesn't conform to the parser requirements.
+		/// </exception>
+		/// <exception cref="ParseException">
+		/// Thrown when parsed arguments don't satisfy declared option fields:
+		/// - Fields not inheriting from predefined classes
+		///   (descendants of `OptionBase<T>` or `ArgumentBase<T>`)
+		/// - Defining argument fields without overriding `GetArgumentOrder`
+		/// </exception>
 		public void Parse(string[] args)
 		{
 			IOption? TryGetOption(string name) => options.Find(o => o.MatchingOptionName(name));
@@ -240,7 +265,14 @@ namespace ArgParser
 		}
 
 		/// <summary>
-		/// Automatically generates help message from declared fields (name, description).
+		/// Generates help message from declared fields (name, description).
+		/// 
+		/// The function scans all the parser's
+		/// <see cref="OptionBase">options</see> /
+		/// <see cref="ArgumentBase">arguments</see> and based on their names
+		/// and descriptions, but also their parameterAccept and validation
+		/// constraints, produces a readable helptext for each one,
+		/// concatenated into one string.
 		/// </summary>
 		public string GenerateHelp()
 		{

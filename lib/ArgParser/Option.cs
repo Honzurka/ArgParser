@@ -20,7 +20,8 @@ namespace ArgParser
 		string GetHelp();
 	}
 
-	/// <typeparam name="T">Type of option value</typeparam>
+	/// <summary>A base class for all options.</summary>
+	/// <typeparam name="T">Type of option value.</typeparam>
 	public abstract class OptionBase<T> : IOption
 	{
 		public const int NOT_SET = -1;
@@ -44,12 +45,16 @@ namespace ArgParser
 		}
 
 		/// <summary>
-		/// Returns the count of parsed parameters or <see cref="OptionBase{T}.NOT_SET">NOT_SET</see> (-1) if not parsed at all.
+		/// Returns the count of parsed parameters or
+		/// <see cref="OptionBase{T}.NOT_SET">NOT_SET</see> (-1)
+		/// if the option wasn't present in the parsed arguments.
 		/// </summary>
 		public int ParsedParameterCount { get; private set; } = NOT_SET;
 
 		/// <summary>
-		/// Shortcut for <see cref="OptionBase{T}.ParsedParameterCount">ParsedParameterCount == <see cref="OptionBase{T}.NOT_SET">NOT_SET</see>
+		/// Shortcut for
+		/// <see cref="OptionBase{T}.ParsedParameterCount">ParsedParameterCount</see>
+		/// == <see cref="OptionBase{T}.NOT_SET">NOT_SET</see>.
 		/// </summary>
 		public bool IsSet => ParsedParameterCount != NOT_SET;
 
@@ -63,22 +68,15 @@ namespace ArgParser
 
 		bool IOption.MatchingOptionName(string optName) => names.Contains(optName);
 
-		void IOption.CallParse(string[]? optVals)
+		void IOption.CallParse(string[] optVals)
 		{
-			ParsedParameterCount = optVals?.Length ?? 0;
-			Parse(optVals ?? Array.Empty<string>());
+			ParsedParameterCount = optVals.Length;
+			parsable.Parse(optVals);
 		}
 
 		/// <summary>
-		/// Checks type and restrictions.
-		/// Saves typed result in its internal state.
-		/// </summary>
-		/// <param name="optVals">Arguments passed to the parser that correspond to this option/argument</param>
-		/// <exception cref="ParseException">Thrown when type or restrictions aren't fulfilled</exception>
-		void Parse(string[] optVals) => parsable.Parse(optVals);
-
-		/// <summary>
-		/// Called by user to access parsed value(s).
+		/// Called by user to access parsed value(s). Implemented using
+		/// <see cref="IParsable.Parse(string[])">IParsable.Parse</see>.
 		/// </summary>
 		/// <param name="idx">Index of accessed value</param>
 		/// <returns>Default value if idx is out of range</returns>
@@ -136,7 +134,8 @@ namespace ArgParser
 
 
 	/// <summary>
-	/// A special case of an option. Its <see cref="OptionBase.GetValue(int)">GetValue</see>
+	/// A special case of an option. Its
+	/// <see cref="OptionBase.GetValue(int)">GetValue</see>
 	/// method returns whether it was in parsed arguments.
 	/// </summary>
 	public sealed class NoValueOption : OptionBase<bool>
