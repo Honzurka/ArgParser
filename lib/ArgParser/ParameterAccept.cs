@@ -49,20 +49,26 @@ namespace ArgParser
 		public int MinParamAmount
 		{
 			get
-			{
-				if (minParamAmount < 1 && maxParamAmount < 1) { return minParamAmount + 1; }
-				return minParamAmount;
-			}
-		}
+            {
+                if (minParamAmount < 1 && maxParamAmount < 1)
+                {
+                    return minParamAmount + 1;
+                }
+                return minParamAmount;
+            }
+        }
 
-		/// <summary>
-		/// Returns maximal acceptable amount of parameters.
-		/// </summary>
-		public int MaxParamAmount
-		{
-			get
-			{
-				if (minParamAmount < 1 && maxParamAmount < 1) { return maxParamAmount + 1; }
+        /// <summary>
+        /// Returns maximal acceptable amount of parameters.
+        /// </summary>
+        public int MaxParamAmount
+        {
+            get
+            {
+                if (minParamAmount < 1 && maxParamAmount < 1)
+                {
+                    return maxParamAmount + 1;
+                }
 				return maxParamAmount;
 			}
 		}

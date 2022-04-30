@@ -17,27 +17,32 @@ namespace ArgParser
 	/// </summary>
 	public abstract class ParserBase
 	{
-		readonly List<IOption> options = new();
+		readonly List<IOption> options;
 
 		protected ParserBase()
 		{
-			void AssignOptions()
+			List<IOption> GetOptions()
 			{
+				List<IOption> result = new();
+
 				var fields = GetType().GetFields();
 				foreach (var field in fields)
 				{
 					if (field.FieldType.GetInterface(nameof(IOption)) != null)
 					{
-						options.Add((IOption)(field.GetValue(this))!);
+						result.Add((IOption)(field.GetValue(this))!);
 					}
 				}
+
+				return result;
 			}
 
 			void CheckThatOptionsHaveAtLeastOneAlias()
 			{
 				foreach (var opt in options)
 				{
-					if (opt.Names.Length == 0) throw new ArgumentException("Each option must have at least 1 name.");
+					if (opt.Names.Length == 0)
+						throw new ArgumentException("Each option must have at least 1 name.");
 				}
 			}
 
@@ -59,30 +64,31 @@ namespace ArgParser
 
 			void CheckUnknownPlainArguments()
 			{
+				void CheckDuplicates(IArgument[] orderedPlainArgs) {
+					var duplicates = orderedPlainArgs.GroupBy(x => x).Where(g => g.Count() > 1);
+					if (duplicates.Any())
+					{
+						throw new ParserCodeException($"Duplicate elements `{string.Join(' ', duplicates.Select(d => d.Key.Name))}` in argument order specification");
+					}
+				}
+
+				void CheckArgOrder(IEnumerable<IArgument> minuend, IEnumerable<IArgument> subtrahend, string errorMessage)
+				{
+					var diff = minuend.Except(subtrahend);
+					if (diff.Any())
+					{
+						throw new ParserCodeException($"{errorMessage}: `{diff.First().Name}`");
+					}
+				}
+				
 				var orderedPlainArgs = GetArgumentOrder();
 				var classPlainArgs = GetType().GetFields()
 					.Where(field => field.FieldType.GetInterface(nameof(IArgument)) != null)
 					.Select(field => (IArgument)(field.GetValue(this))!);
 
-				var orderedPlainArgsSet = orderedPlainArgs.ToHashSet();
-				var classPlainArgsSet = classPlainArgs.ToHashSet();
-
-				if (orderedPlainArgs.Length != orderedPlainArgsSet.Count) {
-					var duplicates = orderedPlainArgs.GroupBy(a => a).Where(g => g.Count() > 1).Select(d => d.Key.Name).ToList();
-					throw new ParserCodeException($"Duplicate elements `{string.Join(' ', duplicates)}` in argument order specification");
-				}
-
-				foreach (var pa in orderedPlainArgsSet)
-				{
-					if (!classPlainArgsSet.Contains(pa))
-						throw new ParserCodeException($"Unused plain argument `{pa.Name.First()}` out of argument order");
-				}
-
-				foreach (var pa in classPlainArgsSet)
-				{
-					if (!orderedPlainArgsSet.Contains(pa))
-						throw new ParserCodeException($"Unknown plain argument `{pa.Name.First()}` in argument order ( didn't you forget to override GetArgumentOrder? :) )");
-				}
+				CheckDuplicates(orderedPlainArgs);
+				CheckArgOrder(orderedPlainArgs, classPlainArgs, "Unused plain argument out of argument order");
+				CheckArgOrder(classPlainArgs, orderedPlainArgs, "Unknown plain argument in argument order ( didn't you forget to override GetArgumentOrder? :) )");
 			}
 
 			void CheckMultipleVariadicPlainArgs()
@@ -91,12 +97,13 @@ namespace ArgParser
 
 				if (variadicArgs.Count() > 1)
 				{
-					throw new ParserCodeException($"Multiple plain arguments with variadic count:" +
+					throw new ParserCodeException(
+						$"Multiple plain arguments with variadic count:" +
 						$"`{string.Join(' ', variadicArgs.Select(a => a.Name))}`");
 				}
 			}
 
-			AssignOptions();
+			options = GetOptions();
 			CheckThatOptionsHaveAtLeastOneAlias();
 			CheckConflictingAliases();
 			CheckUnknownPlainArguments();
@@ -146,14 +153,10 @@ namespace ArgParser
 		///   (descendants of `OptionBase<T>` or `ArgumentBase<T>`)
 		/// - Defining argument fields without overriding `GetArgumentOrder`
 		/// </exception>
-		public void Parse(string[] args)
+		public void Parse0(string[] args)
 		{
 			IOption? TryGetOption(string name) => options.Find(o => o.MatchingOptionName(name));
 
-			/// <summary>
-			/// Returns value between option.ParameterAccept.MinParamAmount and option.ParameterAccept.MaxParamAmount.
-			/// Consume as much params as possible if variadic.
-			/// </summary>
 			int GetOptionParamCount(IOption option, string[] args, int argIdx)
 			{
 				int result = 0;
@@ -172,9 +175,6 @@ namespace ArgParser
 				return result;
 			}
 
-			/// <summary>
-			/// Returns arg idx after parsing options.
-			/// </summary>
 			int ParseOptions(string[] args)
 			{
 				bool IsPlainArg(string arg) => !arg.StartsWith("-");
@@ -255,13 +255,134 @@ namespace ArgParser
 				}
 			}
 
-			int argIdx = ParseOptions(args);
-
+			int firstArgIdx = ParseOptions(args);
 			var orderedArguments = GetArgumentOrder();
-			CheckPlainParamCounts(orderedArguments, args.Length - argIdx);
-			ParsePlainArgs(args, argIdx, orderedArguments);
+			CheckPlainParamCounts(orderedArguments, args.Length - firstArgIdx);
+			ParsePlainArgs(args, firstArgIdx, orderedArguments);
 
 			CheckThatMandatoryAreParsed();
+		}
+
+		public void Parse(string[] args)
+		{
+			IOption? TryGetOption(string name) => options.Find(o => o.MatchingOptionName(name));
+
+			/// <summary>
+			/// Returns value between option.ParameterAccept.MinParamAmount and
+			/// option.ParameterAccept.MaxParamAmount. Consume as much params
+			/// as possible if variadic.
+			/// </summary>
+			int GetOptionParamCount(IOption option, string[] args, int argIdx)
+			{
+				int result = 0;
+				for (; result < option.ParameterAccept.MaxParamAmount; result++)
+				{
+					int idx = argIdx + result + 1;
+					if (idx == args.Length || args[idx] == Delimiter || TryGetOption(args[idx]) != null)
+					{
+						if (result < option.ParameterAccept.MinParamAmount)
+							throw new ParseException($"Too few parameters passed to option `{option.Names.First()}`");
+						else break;
+					}
+				}
+				return result;
+			}
+
+			/// <returns>
+			/// Remaining plain arguments, filtered of the parsed options
+			/// </returns>
+			List<string> ParseOptions(string[] args)
+			{
+				List<string> nonOptions = new ();
+				bool IsPlainArg(string arg) => !arg.StartsWith("-");
+
+				int argIdx = 0;
+				while (argIdx < args.Length)
+				{
+					var currentArg = args[argIdx];
+
+					if (IsPlainArg(currentArg))
+					{
+						nonOptions.Add(currentArg);
+						argIdx++;
+						continue;
+					}
+					else if (currentArg == Delimiter)
+					{
+						argIdx++;
+						nonOptions.AddRange(args[argIdx..]);
+						break;
+					}
+
+					var option = TryGetOption(currentArg);
+					if (option == null) throw new ParseException($"Unrecognized option `{currentArg}`");
+
+					var paramCount = GetOptionParamCount(option, args, argIdx);
+					option.CallParse(args[(argIdx + 1)..(argIdx + paramCount + 1)]);
+					argIdx += paramCount + 1;
+				}
+
+				return nonOptions;
+			}
+
+			void CheckPlainParamCounts(IArgument[] orderedArguments, int argsLength)
+			{
+				long min = orderedArguments
+				   .Select(a => a.ParameterAccept.MinParamAmount)
+				   .Aggregate(0L, (acc, val) => acc + val);
+
+				long max = orderedArguments
+				   .Select(a => a.ParameterAccept.MaxParamAmount)
+				   .Aggregate(0L, (acc, val) => acc + val);
+
+				if (argsLength < min) throw new ParseException($"Insufficient amount of arguments (min {min})");
+				if (argsLength > max) throw new ParseException($"Too many arguments (max {max})");
+			}
+
+			int GetPlainParamCount(int plainArgIdx, int argsCount)
+			{
+				var OrderedArguments = GetArgumentOrder();
+				var currentArg = OrderedArguments[plainArgIdx];
+
+				if (!currentArg.ParameterAccept.IsVariadic)
+					return currentArg.ParameterAccept.MinParamAmount;
+
+				var argCountRequiredByFollowingArgs = OrderedArguments[(plainArgIdx + 1)..]
+					.Select(a => a.ParameterAccept.MinParamAmount)
+					.Aggregate(0, (acc, val) => acc + val);
+
+				return argsCount - argCountRequiredByFollowingArgs;
+			}
+
+			void ParsePlainArgs(List<string> args, IArgument[] orderedArguments)
+			{
+				int argsIdx = 0;
+				for (int plainArgIdx = 0; plainArgIdx < orderedArguments.Length; plainArgIdx++)
+				{
+					var remainingArgumentsCount = args.Count - argsIdx;
+					var currentArg = orderedArguments[plainArgIdx];
+					var valCount = GetPlainParamCount(plainArgIdx, remainingArgumentsCount);
+
+					var plainArgValues = args.GetRange(argsIdx, valCount);
+					currentArg.CallParse(plainArgValues.ToArray());
+					argsIdx += valCount;
+				}
+			}
+
+			void CheckThatMandatoryOptionsAreParsed()
+			{
+				foreach (var o in options)
+				{
+					if (o.IsMandatory && !o.IsSet)
+						throw new ParseException($"Mandatory option `{o.Names.First()}` not set");
+				}
+			}
+
+			var filteredPlainArgs = ParseOptions(args);
+			var orderedArguments = GetArgumentOrder();
+			CheckPlainParamCounts(orderedArguments, filteredPlainArgs.Count);
+			ParsePlainArgs(filteredPlainArgs, orderedArguments);
+			CheckThatMandatoryOptionsAreParsed();
 		}
 
 		/// <summary>
@@ -276,8 +397,6 @@ namespace ArgParser
 		/// </summary>
 		public string GenerateHelp()
 		{
-			StringBuilder result = new();
-
 			string GetArgumentName(IArgument argument)
 			{
 				string result = argument.Name;
@@ -290,34 +409,44 @@ namespace ArgParser
 				return result;
 			}
 
-			void AppendUsageExampleLine(StringBuilder result)
+			string GetUsageExampleLine()
 			{
 				string programName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-				result.Append(programName);
-				if (options.Count > 0) result.Append(" [options]");
+				string result = programName;
+
+				if (options.Count > 0)
+				{
+					result += " [options]";
+				}
+
 				foreach (var plainArg in GetArgumentOrder())
-					result.Append($" {GetArgumentName(plainArg)}");
-				result.Append("\n\n");
+					result += $" {GetArgumentName(plainArg)}";
+				result += "\n\n";
+
+				return result;
 			}
 
-			void AppendOptionHelp(StringBuilder result)
+			string GetOptionHelp()
 			{
-				result.Append("Options:\n");
+				string result = "Options:\n";
 				foreach (var opt in options)
-					result.Append($"{opt.GetHelp()}");
+					result += $"{opt.GetHelp()}";
+				
+				return result;
 			}
 
-			void AppendPlainArgHelp(StringBuilder result)
+			string GetPlainArgHelp()
 			{
-				result.Append("Arguments:\n");
+				string result = "Arguments:\n";
 				foreach (var plainArg in GetArgumentOrder())
-					result.Append(plainArg.GetHelp());
+					result += plainArg.GetHelp();
+				return result;
 			}
 
-			AppendUsageExampleLine(result);
-			AppendOptionHelp(result);
-			AppendPlainArgHelp(result);
-
+			StringBuilder result = new();
+			result.Append(GetUsageExampleLine());
+			result.Append(GetOptionHelp());
+			result.Append(GetPlainArgHelp());
 			return result.ToString();
 		}
 	}
