@@ -1,8 +1,10 @@
 ﻿namespace ArgParser
 {
 	/// <summary>
-	/// Specifies that this class is an argument. The interface contains internal methods
-	/// and should not be implemented. Use <see cref="ArgumentBase{T}">ArgumentBase</see> instead.
+	/// Specifies that this class is an argument.
+	/// 
+	/// The interface contains internal methods and should not be implemented
+	/// directly; use <see cref="ArgumentBase{T}">ArgumentBase</see> instead.
 	/// </summary>
 	public interface IArgument
 	{
@@ -17,10 +19,8 @@
 	}
 
 
-	/// <summary>
-	/// Shared by all arguments.
-	/// </summary>
-	/// <typeparam name="T">Type of argument value</typeparam>
+	/// <summary>A base class for all arguments.</summary>
+	/// <typeparam name="T">Type of argument value.</typeparam>
 	public abstract class ArgumentBase<T> : IArgument
 	{
 		readonly IParsable<T> parsable;
@@ -50,23 +50,15 @@
 		void IArgument.CallParse(string[] optVals)
 		{
 			ParsedArgumentCount = optVals.Length;
-			Parse(optVals);
+			parsable.Parse(optVals);
 		}
 
-
 		/// <summary>
-		/// Checks type and restrictions and saves the typed result in its internal state.
-		/// </summary>
-		/// <param name="optVals">Arguments passed to the parser that correspond to this option / argument</param>
-		/// <exception cref="ParseException">Thrown when type or restrictions aren't fulfilled</exception>
-		void Parse(string[] optVals) => parsable.Parse(optVals);
-
-
-		/// <summary>
-		/// Called by user to access parsed value(s).
+		/// Called by user to access parsed value(s). Implemented using
+		/// <see cref="IParsable.Parse(string[])">IParsable.Parse</see>.
 		/// </summary>
 		/// <param name="idx">Index of accessed value</param>
-		/// <returns>The parsed value, or default value if idx is out of range.</returns>
+		/// <returns>Default value if idx is out of range</returns>
 		public T? GetValue(int idx = 0) => parsable.GetValue(idx);
 
 		/// <summary>

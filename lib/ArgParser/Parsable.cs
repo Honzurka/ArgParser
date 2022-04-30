@@ -4,15 +4,60 @@ using System.Collections.Generic;
 
 namespace ArgParser
 {
+	/// <summary>
+	/// Base interface for implementation of all options / arguments.
+	///
+	/// A class implementing this interface can be used to provide
+	/// functionality to both an option and an argument (or only one of them,
+	/// if needed) by creating a class inheriting from
+	/// <see cref="OptionBase{T}">OptionBase</see> /
+	/// <see cref="ArgumentBase{T}">ArgumentBase</see>,
+	/// and passing the IParsable class in the constructor.
+	/// </summary>
+	/// 
+	/// <typeparam name="T">
+	/// Type of the parsed value (often nullable, to avoid making default
+	/// values confusing).
+	/// </typeparam>
 	public interface IParsable<T>
 	{
+		/// <summary>
+		/// Parses, validates and stores the given option values.
+		/// 
+		/// The function shall try to parse the optVals, validate it against
+		/// the instance's constraints, and either save the result in its
+		/// internal state to be obtained later by
+		/// <see cref="IParsable{T}.GetValue(int)">GetValue</see>
+		/// or throw an exception indicating that the parsing failed.
+		/// </summary>
+		/// 
+		/// <param name="optVals">
+		/// Arguments passed to the parser that correspond to this option /
+		/// argument.
+		/// </param>
+		/// 
+		/// <exception cref="ParseException">
+		/// Thrown when type or constraints aren't fulfilled.
+		/// </exception>
 		void Parse(string[] optVals);
 
+		/// <summary>
+		/// Called by user to access parsed value(s).
+		/// </summary>
+		/// <param name="idx">Index of accessed value</param>
+		/// <returns>Default value if idx is out of range</returns>
 		public T? GetValue(int idx);
 
-
+		/// <summary>
+		/// Returns a string with a name of the parsed type
+		/// (e.g. "comma_separated_ints").
+		/// </summary>
 		string TypeAsString { get; }
 
+		/// <summary>
+		/// Returns a string describing how the parsable is constrained
+		/// (e.g. "min: 0 max: 42").
+		/// </summary>
 		string ConstraintsAsString { get; }
 	}
 

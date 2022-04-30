@@ -3,8 +3,13 @@ using System;
 namespace ArgParser
 {
 	/// <summary>
-	/// Describes number of accepted parameters. The default is to accept exactly 1 parameter
-	/// (the default parameterless constructor will construct such an instance).
+	/// Describes number of accepted parameters.
+	///
+	/// Used by <see cref="ParserBase">parsers</see> to determine how many
+	/// parameters are possible to accept by each option or parameter.
+	///
+	/// The default of this struct is to accept exactly 1 parameter (the
+	/// default parameterless constructor will construct such an instance).
 	/// </summary>
 	public struct ParameterAccept
 	{
@@ -17,7 +22,10 @@ namespace ArgParser
 		public readonly static ParameterAccept Any = new(0, int.MaxValue);
 		internal static ParameterAccept Zero = new() { minParamAmount = -1, maxParamAmount = -1 };
 
-		/// <exception cref="ArgumentException">Thrown when minParamAmount < 0 or maxParamAmount < minParamAmount or maxParamAmount == 0</exception>
+		/// <exception cref="ArgumentException">
+		/// Thrown when minParamAmount < 0 or maxParamAmount < minParamAmount
+		/// or maxParamAmount == 0.
+		/// </exception>
 		public ParameterAccept(int minParamAmount, int maxParamAmount)
 		{
 			if (minParamAmount < 0 || maxParamAmount < minParamAmount || maxParamAmount == 0)
@@ -29,8 +37,15 @@ namespace ArgParser
 
 		public ParameterAccept(int paramAmount) : this(paramAmount, paramAmount) { }
 
+		/// <summary>
+		/// Returns true if the range of accepted parameters is more than one
+		/// number.
+		/// </summary>
 		public bool IsVariadic => MinParamAmount != MaxParamAmount;
 
+		/// <summary>
+		/// Returns minimal acceptable amount of parameters.
+		/// </summary>
 		public int MinParamAmount
 		{
 			get
@@ -40,6 +55,9 @@ namespace ArgParser
 			}
 		}
 
+		/// <summary>
+		/// Returns maximal acceptable amount of parameters.
+		/// </summary>
 		public int MaxParamAmount
 		{
 			get
