@@ -1,40 +1,36 @@
 ﻿using System;
 using ArgParser;
 
-// args = new string[] { "--help", "-b", "true", "1" };
-
 var parser = new Parser();
-try
-{
+try {
 	parser.Parse(args);
-}
-catch (ParseException)
-{
-	Console.Error.WriteLine("Passed arguments doesn't conform to program specification. See help for more explanation.");
+} catch (ParseException) {
+	if (parser.Help.GetValue()) {
+		Console.Write(parser.GenerateHelp());
+	} else {
+		Console.Error.WriteLine("Arguments don't conform to program specification. Type --help for help.");
+	}
 	Environment.Exit(1);
 }
-if (parser.Help.GetValue())
-{
+if (parser.Help.GetValue()) {
 	Console.WriteLine(parser.GenerateHelp());
-}
-else
-{
-	if (parser.BoolOpt.GetValue() != null) Console.WriteLine($"boolOpt = {parser.BoolOpt.GetValue()}");
-	int i = 0;
-	while (parser.Files.GetValue(i) != null) {
-		// equivalent to while (i < parser.files.ParsedParameterCount)
-		Console.WriteLine($"file{i} = {parser.Files.GetValue(i)}");
-		i++;
+} else {
+	if (parser.BoolOpt.GetValue() != null) {
+		Console.WriteLine($"boolOpt = {parser.BoolOpt.GetValue()}");
 	}
+	for (int i = 0; parser.Files.GetValue(i) != null; i++) {
+		Console.WriteLine($"file[{i}] = {parser.Files.GetValue(i)}");
+	}
+	Console.WriteLine($"number = {parser.Number.GetValue()}");
 }
 
 class Parser : ParserBase
 {
-	public BoolOption BoolOpt = new(new string[] { "b", "bool" }, "bool description", isMandatory: true);
-	public NoValueOption Help = new(new string[] { "h", "help", "?" }, "show help");
+	public BoolOption BoolOpt = new(new string[] { "b", "bool" }, "Pass some bool here");
+	public NoValueOption Help = new(new string[] { "h", "help", "?" }, "Display help");
 
-	public StringArgument Files = new("files", "files to read", ParameterAccept.Any);
-	public IntArgument Number = new("number", "number description", minValue: 0, defaultValue: 42);
+	public StringArgument Files = new("strings", "Accepts any amount of strings", ParameterAccept.Any);
+	public IntArgument Number = new("number", "Pass some number here", minValue: 0, defaultValue: 42);
 
-	protected override IArgument[] GetArgumentOrder() => new IArgument[]{ Files, Number };
+	protected override IArgument[] GetArgumentOrder() => new IArgument[] { Files, Number };
 }
