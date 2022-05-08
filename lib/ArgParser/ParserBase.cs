@@ -321,8 +321,7 @@ namespace ArgParser
             {
                 string result = "Options:\n";
                 foreach (var opt in options)
-                    result += $"{opt.GetHelp()}";
-
+                    result += $"{opt.GetHelp()}\n\n";
                 return result;
             }
 
@@ -330,7 +329,7 @@ namespace ArgParser
             {
                 string result = "Arguments:\n";
                 foreach (var plainArg in GetArgumentOrder())
-                    result += plainArg.GetHelp();
+                    result += $"{plainArg.GetHelp()}\n\n";
                 return result;
             }
 
