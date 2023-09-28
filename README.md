@@ -1,3 +1,5 @@
+- project created as a part of school subject [Best Practices in Programming](https://d3s.mff.cuni.cz/teaching/nprg043/)
+
 # Library Description
 The ArgParser library allows for parsing command line arguments through a
 user-defined class which enables easy access to parsed values.
